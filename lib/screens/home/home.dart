@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
+import 'package:workout_app/shared/constants.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,24 +16,26 @@ class _HomeState extends State<Home> {
   void _onItemTapped(int index) {
     setState(() => _selectedIndex = index);
   }
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'HOME',
-      style: optionStyle,
-    ),
-    Text(
-      'RECORD',
-      style: optionStyle,
-    ),
-    Text(
-      'MY PAGE',
-      style: optionStyle,
-    ),
-  ];
+
+  static const TextStyle optionStyle =
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
 
   @override
   Widget build(BuildContext context) {
+    //NB: fjernet const under her for det skapte trøbbel med 'row'. La også til const bak "TEXT".
+     final List<Widget> _widgetOptions = <Widget>[
+      const Text(
+        'HOME',
+        style: optionStyle,
+      ),
+      column(context),
+      const Text(
+        'MY PAGE',
+        style: optionStyle,
+      ),
+    ];
+
     return Scaffold(
       backgroundColor: Colors.brown[50],
       appBar: AppBar(
@@ -48,9 +51,7 @@ class _HomeState extends State<Home> {
             label: const Text("Logout"),
             icon: const Icon(Icons.person),
           ),
-
         ],
-
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -73,6 +74,49 @@ class _HomeState extends State<Home> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+//TODO: MOVE TO PROPER CLASS
+class Running extends StatelessWidget {
+  const Running({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Running"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Navigate back to first route when tapped.
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );  }
+}
+
+//TODO: MOVE TO PROPER CLASS
+class WeightLifting extends StatelessWidget {
+  const WeightLifting({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Weightlifting"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Navigate back to first route when tapped.
+          },
+          child: Text('Go back!'),
+        ),
       ),
     );  }
 }
