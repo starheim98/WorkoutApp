@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "750347264165",
+    "project_id": "mobappfitness",
+    "storage_bucket": "mobappfitness.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750347264165:android:21662c920b06038ba5ed4c",
+        "android_client_info": {
+          "package_name": "no.ntnu.workout_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750347264165-len02ral7bhn5c7fhv4b2q84cp1ffkhu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA47P_4zdlFq7cOKP1FiWSf6xH_d6wVgbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750347264165-len02ral7bhn5c7fhv4b2q84cp1ffkhu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
