@@ -1,8 +1,11 @@
+
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
+import 'package:workout_app/screens/new_workout/exercise_list.dart';
 import 'package:workout_app/screens/new_workout/exercise_tile.dart';
+import 'package:workout_app/screens/new_workout/select_exercise.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
 
@@ -22,7 +25,7 @@ class _WeightLiftingState extends State<WeightLifting> {
         ),
         body: Center(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
@@ -55,34 +58,39 @@ class NewWorkout extends StatefulWidget {
 
 class _NewWorkoutState extends State<NewWorkout> {
   final AuthService _auth = AuthService();
+  WeightWorkout weightWorkout = WeightWorkout();
 
   @override
   Widget build(BuildContext context) {
-    WeightWorkout weightWorkout = WeightWorkout();
 
     return Scaffold(
         appBar: appbar(_auth, "NEW WORKOUT"),
         body: Column(
             children: <Widget>[
-              Expanded(
-                  child: ListView.builder(
-                      itemCount: weightWorkout.getExercises().length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ;
-                      }
-                  )
-              ),
-
+              ExerciseList(workout: weightWorkout),
+              ElevatedButton(onPressed: () => setState(() => newExercise(context)) , child: Text("Add exercise"))
             ]
-
         )
     );
   }
 
-  newExercise() {
+  void newExercise(BuildContext context) {
+    Future<String> future = selectExercise(context);
+    future.then((value) => {
+      weightWorkout.addExercise(Exercise(value)),
+    });
+  }
 
+  Future<String> selectExercise(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SelectExercise())
+    );
+    return await result;
   }
 }
+
+
 
 Column testingMachine(index, exercise) =>
     Column(children: <Widget>[
