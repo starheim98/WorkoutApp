@@ -5,7 +5,6 @@ class Account{
   Account({required this.uid}); //Constructor
 }
 
-
 // Account data class.
 class AccountData{
   final String uid; //Unique ID of user.
