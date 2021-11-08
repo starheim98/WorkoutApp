@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
@@ -58,8 +57,8 @@ class _NewWorkoutState extends State<NewWorkout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbar(_auth),
-      body: Text("potato"),
+      appBar: appbar(_auth, "NEW WORKOUT"),
+      body: Text("2"),
     );
   }
 }
