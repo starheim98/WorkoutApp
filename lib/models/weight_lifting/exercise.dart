@@ -15,6 +15,10 @@ class Exercise{
   void removeSet(Set set){
     sets!.remove(set);
   }
+
+  String getName(){
+    return name;
+  }
 }
 
 //Squats
