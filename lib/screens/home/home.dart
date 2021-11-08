@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       backgroundColor: Colors.brown[50],
-      appBar: appbar(_auth),
+      appBar: appbar(_auth, "Home"),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),

@@ -17,7 +17,7 @@ const textInputDecoration = InputDecoration(
 );
 
 
-//TODO: MOVE TO PROPER CLASS
+//TODO: MOVE TO PROPER CLASS THESE ARE NOT CONSTANTS
 Column column(context) => Column(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,15 +48,14 @@ Column column(context) => Column(
 
 
 /// AppBar
-AppBar appbar(AuthService _auth) => AppBar(
-      title: const Text('Fitness App'),
+appbar(AuthService _auth, String title) => AppBar(
+      title: Text(title),
       backgroundColor: Colors.brown[400],
       elevation: 0.0, //no dropshadow / flat on the screen
       actions: <Widget>[
         TextButton.icon(
           onPressed: () async {
             await _auth.signOut();
-            print("User signed out.");
           },
           label: const Text("Logout"),
           icon: const Icon(Icons.person),
