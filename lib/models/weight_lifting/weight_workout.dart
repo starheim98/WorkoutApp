@@ -28,4 +28,8 @@ class WeightWorkout {
   void finishWorkout(){
     duration = DateTime.now().difference(startDate).inMinutes;
   }
+
+  List<Exercise> getExercises(){
+    return exercises;
+  }
 }
