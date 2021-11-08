@@ -1,6 +1,8 @@
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
+import 'package:workout_app/models/weight_lifting/weight_workout.dart';
+import 'package:workout_app/screens/new_workout/exercise_tile.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
 
@@ -29,7 +31,8 @@ class _WeightLiftingState extends State<WeightLifting> {
                   child: const Text('Select from template'),
                 ),
                 ElevatedButton(
-                  onPressed: () async => {
+                  onPressed: () async =>
+                  {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -55,78 +58,69 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   @override
   Widget build(BuildContext context) {
-    Exercise exercise = Exercise("Squats");
-    List<Exercise> exercises = [exercise];
+    WeightWorkout weightWorkout = WeightWorkout();
 
     return Scaffold(
-      appBar: appbar(_auth, "NEW WORKOUT"),
-      body: ListView.builder(
-        itemCount: exercises.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
-              child: Card(
-                child: testingMachine(index, exercise),
-            )
-          );
-        },
-      ),
+        appBar: appbar(_auth, "NEW WORKOUT"),
+        body: Column(
+            children: <Widget>[
+              Expanded(
+                  child: ListView.builder(
+                      itemCount: weightWorkout.getExercises().length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ;
+                      }
+                  )
+              ),
+
+            ]
+
+        )
     );
+  }
+
+  newExercise() {
+
   }
 }
 
-
-
-Column testingMachine(index, exercise) => Column(
-    children: <Widget>[
+Column testingMachine(index, exercise) =>
+    Column(children: <Widget>[
       Text(exercise.name),
       Row(
-  children: <Widget>[
-    Text("SET " + (index+1).toString() +":"),
-    const Flexible(
-      child: TextField(
-          decoration: InputDecoration(
-              hintText: "repetitions",
-              contentPadding: EdgeInsets.all(10)
-          )
+        children: <Widget>[
+          Text("SET " + (index + 1).toString() + ":"),
+          const Flexible(
+            child: TextField(
+                decoration: InputDecoration(
+                    hintText: "repetitions",
+                    contentPadding: EdgeInsets.all(10))),
+          ),
+          const Flexible(
+            child: TextField(
+                decoration: InputDecoration(
+                    hintText: "weight", contentPadding: EdgeInsets.all(10))),
+          ),
+          IconButton(
+              onPressed: () => print("123"), icon: const Icon(Icons.close))
+        ],
       ),
-    ),
-    const Flexible(
-      child: TextField(
-          decoration: InputDecoration(
-              hintText: "weight",
-              contentPadding: EdgeInsets.all(10)
-          )
-      ),
-    ),
-    IconButton(
-        onPressed: () => print("123"),
-        icon: const Icon(Icons.close))
-  ],
-),
       Row(
-  children: <Widget>[
-    Text("SET " + (index+1).toString() +":"),
-    const Flexible(
-      child: TextField(
-          decoration: InputDecoration(
-              hintText: "repetitions",
-              contentPadding: EdgeInsets.all(10)
-          )
+        children: <Widget>[
+          Text("SET " + (index + 1).toString() + ":"),
+          const Flexible(
+            child: TextField(
+                decoration: InputDecoration(
+                    hintText: "repetitions",
+                    contentPadding: EdgeInsets.all(10))),
+          ),
+          const Flexible(
+            child: TextField(
+                decoration: InputDecoration(
+                    hintText: "weight", contentPadding: EdgeInsets.all(10))),
+          ),
+          IconButton(
+              onPressed: () => print("123"), icon: const Icon(Icons.close))
+        ],
       ),
-    ),
-    const Flexible(
-      child: TextField(
-          decoration: InputDecoration(
-              hintText: "weight",
-              contentPadding: EdgeInsets.all(10)
-          )
-      ),
-    ),
-    IconButton(
-        onPressed: () => print("123"),
-        icon: const Icon(Icons.close))
-  ],
-),
-
     ]);
