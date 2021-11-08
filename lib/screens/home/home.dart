@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //NB: fjernet const under her for det skapte trøbbel med 'row'. La også til const bak "TEXT".
+    //NB: fjernet const under her for det skapte trøbbel med 'column'. La også til const bak "TEXT".
      final List<Widget> _widgetOptions = <Widget>[
       const Text(
         'HOME',
@@ -38,21 +38,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       backgroundColor: Colors.brown[50],
-      appBar: AppBar(
-        title: const Text('Fitness App'),
-        backgroundColor: Colors.brown[400],
-        elevation: 0.0, //no dropshadow / flat on the screen
-        actions: <Widget>[
-          TextButton.icon(
-            onPressed: () async {
-              await _auth.signOut();
-              print("User signed out.");
-            },
-            label: const Text("Logout"),
-            icon: const Icon(Icons.person),
-          ),
-        ],
-      ),
+      appBar: appbar(_auth),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -77,46 +63,4 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
-
-//TODO: MOVE TO PROPER CLASS
-class Running extends StatelessWidget {
-  const Running({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Running"),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );  }
-}
-
-//TODO: MOVE TO PROPER CLASS
-class WeightLifting extends StatelessWidget {
-  const WeightLifting({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Weightlifting"),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );  }
 }

@@ -1,7 +1,7 @@
 
 class Set{
-  int repetitions;
   int weight;
+  int repetitions;
 
-  Set(this.repetitions, this.weight);
+  Set(this.weight,this.repetitions);
 }
