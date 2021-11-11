@@ -1,4 +1,3 @@
-/*
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -250,4 +249,4 @@ class _CurrentLocationState extends State<CurrentLocation> {
       onPressed: _moveToCurrent,
     );
   }
-}*/
+}

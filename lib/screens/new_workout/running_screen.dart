@@ -1,16 +1,16 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart' as loc;
 
-
-
-
+/// https://github.com/Baseflow/flutter-geolocator/blob/master/geolocator_android/example/lib/main.dart GEOLOCATOR EXAMPLE
+/// https://pub.dev/packages/geolocator/example - ^
+/// https://github.com/fleaflet/flutter_map/blob/master/example/lib/pages/map_controller.dart CONTROLLER EXAMPLE
 class Running extends StatefulWidget {
-  const Running({Key? key}) : super(key: key);
-
   @override
   State<Running> createState() => _RunningState();
 }
@@ -53,13 +53,17 @@ Future<Position> _determinePosition() async {
 
   // When we reach here, permissions are granted and we can
   // continue accessing the position of the device.
-  return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy
+          .high); //LocationAccuracy.high: 0-100m for android, 10m for iOS.
 }
 
-
 class _RunningState extends State<Running> {
-
-  late final MapController mapController;
+  bool positionStreamStarted = false;
+  MapController? mapController;
+  StreamSubscription<Position>? _positionStreamSubscription;
+  final GeolocatorPlatform geolocator = GeolocatorPlatform.instance;
+  StreamSubscription<Position>? positionStream;
 
   @override
   void initState() {
@@ -68,60 +72,87 @@ class _RunningState extends State<Running> {
   }
 
   Position? position;
-    double longitude = 6.235902420311039;
-    double latitude = 62.472207764237886;
+  double longitude = 6.235902420311039;
+  double latitude = 62.472207764237886;
 
-  void refresh(){
+  void refreshToCurrentPosition() {
     _determinePosition().then((value) => position = value);
-    if(position?.longitude != null) {
-      setState(() { // USE SET STATE
+    if (position?.longitude != null) {
+      setState(() {
+        // USE SET STATE
         longitude = position!.longitude;
       });
     }
-    if(position?.latitude != null) {
+    if (position?.latitude != null) {
       setState(() {
         latitude = position!.latitude;
       });
     }
-    mapController.move(LatLng(latitude,longitude),13);
+    mapController?.move(LatLng(latitude, longitude), 18);
+    //            mapController?.move(LatLng(position.latitude, position.longitude), 15);
+  }
+
+
+  void _toggleListening() {
+    positionStream = Geolocator.getPositionStream().listen(
+            (Position position) {
+            print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString());
+              refreshToCurrentPosition();
+            });
   }
 
   @override
   Widget build(BuildContext context) {
-    TransformationController controller; // Possible controller
+    const sizedBox = SizedBox(
+      height: 10,
+    );
+
     return Scaffold(
         appBar: AppBar(
-        title: Text("Running"),
-      ),
-      body:  FlutterMap(
-        options: MapOptions(
-          center: LatLng(latitude, longitude),
-          zoom: 15.0,
-          controller: mapController
+          title: Text("Running"),
         ),
-        layers: [
-          TileLayerOptions(
+        body: FlutterMap(
+          options: MapOptions(
+            center: LatLng(latitude, longitude),
+            zoom: 15.0,
+          ),
+          mapController: mapController,
+          layers: [
+            TileLayerOptions(
 
-          ),
-          MarkerLayerOptions(
-            markers: [
-              Marker(
-                width: 80.0,
-                height: 80.0,
-                point: LatLng(latitude, longitude),
-                builder: (ctx) => const Icon(Icons.pin_drop),
+            ),
+            MarkerLayerOptions(
+              markers: [
+                Marker(
+                  width: 80.0,
+                  height: 80.0,
+                  point: LatLng(latitude, longitude),
+                  builder: (ctx) => const Icon(Icons.pin_drop),
+                ),
+              ],
+            ),
+          ],
+        ),
+        floatingActionButton: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                child: Icon(Icons.location_searching),
+                heroTag: "btn1",
+                onPressed: () {
+                  refreshToCurrentPosition();
+                },
               ),
-            ],
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.location_searching),
-        onPressed: (){
-          refresh();
-        },
-      ),
-    );
+              sizedBox,
+              FloatingActionButton(
+              child:
+                  const Icon(Icons.play_arrow),
+                  onPressed: () {
+                    _toggleListening();
+                  },
+              ),
+            ]));
   }
 }
 
@@ -226,4 +257,3 @@ onPressed: () {setState(() => buttonText = "Loading");},
 child: Text(buttonText),
 ),
 ),*/
-
