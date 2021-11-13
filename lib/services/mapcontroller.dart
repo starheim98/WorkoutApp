@@ -5,7 +5,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
-
 class MapControllerPage extends StatefulWidget {
   static const String route = 'map_controller';
 
@@ -122,10 +121,10 @@ class MapControllerPageState extends State<MapControllerPage> {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                             'Map bounds: \n'
-                                'E: ${bounds.east} \n'
-                                'N: ${bounds.north} \n'
-                                'W: ${bounds.west} \n'
-                                'S: ${bounds.south}',
+                            'E: ${bounds.east} \n'
+                            'N: ${bounds.north} \n'
+                            'W: ${bounds.west} \n'
+                            'S: ${bounds.south}',
                           ),
                         ));
                       },
@@ -160,9 +159,9 @@ class MapControllerPageState extends State<MapControllerPage> {
                 ),
                 layers: [
                   TileLayerOptions(
-                      urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      subdomains: ['a', 'b', 'c']),
+                    //Map box data for tile layer.
+
+                  ),
                   MarkerLayerOptions(markers: markers)
                 ],
               ),

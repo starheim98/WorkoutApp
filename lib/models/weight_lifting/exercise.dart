@@ -1,23 +1,28 @@
 
+import 'package:workout_app/models/weight_lifting/weight_set.dart';
+
 class Exercise{
   final String name;
-  List<Set>? sets;
+  List<WeightSet>? sets;
 
   Exercise(this.name){
     sets = [];
   }
 
- // [[100,4],[100,4],[100,4]] Exercise 1
-  void addSet(Set set){
-    sets!.add(set);
+  void addSet(){
+    sets!.add(WeightSet.newSet());
   }
 
-  void removeSet(Set set){
+  void removeSet(WeightSet set){
     sets!.remove(set);
   }
 
   String getName(){
     return name;
+  }
+
+  List<WeightSet>? getSets() {
+    return sets;
   }
 }
 

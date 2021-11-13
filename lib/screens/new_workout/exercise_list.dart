@@ -10,11 +10,16 @@ class ExerciseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+        padding: const EdgeInsets.all(8),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         itemCount: workout.getExercises().length,
         itemBuilder: (BuildContext context, int index) {
           return ExerciseTile(exercise: workout.getExercises()[index]);
-        }
+        }, separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(height: 20);
+    },
     );
   }
 }

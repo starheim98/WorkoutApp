@@ -1,6 +1,7 @@
 
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/template.dart';
+import 'package:intl/intl.dart';
 
 class WeightWorkout {
   String? name;
@@ -31,5 +32,10 @@ class WeightWorkout {
 
   List<Exercise> getExercises(){
     return exercises;
+  }
+
+  String getDate(){
+    DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    return dateFormat.format(startDate);
   }
 }
