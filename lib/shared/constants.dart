@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/screens/home/home.dart';
-import 'package:workout_app/screens/new_workout/running_screen.dart';
-import 'package:workout_app/screens/new_workout/weightlift_screen.dart';
+import 'package:workout_app/screens/new_workout/running/running_screen.dart';
+import 'package:workout_app/screens/new_workout/weights/weightlift_screen.dart';
 import 'package:workout_app/services/auth.dart';
 
 
