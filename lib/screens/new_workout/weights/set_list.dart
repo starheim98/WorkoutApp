@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_set.dart';
+import 'package:workout_app/models/weight_lifting/weight_workout.dart';
+import 'package:workout_app/screens/new_workout/weights/set_tile.dart';
 
 class SetList extends StatefulWidget {
   Exercise exercise;
@@ -22,29 +24,11 @@ class _SetListState extends State<SetList> {
       itemCount: widget.exercise.getSets()!.length,
       itemBuilder: (BuildContext context, int index) {
         WeightSet set = widget.exercise.getSets()![index];
-        return Row(
+        return SetTile(
           key: ObjectKey(set),
-          children: <Widget>[
-            Text((index + 1).toString()),
-            const Flexible(
-              child: TextField(
-                  decoration: InputDecoration(
-                      labelText: "repetitions",
-                      contentPadding: EdgeInsets.all(10))),
-            ),
-            const Flexible(
-              child: TextField(
-                  decoration: InputDecoration(
-                      labelText: "weight", contentPadding: EdgeInsets.all(10))),
-            ),
-            Flexible(
-              child: IconButton(
-                onPressed: () => deleteSet(set),
-                icon: const Icon(Icons.close),
-              ),
-            )
-          ],
-        );
+            deleteSet: deleteSet,
+            set: widget.exercise.getSets()![index],
+            index: index);
       },
     );
   }

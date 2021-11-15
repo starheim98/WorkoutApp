@@ -2,11 +2,11 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
-import 'package:workout_app/screens/new_workout/exercise_list.dart';
-import 'package:workout_app/screens/new_workout/exercise_tile.dart';
-import 'package:workout_app/screens/new_workout/select_exercise.dart';
+import 'package:workout_app/screens/new_workout/weights/select_exercise.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
+
+import 'exercise_list.dart';
 
 class WeightLifting extends StatefulWidget {
   const WeightLifting({Key? key}) : super(key: key);
@@ -59,8 +59,16 @@ class _NewWorkoutState extends State<NewWorkout> {
   final AuthService _auth = AuthService();
   WeightWorkout weightWorkout = WeightWorkout();
 
+
+  @override
+  void initState() {
+    weightWorkout.setName("Workout " + weightWorkout.getDate());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: appbar(_auth, "NEW WORKOUT"),
         body: SingleChildScrollView(
@@ -68,7 +76,7 @@ class _NewWorkoutState extends State<NewWorkout> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Text("Workout " + weightWorkout.getDate()),
+                Text(weightWorkout.name!),
                 const Icon(Icons.create_outlined),
               ],
             ),
@@ -93,9 +101,11 @@ class _NewWorkoutState extends State<NewWorkout> {
     Future<String> future = selectExercise(context);
     future.then((value) => {
           setState(() {
-            Exercise newExercise = Exercise(value);
-            newExercise.addSet();
-            weightWorkout.addExercise(newExercise);
+            Exercise exercise = Exercise(value);
+            exercise.addSet();
+            exercise.addSet();
+            exercise.addSet();
+            weightWorkout.addExercise(exercise);
           })
         });
   }

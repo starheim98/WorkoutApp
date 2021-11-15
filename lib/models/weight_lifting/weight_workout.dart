@@ -4,7 +4,7 @@ import 'package:workout_app/models/weight_lifting/template.dart';
 import 'package:intl/intl.dart';
 
 class WeightWorkout {
-  String? name;
+  String? _name;
   DateTime startDate = DateTime.now();
   int duration = 0;
   List<Exercise> exercises = [];
@@ -14,7 +14,7 @@ class WeightWorkout {
 
   /// Initializes a workout session from existing template
   WeightWorkout.template(Template template){
-    name = template.getName();
+    _name = template.getName();
     exercises = template.getExercices();
   }
 
@@ -34,8 +34,19 @@ class WeightWorkout {
     return exercises;
   }
 
+  String? get name => _name;
+
   String getDate(){
     DateFormat dateFormat = DateFormat('dd-MM-yyyy');
     return dateFormat.format(startDate);
+  }
+
+  void setName(String value) {
+    _name = value;
+  }
+
+  @override
+  String toString() {
+    return 'WeightWorkout{name: $_name, startDate: $startDate, duration: $duration, exercises: $exercises}';
   }
 }
