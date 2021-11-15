@@ -25,6 +25,7 @@ class _SetListState extends State<SetList> {
       itemBuilder: (BuildContext context, int index) {
         WeightSet set = widget.exercise.getSets()![index];
         return SetTile(
+          key: ObjectKey(set),
             deleteSet: deleteSet,
             set: widget.exercise.getSets()![index],
             index: index);

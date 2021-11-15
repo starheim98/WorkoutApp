@@ -21,7 +21,10 @@ class _ExerciseListState extends State<ExerciseList> {
       shrinkWrap: true,
       itemCount: widget.workout.getExercises().length,
       itemBuilder: (BuildContext context, int index) {
-        return ExerciseTile(exercise: widget.workout.getExercises()[index]);
+        return ExerciseTile(
+          exercise: widget.workout.getExercises()[index],
+          deleteExercise: removeExercise,
+        );
       },
       separatorBuilder: (BuildContext context, int index) {
         return const SizedBox(height: 20);

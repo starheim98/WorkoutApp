@@ -26,15 +26,17 @@ class _SetTileState extends State<SetTile> {
   @override
   void initState() {
     super.initState();
-    _weightController.text = widget.set.getWeight().toString();
-    _repetitionController.text = widget.set.getRepetitions().toString();
-
+    if (widget.set.getWeight() != 0) {
+      _weightController.text = widget.set.getWeight().toString();
+    }
+    if (widget.set.getRepetitions() != 0) {
+      _repetitionController.text = widget.set.getRepetitions().toString();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      key: ObjectKey(widget.set),
       children: <Widget>[
         Expanded(
           flex: 2,
@@ -45,7 +47,7 @@ class _SetTileState extends State<SetTile> {
           child: TextField(
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            onEditingComplete: updateRepetitions(_repetitionController.text),
+            onChanged: (reps) => updateRepetitions(reps),
             controller: _repetitionController,
             decoration: const InputDecoration(
                 labelText: "repetitions", contentPadding: EdgeInsets.all(10)),
@@ -80,7 +82,6 @@ class _SetTileState extends State<SetTile> {
     if (weight is int) {
       widget.set.setWeight(weight);
     }
-    print(widget.set.getWeight());
   }
 
   updateRepetitions(String text) {
