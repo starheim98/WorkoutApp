@@ -101,7 +101,11 @@ class _NewWorkoutState extends State<NewWorkout> {
     Future<String> future = selectExercise(context);
     future.then((value) => {
           setState(() {
-            weightWorkout.addExercise(Exercise(value));
+            Exercise exercise = Exercise(value);
+            exercise.addSet();
+            exercise.addSet();
+            exercise.addSet();
+            weightWorkout.addExercise(exercise);
           })
         });
   }
