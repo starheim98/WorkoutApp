@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:maps_toolkit/maps_toolkit.dart' as mapstool;
 
 /// https://github.com/Baseflow/flutter-geolocator/blob/master/geolocator_android/example/lib/main.dart GEOLOCATOR EXAMPLE
 /// https://pub.dev/packages/geolocator/example - ^
@@ -61,7 +62,7 @@ class _RunningState extends State<Running> {
   MapController? mapController;
   StreamSubscription<Position>? _positionStreamSubscription;
   final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
-  final List<Position> _positionItems = <Position>[];
+  final Set<Position> _positionItems = <Position>{};
 
   Position? position;
   double longitude = 6.235902420311039;
@@ -72,6 +73,7 @@ class _RunningState extends State<Running> {
   @override
   void initState() {
     super.initState();
+    reset();
     mapController = MapController();
   }
 
@@ -113,7 +115,11 @@ class _RunningState extends State<Running> {
   }
 
   void _updatePositionList(Position position) {
-    _positionItems.add(position);
+    if (!_positionItems.contains(position)) {
+      _positionItems.add(position);
+    } else {
+      print("Duplicate!");
+    }
     setState(() {});
   }
 
@@ -125,10 +131,10 @@ class _RunningState extends State<Running> {
         _positionStreamSubscription?.cancel();
         _positionStreamSubscription = null;
       }).listen((position) => {
-            _updatePositionList(position),
-            refreshToCurrentPosition(),
-            updatePoints(),
-          });
+        _updatePositionList(position),
+        refreshToCurrentPosition(),
+        updatePoints(),
+      });
       _positionStreamSubscription?.pause();
     }
     setState(() {
@@ -146,6 +152,18 @@ class _RunningState extends State<Running> {
     });
   }
 
+  double distance() {
+    double distance = 0.0;
+    for (int i = 1; i < _positionItems.length; i++) {
+      distance += mapstool.SphericalUtil.computeDistanceBetween(
+          mapstool.LatLng(_positionItems.elementAt(i).latitude,
+              _positionItems.elementAt(i).longitude),
+          mapstool.LatLng(_positionItems.elementAt(i - 1).latitude,
+              _positionItems.elementAt(i - 1).longitude));
+    }
+    return distance / 1000.0;
+  }
+
   @override
   Widget build(BuildContext context) {
     const sizedBox = SizedBox(
@@ -153,17 +171,14 @@ class _RunningState extends State<Running> {
     );
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Running"),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 0.0),
-          child: IntrinsicHeight(
-            child:
-                Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+      appBar: AppBar(
+        title: Text("Running"),
+      ),
+      body: IntrinsicHeight(
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               Expanded(
                 child: Column(children: [
                   Container(
@@ -176,6 +191,7 @@ class _RunningState extends State<Running> {
                       mapController: mapController,
                       layers: [
                         TileLayerOptions(
+                          //Map box data for tile layer.
 
                         ),
                         MarkerLayerOptions(
@@ -206,50 +222,61 @@ class _RunningState extends State<Running> {
                   sizedBox,
                   Container(
                     height: 50,
-                    child: Text("Distance:" + "123123 km"),
+                    child: Text("Distance: " + distance().toString() + " km/h"),
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:[
+                        ElevatedButton(
+                          child: (_positionStreamSubscription == null ||
+                              _positionStreamSubscription!.isPaused)
+                              ? const Icon(Icons.play_arrow)
+                              : const Icon(Icons.pause),
+                          onPressed: () {
+                            positionStreamStarted = !positionStreamStarted;
+                            if (positionStreamStarted) {
+                              startTimer();
+                            } else {
+                              stopTimer(resets: false);
+                            }
+                            _toggleListening();
+                          },
+                          /*tooltip: (_positionStreamSubscription == null)
+                            ? 'Start position updates'
+                            : _positionStreamSubscription!.isPaused
+                            ? 'Resume'
+                            : 'Pause',
+                        backgroundColor: _determineButtonColor(),*/
+                        ),
+                        const SizedBox(width: 20),
+                        ElevatedButton(
+                          child: const Icon(Icons.stop),
+                          onPressed: () {
+                            clearPoints();
+                            reset();
+                          },
+                        ),
+                      ]
                   )
                 ]),
-              )
+              ),
             ]),
-          ),
-        ),
-        floatingActionButton: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                child: Icon(Icons.location_searching),
-                heroTag: "btn1",
-                onPressed: () {
-                  clearPoints();
-                },
-              ),
-              sizedBox,
-              FloatingActionButton(
-                child: (_positionStreamSubscription == null ||
-                        _positionStreamSubscription!.isPaused)
-                    ? const Icon(Icons.play_arrow)
-                    : const Icon(Icons.pause),
-                onPressed: () {
-                  positionStreamStarted = !positionStreamStarted;
-                  _toggleListening();
-                },
-                tooltip: (_positionStreamSubscription == null)
-                    ? 'Start position updates'
-                    : _positionStreamSubscription!.isPaused
-                        ? 'Resume'
-                        : 'Pause',
-                backgroundColor: _determineButtonColor(),
-              ),
-            ]));
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.navigate_next),
+        onPressed: () => {
+          print("Go next page")
+        },
+
+      ),
+    );
   }
 
   ///TIMER
-  static const countdownDuration = Duration(minutes: 10);
+  static const countdownDuration = Duration();
   Duration duration = Duration();
   Timer? timer;
-
-  bool countDown = true;
+  bool countDown = false;
 
   void reset() {
     if (countDown) {
