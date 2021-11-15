@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart' as loc;
 
 /// https://github.com/Baseflow/flutter-geolocator/blob/master/geolocator_android/example/lib/main.dart GEOLOCATOR EXAMPLE
 /// https://pub.dev/packages/geolocator/example - ^
@@ -62,18 +61,20 @@ class _RunningState extends State<Running> {
   bool positionStreamStarted = false;
   MapController? mapController;
   StreamSubscription<Position>? _positionStreamSubscription;
-  final GeolocatorPlatform geolocator = GeolocatorPlatform.instance;
-  StreamSubscription<Position>? positionStream;
+  final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
+  final List<Position> _positionItems = <Position>[];
+
+  Position? position;
+  double longitude = 6.235902420311039;
+  double latitude = 62.472207764237886;
+  var points = <LatLng>[];
+  var pointsGradient = <LatLng>[];
 
   @override
   void initState() {
     super.initState();
     mapController = MapController();
   }
-
-  Position? position;
-  double longitude = 6.235902420311039;
-  double latitude = 62.472207764237886;
 
   void refreshToCurrentPosition() {
     _determinePosition().then((value) => position = value);
@@ -88,17 +89,61 @@ class _RunningState extends State<Running> {
         latitude = position!.latitude;
       });
     }
-    mapController?.move(LatLng(latitude, longitude), 18);
-    //            mapController?.move(LatLng(position.latitude, position.longitude), 15);
+    mapController?.move(LatLng(latitude, longitude), 17);
   }
 
+  void updatePoints() {
+    for (Position position in _positionItems){
+      LatLng latLng = LatLng(position.latitude, position.longitude);
+      if(!points.contains(latLng)){ //Without this, it will add previous positions.
+        points.add(latLng);
+      }
+    }
+  }
+
+  void clearPoints(){
+    _positionItems.clear();
+  }
+
+  bool _isListening() => !(_positionStreamSubscription == null ||
+      _positionStreamSubscription!.isPaused);
+
+  Color _determineButtonColor() {
+    return _isListening() ? Colors.green : Colors.red;
+  }
+
+  void _updatePositionList(Position position) {
+    _positionItems.add(position);
+    setState(() {});
+  }
 
   void _toggleListening() {
-    positionStream = Geolocator.getPositionStream().listen(
-            (Position position) {
-            print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString());
-              refreshToCurrentPosition();
-            });
+    if (_positionStreamSubscription == null) {
+      final positionStream = geolocatorPlatform.getPositionStream(
+          desiredAccuracy: LocationAccuracy.best);
+      _positionStreamSubscription = positionStream.handleError((error) {
+        _positionStreamSubscription?.cancel();
+        _positionStreamSubscription = null;
+      }).listen((position) => {
+        _updatePositionList(position),
+        refreshToCurrentPosition(),
+        updatePoints(),
+      });
+      _positionStreamSubscription?.pause();
+    }
+    setState(() {
+      if (_positionStreamSubscription == null) {
+        return;
+      }
+      String statusDisplayValue;
+      if (_positionStreamSubscription!.isPaused) {
+        _positionStreamSubscription!.resume();
+        statusDisplayValue = 'resumed';
+      } else {
+        _positionStreamSubscription!.pause();
+        statusDisplayValue = 'paused';
+      }
+    });
   }
 
   @override
@@ -119,6 +164,7 @@ class _RunningState extends State<Running> {
           mapController: mapController,
           layers: [
             TileLayerOptions(
+              //Map box data for tile layer.
 
             ),
             MarkerLayerOptions(
@@ -131,6 +177,14 @@ class _RunningState extends State<Running> {
                 ),
               ],
             ),
+            PolylineLayerOptions(
+              polylines: [
+                Polyline(
+                    points: points,
+                    strokeWidth: 4.0,
+                    color: Colors.purple),
+              ],
+            ),
           ],
         ),
         floatingActionButton: Column(
@@ -141,119 +195,26 @@ class _RunningState extends State<Running> {
                 child: Icon(Icons.location_searching),
                 heroTag: "btn1",
                 onPressed: () {
-                  refreshToCurrentPosition();
+                  clearPoints();
                 },
               ),
               sizedBox,
               FloatingActionButton(
-              child:
-                  const Icon(Icons.play_arrow),
-                  onPressed: () {
-                    _toggleListening();
-                  },
+                child: (_positionStreamSubscription == null ||
+                    _positionStreamSubscription!.isPaused)
+                    ? const Icon(Icons.play_arrow)
+                    : const Icon(Icons.pause),
+                onPressed: () {
+                  positionStreamStarted = !positionStreamStarted;
+                  _toggleListening();
+                },
+                tooltip: (_positionStreamSubscription == null)
+                    ? 'Start position updates'
+                    : _positionStreamSubscription!.isPaused
+                    ? 'Resume'
+                    : 'Pause',
+                backgroundColor: _determineButtonColor(),
               ),
             ]));
   }
 }
-
-/*
-
-/// LOOK : https://www.mapbox.com/ https://pub.dev/packages/flutter_map
-/// SAUCE: https://www.youtube.com/watch?v=McPzVZZRniU - fungerer ikke. HAR FJERNET API KEY OG DELETET.
-class _RunningState extends State<Running> {
-  String buttonText = "Record";
-  Marker? marker;
-  GoogleMapController? _controller;
-  StreamSubscription? _locationSubscription;
-  Location _locationTracker = Location();
-
-  static const CameraPosition initialLocation = CameraPosition(target:LatLng(35,23), zoom:15);
-
-  //Converting our pointer asset into byte data so it can be used in "get current location".
-  Future<Uint8List> getMarker() async{
-    ByteData byteData = await DefaultAssetBundle.of(context).load("lib/assets/pointer.png");
-    return byteData.buffer.asUint8List();
-  }
-
-  void updateMarker(LocationData newLocalData, Uint8List imageData){
-     LatLng latlng = LatLng(newLocalData.latitude!, newLocalData.longitude!);
-     setState(() {
-       marker = Marker(
-         markerId: const MarkerId("marker"),
-         position: latlng,
-         rotation: newLocalData.heading!,
-         draggable: false,
-         zIndex: 2, // if u use a circle under u need this. We dont
-         flat:true, // if u tilt the map u are flat, etc
-         anchor: const Offset(0.5, 0.5), // the TOP of the pointer will be the middle - we want center of pointer - add offset.
-         icon: BitmapDescriptor.fromBytes(imageData) //Marker icon
-       );
-     });
-  }
-
-  void getCurrentLocation() async {
-    try{
-      Uint8List imageData = await getMarker();
-      var location = await _locationTracker.getLocation(); // get location async
-      updateMarker(location, imageData);
-
-      if(_locationSubscription != null){
-        _locationSubscription!.cancel();
-      }
-
-      _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData){ //always checks for changes in location
-        if(_controller != null){
-          _controller!.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-              bearing: 192.833394319423,
-              target: LatLng(newLocalData.latitude!, newLocalData.longitude!),
-              tilt: 0,
-              zoom: 18.00)));
-          updateMarker(newLocalData, imageData); // update current location
-        }
-      });
-
-    } on PlatformException catch (e){
-      if (e.code == 'PERMISSION_DENIED'){
-        debugPrint("Permission denied");
-      } else print(e);
-    }
-  }
-
-  @override
-  void dispose(){
-    if(_locationSubscription != null){
-      _locationSubscription!.cancel();
-    }
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Running"),
-      ),
-      body: GoogleMap(
-        mapType: MapType.terrain,
-        initialCameraPosition: initialLocation,
-        markers: Set.of((marker != null) ? [marker!] : []) ,
-        onMapCreated: (GoogleMapController controller){
-          controller = controller;
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.location_searching),
-        onPressed: (){
-          getCurrentLocation();
-        },
-      ),
-    );
-  }
-}
-
-Center(
-child: ElevatedButton(
-onPressed: () {setState(() => buttonText = "Loading");},
-child: Text(buttonText),
-),
-),*/
