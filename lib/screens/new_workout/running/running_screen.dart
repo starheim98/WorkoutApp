@@ -15,7 +15,6 @@ class Running extends StatefulWidget {
 }
 
 /// Determine the current position of the device.
-///
 /// When the location services are not enabled or permissions
 /// are denied the `Future` will return an error.
 Future<Position> _determinePosition() async {
@@ -93,15 +92,16 @@ class _RunningState extends State<Running> {
   }
 
   void updatePoints() {
-    for (Position position in _positionItems){
+    for (Position position in _positionItems) {
       LatLng latLng = LatLng(position.latitude, position.longitude);
-      if(!points.contains(latLng)){ //Without this, it will add previous positions.
+      if (!points.contains(latLng)) {
+        //Without this, it will add previous positions.
         points.add(latLng);
       }
     }
   }
 
-  void clearPoints(){
+  void clearPoints() {
     _positionItems.clear();
   }
 
@@ -125,10 +125,10 @@ class _RunningState extends State<Running> {
         _positionStreamSubscription?.cancel();
         _positionStreamSubscription = null;
       }).listen((position) => {
-        _updatePositionList(position),
-        refreshToCurrentPosition(),
-        updatePoints(),
-      });
+            _updatePositionList(position),
+            refreshToCurrentPosition(),
+            updatePoints(),
+          });
       _positionStreamSubscription?.pause();
     }
     setState(() {
@@ -156,36 +156,62 @@ class _RunningState extends State<Running> {
         appBar: AppBar(
           title: Text("Running"),
         ),
-        body: FlutterMap(
-          options: MapOptions(
-            center: LatLng(latitude, longitude),
-            zoom: 15.0,
-          ),
-          mapController: mapController,
-          layers: [
-            TileLayerOptions(
-              //Map box data for tile layer.
+        body: Padding(
+          padding: const EdgeInsets.only(top: 0.0),
+          child: IntrinsicHeight(
+            child:
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+              Expanded(
+                child: Column(children: [
+                  Container(
+                    height: 300,
+                    child: FlutterMap(
+                      options: MapOptions(
+                        center: LatLng(latitude, longitude),
+                        zoom: 15.0,
+                      ),
+                      mapController: mapController,
+                      layers: [
+                        TileLayerOptions(
 
-            ),
-            MarkerLayerOptions(
-              markers: [
-                Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: LatLng(latitude, longitude),
-                  builder: (ctx) => const Icon(Icons.pin_drop),
-                ),
-              ],
-            ),
-            PolylineLayerOptions(
-              polylines: [
-                Polyline(
-                    points: points,
-                    strokeWidth: 4.0,
-                    color: Colors.purple),
-              ],
-            ),
-          ],
+                        ),
+                        MarkerLayerOptions(
+                          markers: [
+                            Marker(
+                              width: 80.0,
+                              height: 80.0,
+                              point: LatLng(latitude, longitude),
+                              builder: (ctx) => const Icon(Icons.pin_drop),
+                            ),
+                          ],
+                        ),
+                        PolylineLayerOptions(
+                          polylines: [
+                            Polyline(
+                                points: points,
+                                strokeWidth: 4.0,
+                                color: Colors.purple),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 120.0,
+                    child: buildTime(),
+                  ),
+                  sizedBox,
+                  Container(
+                    height: 50,
+                    child: Text("Distance:" + "123123 km"),
+                  )
+                ]),
+              )
+            ]),
+          ),
         ),
         floatingActionButton: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -201,7 +227,7 @@ class _RunningState extends State<Running> {
               sizedBox,
               FloatingActionButton(
                 child: (_positionStreamSubscription == null ||
-                    _positionStreamSubscription!.isPaused)
+                        _positionStreamSubscription!.isPaused)
                     ? const Icon(Icons.play_arrow)
                     : const Icon(Icons.pause),
                 onPressed: () {
@@ -211,10 +237,89 @@ class _RunningState extends State<Running> {
                 tooltip: (_positionStreamSubscription == null)
                     ? 'Start position updates'
                     : _positionStreamSubscription!.isPaused
-                    ? 'Resume'
-                    : 'Pause',
+                        ? 'Resume'
+                        : 'Pause',
                 backgroundColor: _determineButtonColor(),
               ),
             ]));
   }
+
+  ///TIMER
+  static const countdownDuration = Duration(minutes: 10);
+  Duration duration = Duration();
+  Timer? timer;
+
+  bool countDown = true;
+
+  void reset() {
+    if (countDown) {
+      setState(() => duration = countdownDuration);
+    } else {
+      setState(() => duration = Duration());
+    }
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
+  }
+
+  void addTime() {
+    final addSeconds = countDown ? -1 : 1;
+    setState(() {
+      final seconds = duration.inSeconds + addSeconds;
+      if (seconds < 0) {
+        timer?.cancel();
+      } else {
+        duration = Duration(seconds: seconds);
+      }
+    });
+  }
+
+  void stopTimer({bool resets = true}) {
+    if (resets) {
+      reset();
+    }
+    setState(() => timer?.cancel());
+  }
+
+  Widget buildTime() {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      buildTimeCard(time: hours, header: 'HOURS'),
+      SizedBox(
+        width: 8,
+      ),
+      buildTimeCard(time: minutes, header: 'MINUTES'),
+      SizedBox(
+        width: 8,
+      ),
+      buildTimeCard(time: seconds, header: 'SECONDS'),
+    ]);
+  }
+
+  Widget buildTimeCard({required String time, required String header}) =>
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            child: Text(
+              time,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 50),
+            ),
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          Text(header, style: TextStyle(color: Colors.black45)),
+        ],
+      );
 }
