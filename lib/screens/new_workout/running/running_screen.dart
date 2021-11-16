@@ -6,6 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mapstool;
+import 'package:workout_app/screens/new_workout/running/running_save_run.dart';
 
 /// https://github.com/Baseflow/flutter-geolocator/blob/master/geolocator_android/example/lib/main.dart GEOLOCATOR EXAMPLE
 /// https://pub.dev/packages/geolocator/example - ^
@@ -264,10 +265,12 @@ class _RunningState extends State<Running> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.navigate_next),
-        onPressed: () => {
-          print("Go next page")
+        onPressed: () async => {
+          Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RunData(distance: distance(),duration: duration,)),
+          )
         },
-
       ),
     );
   }
