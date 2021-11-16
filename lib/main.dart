@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       child: MaterialApp(
         home: Wrapper(),
+        routes: {
+          'home': (context) => const Wrapper(),
+        },
       ),
     );
   }
