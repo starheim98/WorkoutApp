@@ -1,53 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/new_workout/weights/select_exercise.dart';
 import 'package:workout_app/services/auth.dart';
+import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
+import 'package:workout_app/services/databasev2_test.dart';
 
 import 'exercise_list.dart';
 
-class WeightLifting extends StatefulWidget {
-  const WeightLifting({Key? key}) : super(key: key);
 
-  @override
-  State<WeightLifting> createState() => _WeightLiftingState();
-}
 
-class _WeightLiftingState extends State<WeightLifting> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Weightlifting"),
-        ),
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    // Navigate back to first route when tapped.
-                  },
-                  child: const Text('Select from template'),
-                ),
-                ElevatedButton(
-                  onPressed: () async => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NewWorkout()),
-                    )
-                  },
-                  child: const Text('New workout'),
-                ),
-              ]),
-        ));
-  }
-}
-
-// TODO: own class file
 class NewWorkout extends StatefulWidget {
   const NewWorkout({Key? key}) : super(key: key);
 
@@ -58,6 +24,8 @@ class NewWorkout extends StatefulWidget {
 class _NewWorkoutState extends State<NewWorkout> {
   final AuthService _auth = AuthService();
   WeightWorkout weightWorkout = WeightWorkout();
+
+
 
 
   @override
@@ -118,6 +86,8 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   finishWorkout() {
     weightWorkout.finishWorkout();
+    weightWorkout.setId(saveWorkout(weightWorkout));
+    saveWorkout(weightWorkout);
     Navigator.pop(this.context);
     Navigator.pop(this.context);
   }

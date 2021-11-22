@@ -192,7 +192,6 @@ class _RunningState extends State<Running> {
                       mapController: mapController,
                       layers: [
                         TileLayerOptions(
-                          //Map box data for tile layer.
 
                         ),
                         MarkerLayerOptions(
