@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:workout_app/models/account.dart';
 import 'package:workout_app/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final CollectionReference users = FirebaseFirestore.instance.collection('users'); //reference to the users collection.
 
   //Create user object based on firebase user. BASICALLY filters all the
   //unwanted fields from the regular user to our custom version.
@@ -49,8 +53,20 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
 
+
+      ///// Create collection of users -> create document with the registered users uid + email.
+      // Will not override - cause our AUTH uses unique emails.
+      await users.doc(email).set({
+        "uid" : user!.uid,
+        "email" : email,
+        "weight_workouts" : [],
+        "runs" : [],
+      });
+      /////
+
       // create a new document for the user with the uid.
-      await DatabaseService(uid: user!.uid).updateUserData(email);
+      await DatabaseService(uid: user.uid).updateUserData(email);
+      //writeUserData(user.uid, user.displayName, )
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -70,3 +86,4 @@ class AuthService {
   }
 
 }
+
