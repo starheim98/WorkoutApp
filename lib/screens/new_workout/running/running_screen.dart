@@ -192,13 +192,7 @@ class _RunningState extends State<Running> {
                       mapController: mapController,
                       layers: [
                         TileLayerOptions(
-                          urlTemplate:
-                          'https://api.mapbox.com/styles/v1/mathiasvdbend/ckvtm91u7255q15nvl3pkjlvi/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibWF0aGlhc3ZkYmVuZCIsImEiOiJja3Z0bGdhZjIwc3drMnVseXRwa3BmYmwzIn0.YfwcUB1r3-KSgmY_w6Eshg',
-                          additionalOptions: {
-                            'accessToken':
-                            'pk.eyJ1IjoibWF0aGlhc3ZkYmVuZCIsImEiOiJja3Z0bGdhZjIwc3drMnVseXRwa3BmYmwzIn0.YfwcUB1r3-KSgmY_w6Eshg',
-                            'id': 'mapbox.mapbox-streets-v8'
-                          },
+
                         ),
                         MarkerLayerOptions(
                           markers: [
