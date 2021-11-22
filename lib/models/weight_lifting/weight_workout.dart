@@ -73,3 +73,4 @@ class WeightWorkout {
 
   List<Exercise> get exercises => _exercises;
 }
+
