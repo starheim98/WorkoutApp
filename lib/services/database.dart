@@ -12,12 +12,6 @@ class DatabaseService {
   final CollectionReference weightWorkoutCollection = FirebaseFirestore.instance.collection('weight_workouts');
   final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
 
-  Future updateUserData(String email) async {
-    return await weightWorkoutCollection.doc(uid).set({
-      'email': email,
-    });
-  }
-
 
   DatabaseReference saveWorkout(WeightWorkout workout) {
     var id = databaseReference.child('weightWorkouts/').push();

@@ -24,6 +24,13 @@ class Exercise{
   List<WeightSet>? getSets() {
     return sets;
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'sets': sets
+    };
+  }
 }
 
 //Squats
