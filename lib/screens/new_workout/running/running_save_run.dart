@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RunData extends StatefulWidget {
   final double distance;
@@ -13,17 +15,21 @@ class RunData extends StatefulWidget {
 }
 
 class _RunDataState extends State<RunData> {
+
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final CollectionReference users = FirebaseFirestore.instance.collection('users'); //reference to the users collection.
+  final CollectionReference runs = FirebaseFirestore.instance.collection('runs'); //reference to the users collection.
+
   final AuthService _auth = AuthService();
+  String title = "";
+  String desc = "";
+
+  var sizedbox = SizedBox(height: 30);
+  var document;
 
   @override
   Widget build(BuildContext context) {
-    String title = "";
-    String desc = "";
-    //TODO: PHOTO / MAP.
-
-    var sizedbox = SizedBox(height: 30);
     return Scaffold(
-
         appBar: appbar(_auth, "Home"),
         body: Center(
           child: Column(
@@ -50,7 +56,6 @@ class _RunDataState extends State<RunData> {
                 )
             ),
               sizedbox,
-
               Text("Distance: " + widget.distance.toString()),
               sizedbox,
               Text("Duration: " + widget.duration.toString()),
@@ -59,13 +64,44 @@ class _RunDataState extends State<RunData> {
               ),
               Image.asset('lib/assets/Sample.PNG',height: 240,),
               ElevatedButton(
-                onPressed: () =>
-                    {
+                onPressed: ()  => {
                       //TODO: SEND RUN-DATA TO DATABASE
-                      Navigator.of(context).popUntil((route) => route.isFirst)
+                      saveRun(title, desc, widget.duration, widget.distance),
+                      Navigator.of(context).popUntil((route) => route.isFirst),
                     },
                 child: const Text("Save Run"),
               ),
         ])));
+   }
+
+  //Add LATLNG
+  Future<void> saveRun(String title, String desc, Duration duration, double distance) async {
+    if(title.isEmpty) title = "Went for a run today!";
+    await runs.doc().set({
+      "title" : title,
+      "description" : desc,
+      "duration" : duration.toString(),
+      "distance" : distance.toString(),
+    });
   }
+
+  Future<String> getEmailOfCurrentUser() async {
+    var docSnapshot = await users.doc(_firebaseAuth.currentUser!.email).get();
+    String value = "";
+
+    if(docSnapshot.exists){
+      Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+      value = data?["email"];
+      print(value);
+    }
+    return value;
+  }
+
+  //RUN WORKOUT:
+  //title
+  //desc
+  //LatLng data - geolocation
+  //distance
+  //duration
 }
+
