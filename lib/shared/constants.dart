@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/screens/home/home.dart';
+import 'package:workout_app/screens/new_workout/choose_new_or_template.dart';
 import 'package:workout_app/screens/new_workout/running/running_screen.dart';
 import 'package:workout_app/screens/new_workout/weights/weightlift_screen.dart';
 import 'package:workout_app/services/auth.dart';
@@ -38,7 +39,7 @@ Column column(context) => Column(
         onPressed: () async => {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => WeightLifting()),
+                MaterialPageRoute(builder: (context) => const WeightLifting()),
             )
         },
         child: const Text("Weightlifting",
