@@ -20,4 +20,11 @@ class WeightSet{
   void setRepetitions(int repetitions){
     _repetitions = repetitions;
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'weight': _weight,
+      'repetitions': _repetitions,
+    };
+  }
 }

@@ -86,8 +86,7 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   finishWorkout() {
     weightWorkout.finishWorkout();
-    weightWorkout.setId(saveWorkout(weightWorkout));
-    saveWorkout(weightWorkout);
+    addWeightWorkout(weightWorkout);
     Navigator.pop(this.context);
     Navigator.pop(this.context);
   }

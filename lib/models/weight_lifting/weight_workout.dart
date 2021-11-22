@@ -1,3 +1,4 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
@@ -6,9 +7,9 @@ import 'package:intl/intl.dart';
 
 class WeightWorkout {
   String? _name;
-  DateTime startDate = DateTime.now();
-  int duration = 0;
-  List<Exercise> exercises = [];
+  final DateTime _startDate = DateTime.now();
+  int _duration = 0;
+  List<Exercise> _exercises = [];
   DatabaseReference? _id;
 
   /// Initializes an empty workout session
@@ -17,30 +18,33 @@ class WeightWorkout {
   /// Initializes a workout session from existing template
   WeightWorkout.template(Template template){
     _name = template.getName();
-    exercises = template.getExercices();
+    _exercises = template.getExercices();
   }
 
+
+  DateTime get startDate => _startDate;
+
   void addExercise(Exercise exercise){
-    exercises.add(exercise);
+    _exercises.add(exercise);
   }
 
   void removeExercise(Exercise exercise){
-    exercises.remove(exercise);
+    _exercises.remove(exercise);
   }
 
   void finishWorkout(){
-    duration = DateTime.now().difference(startDate).inMinutes;
+    _duration = DateTime.now().difference(startDate).inMinutes;
   }
 
   List<Exercise> getExercises(){
-    return exercises;
+    return _exercises;
   }
 
   String? get name => _name;
 
   String getDate(){
     DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-    return dateFormat.format(startDate);
+    return dateFormat.format(_startDate);
   }
 
   void setName(String value) {
@@ -53,15 +57,19 @@ class WeightWorkout {
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'startDate': startDate,
-      'duration': duration,
-      'exercises': exercises
+      'name': _name,
+      'startDate': _startDate,
+      'duration': _duration,
+      'exercises': exercises.toList()
     };
   }
 
   @override
   String toString() {
-    return 'WeightWorkout{name: $_name, startDate: $startDate, duration: $duration, exercises: $exercises}';
+    return 'WeightWorkout{name: $_name, startDate: $_startDate, duration: $_duration, exercises: $_exercises}';
   }
+
+  int get duration => _duration;
+
+  List<Exercise> get exercises => _exercises;
 }
