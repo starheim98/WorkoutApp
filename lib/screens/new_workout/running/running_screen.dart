@@ -245,28 +245,29 @@ class _RunningState extends State<Running> {
                         const SizedBox(width: 20),
                         ElevatedButton(
                           child: const Icon(Icons.stop),
-                          onPressed: () {
-                            clearPoints();
-                            reset();
-                          },
+                            onPressed: () async => {
+                                stopTimer(resets: false),
+                              if(positionStreamStarted){
+                                _toggleListening()
+                              },
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => RunData(distance: distance(),duration: duration,)),
+                              ),
+                            },
                         ),
                       ]
-                  )
+                  ),
+                  const Text("( * Y * )"),
                 ]),
               ),
             ]),
+
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.navigate_next),
-        onPressed: () async => {
-          Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => RunData(distance: distance(),duration: duration,)),
-          )
-        },
-      ),
+
     );
   }
+
 
   ///TIMER
   static const countdownDuration = Duration();
@@ -346,3 +347,10 @@ class _RunningState extends State<Running> {
         ],
       );
 }
+
+/*
+
+
+City city = new City("Los Angeles", "CA", "USA", false, 5000000L,
+          {"field2", Arrays.asList(123123), {"field2", Arrays.asList(123123)}});
+*/

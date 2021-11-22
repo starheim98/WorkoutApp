@@ -16,9 +16,8 @@ class RunData extends StatefulWidget {
 
 class _RunDataState extends State<RunData> {
 
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final CollectionReference users = FirebaseFirestore.instance.collection('users'); //reference to the users collection.
-  final CollectionReference runs = FirebaseFirestore.instance.collection('runs'); //reference to the users collection.
 
   final AuthService _auth = AuthService();
   String title = "";
@@ -73,6 +72,8 @@ class _RunDataState extends State<RunData> {
               ),
         ])));
    }
+
+  final CollectionReference runs = FirebaseFirestore.instance.collection('runs'); //reference to the users collection.
 
   //Add LATLNG
   Future<void> saveRun(String title, String desc, Duration duration, double distance) async {
