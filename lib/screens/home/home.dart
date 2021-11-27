@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
+import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
 
 import 'package:workout_app/screens/new_workout/choose_new_or_template.dart';
@@ -44,8 +45,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //NB: fjernet const under her for det skapte trøbbel med 'column'. La også til const bak "TEXT".
      final List<Widget> _widgetOptions = <Widget>[
-      hometest(context),
-
+      /*hometest(context),*/
+       const Text(
+         'MY PAGE',
+         style: optionStyle,
+       ),
       column(context),
 
       const Text(
@@ -84,8 +88,13 @@ class _HomeState extends State<Home> {
 }
 
 /////////////////////////////////
-final FirebaseDatabase database = FirebaseDatabase.getInstance();
-DatabaseReference ref = database.reference("server/saving-data/fireblog/posts");
+/*
+final String uid;
+
+final CollectionReference runCollection =
+FirebaseFirestore.instance.collection('runs');
+
+DocumentReference document = runCollection.get("123");
 
 MapController? mapController;
 List<LatLng> getPoints(){
@@ -128,6 +137,7 @@ Column hometest(context) => Column(
   ],
 );
 /////////////////////////////////
+*/
 
 /// New Workout/Record screen.
 Column column(context) => Column(

@@ -26,7 +26,6 @@ class _NewWorkoutState extends State<NewWorkout> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   WeightWorkout weightWorkout = WeightWorkout();
 
-
   @override
   void initState() {
     weightWorkout.setName("Workout " + weightWorkout.getDate());
@@ -35,7 +34,6 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: appbar(_authService, "NEW WORKOUT"),
         body: SingleChildScrollView(
@@ -85,7 +83,7 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   finishWorkout() {
     weightWorkout.finishWorkout();
-    addWeightWorkout(weightWorkout, _firebaseAuth.currentUser!.uid);
+    DatabaseService(uid: _firebaseAuth.currentUser!.uid).addWeightWorkout(weightWorkout); //TODO keep?
     Navigator.pop(this.context);
     Navigator.pop(this.context);
   }
