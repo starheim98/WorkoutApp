@@ -6,6 +6,7 @@ import 'package:workout_app/shared/constants.dart';
 import 'package:workout_app/screens/new_workout/choose_new_or_template.dart';
 import 'package:workout_app/screens/new_workout/running/running_screen.dart';
 
+import '../../../top_secret.dart';
 
 ///FLUTTER MAP STUFF
 import 'package:flutter/material.dart';
@@ -103,9 +104,7 @@ Column hometest(context) => Column(
       ),
       mapController: mapController,
       layers: [
-        TileLayerOptions(
-
-        ),
+        tileLayerOptions,
         MarkerLayerOptions(
           markers: [
             Marker(
