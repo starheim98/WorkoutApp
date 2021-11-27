@@ -22,10 +22,9 @@ class NewWorkout extends StatefulWidget {
 }
 
 class _NewWorkoutState extends State<NewWorkout> {
-  final AuthService _auth = AuthService();
+  final AuthService _authService = AuthService();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   WeightWorkout weightWorkout = WeightWorkout();
-
-
 
 
   @override
@@ -38,7 +37,7 @@ class _NewWorkoutState extends State<NewWorkout> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        appBar: appbar(_auth, "NEW WORKOUT"),
+        appBar: appbar(_authService, "NEW WORKOUT"),
         body: SingleChildScrollView(
           child: Column(children: <Widget>[
             Row(
@@ -86,7 +85,7 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   finishWorkout() {
     weightWorkout.finishWorkout();
-    addWeightWorkout(weightWorkout);
+    addWeightWorkout(weightWorkout, _firebaseAuth.currentUser!.uid);
     Navigator.pop(this.context);
     Navigator.pop(this.context);
   }
