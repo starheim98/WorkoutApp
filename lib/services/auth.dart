@@ -56,8 +56,8 @@ class AuthService {
 
       ///// Create collection of users -> create document with the registered users uid + email.
       // Will not override - cause our AUTH uses unique emails.
-      await users.doc(email).set({
-        "uid" : user!.uid,
+      await users.doc(user!.uid).set({
+        "uid" : user.uid,
         "email" : email,
         "weight_workouts" : [],
         "runs" : [],
