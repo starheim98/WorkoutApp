@@ -19,7 +19,7 @@ const textInputDecoration = InputDecoration(
 
 
 //TODO: MOVE TO PROPER CLASS THESE ARE NOT CONSTANTS
-Column column(context) => Column(
+Column column23132(context) => Column(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
@@ -46,9 +46,10 @@ Column column(context) => Column(
     style: TextStyle(color: Colors.white))),
     ],
 );
+*/
 
 
-/// AppBar
+/// AppBar - TODO: Move to better named file? or not
 appbar(AuthService _auth, String title) => AppBar(
       title: Text(title),
       backgroundColor: Colors.brown[400],

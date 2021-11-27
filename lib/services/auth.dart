@@ -53,7 +53,6 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
 
-
       ///// Create collection of users -> create document with the registered users uid + email.
       // Will not override - cause our AUTH uses unique emails.
       await users.doc(user!.uid).set({

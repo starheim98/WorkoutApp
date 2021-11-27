@@ -23,6 +23,7 @@ DatabaseReference saveWorkout(WeightWorkout workout) {
   return id;
 }
 
+
 /// Easy.
 Future addWeightWorkout(WeightWorkout weightWorkout, String uid) async {
   var exerciseJson = json.decode(json.encode(weightWorkout.getExercises()));
