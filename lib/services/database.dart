@@ -47,5 +47,13 @@ class DatabaseService {
         .catchError((error) => print("Failed to add workout $error"));
   }
 
-
+  Future<List<WeightWorkout>> getWeightWorkouts() async {
+    List<WeightWorkout> weightWorkouts = [];
+    QuerySnapshot snapshot = await weightWorkoutCollection.get();
+    for (var document in snapshot.docs) {
+      WeightWorkout weightWorkout = WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
+      weightWorkouts.add(weightWorkout);
+    }
+    return weightWorkouts;
+  }
 }

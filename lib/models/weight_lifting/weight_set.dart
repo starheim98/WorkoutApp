@@ -6,6 +6,10 @@ class WeightSet{
   WeightSet(this._weight,this._repetitions);
   WeightSet.newSet();
 
+  factory WeightSet.fromJson(Map<String, dynamic> json) {
+    return WeightSet(json['weight'], json['repetitions']);
+  }
+
   int getWeight(){
     return _weight;
   }

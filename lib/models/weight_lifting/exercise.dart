@@ -9,6 +9,17 @@ class Exercise{
     sets = [];
   }
 
+  Exercise.complete(this.name, this.sets);
+
+  factory Exercise.fromJson(Map<String, dynamic> json) {
+    String name = json['name'];
+    List<WeightSet> sets = [];
+    for (var set in json['sets']) {
+      sets.add(WeightSet.fromJson(set));
+    }
+    return Exercise.complete(name, sets);
+  }
+
   void addSet(){
     sets!.add(WeightSet.newSet());
   }

@@ -21,6 +21,17 @@ class WeightWorkout {
     _exercises = template.getExercices();
   }
 
+  WeightWorkout.complete(this._name, this._duration, this._exercises);
+
+  factory WeightWorkout.fromJson(Map<String, dynamic> json) {
+    String name = json['name'];
+    int duration = json['duration'];
+    List<Exercise> exercices = [];
+    for (var exercise in json['exercises']){
+      exercices.add(Exercise.fromJson(exercise));
+    }
+    return WeightWorkout.complete(name, duration, exercices);
+  }
 
   DateTime get startDate => _startDate;
 
