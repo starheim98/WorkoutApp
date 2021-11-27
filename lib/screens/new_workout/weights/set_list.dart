@@ -17,19 +17,22 @@ class _SetListState extends State<SetList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(4),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: widget.exercise.getSets()!.length,
-      itemBuilder: (BuildContext context, int index) {
-        WeightSet set = widget.exercise.getSets()![index];
-        return SetTile(
-          key: ObjectKey(set),
-            deleteSet: deleteSet,
-            set: widget.exercise.getSets()![index],
-            index: index);
-      },
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 200, minHeight: 25),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(4),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: widget.exercise.getSets()!.length,
+        itemBuilder: (BuildContext context, int index) {
+          WeightSet set = widget.exercise.getSets()![index];
+          return SetTile(
+            key: ObjectKey(set),
+              deleteSet: deleteSet,
+              set: widget.exercise.getSets()![index],
+              index: index);
+        },
+      ),
     );
   }
 

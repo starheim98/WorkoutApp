@@ -37,6 +37,7 @@ class _NewWorkoutState extends State<NewWorkout> {
     return Scaffold(
         appBar: appbar(_authService, "NEW WORKOUT"),
         body: SingleChildScrollView(
+          physics: const ScrollPhysics(),
           child: Column(children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

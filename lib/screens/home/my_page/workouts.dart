@@ -16,6 +16,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
           padding: EdgeInsets.symmetric(vertical: 15),
           child: Text("Workouts", style: TextStyle(fontSize: 25,)),
         ),
+
       ],
     );
   }
