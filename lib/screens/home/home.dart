@@ -1,13 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:workout_app/screens/home/my_page/workouts.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
 
 import 'package:workout_app/screens/new_workout/choose_new_or_template.dart';
 import 'package:workout_app/screens/new_workout/running/running_screen.dart';
-
-import '../../../top_secret.dart';
 
 ///FLUTTER MAP STUFF
 import 'package:flutter/material.dart';
@@ -19,6 +18,9 @@ import 'package:maps_toolkit/maps_toolkit.dart' as mapstool;
 import 'package:workout_app/screens/new_workout/running/running_save_run.dart';
 ///
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'my_page/friends.dart';
+import 'my_page/progression.dart';
 
 ///
 
@@ -45,16 +47,38 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //NB: fjernet const under her for det skapte trøbbel med 'column'. La også til const bak "TEXT".
      final List<Widget> _widgetOptions = <Widget>[
-      /*hometest(context),*/
+      // hometest(context),
        const Text(
-         'MY PAGE',
+         'HOME',
          style: optionStyle,
        ),
-      column(context),
 
-      const Text(
-        'MY PAGE',
-        style: optionStyle,
+      newWorkoutFragment(context),
+
+      DefaultTabController(
+        length: 3,
+        child: Column(children: <Widget>[
+          TabBar(
+            labelColor: Colors.amber[800],
+            unselectedLabelColor: Colors.grey[800],
+            labelStyle: TextStyle(fontSize: 18),
+            tabs: const [
+              Tab(text: "Workouts",),
+              Tab(text: "Progression"),
+              Tab(text: "Friends"),
+            ],
+
+          ),
+          const Expanded(
+            child: TabBarView(
+              children: [
+                MyWorkouts(),
+                Progression(),
+                Friends(),
+              ],
+            ),
+          )
+        ]),
       ),
     ];
 
@@ -140,7 +164,7 @@ Column hometest(context) => Column(
 */
 
 /// New Workout/Record screen.
-Column column(context) => Column(
+Column newWorkoutFragment(context) => Column(
   mainAxisAlignment: MainAxisAlignment.center,
   crossAxisAlignment: CrossAxisAlignment.center,
   children: <Widget>[

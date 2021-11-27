@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:workout_app/top_secret.dart';
 
 class MapControllerPage extends StatefulWidget {
   static const String route = 'map_controller';
@@ -158,10 +159,7 @@ class MapControllerPageState extends State<MapControllerPage> {
                   minZoom: 3.0,
                 ),
                 layers: [
-                  TileLayerOptions(
-                    //Map box data for tile layer.
-
-                  ),
+                  tileLayerOptions,
                   MarkerLayerOptions(markers: markers)
                 ],
               ),
