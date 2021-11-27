@@ -16,6 +16,7 @@ class _ExerciseListState extends State<ExerciseList> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(8),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
