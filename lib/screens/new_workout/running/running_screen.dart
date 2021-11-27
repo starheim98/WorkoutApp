@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../../top_secret.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -191,11 +192,7 @@ class _RunningState extends State<Running> {
                       ),
                       mapController: mapController,
                       layers: [
-                        TileLayerOptions(
-                          //Map box data for tile layer.
-
-
-                        ),
+                        tileLayerOptions,
                         MarkerLayerOptions(
                           markers: [
                             Marker(
