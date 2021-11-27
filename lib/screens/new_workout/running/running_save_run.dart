@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:latlong2/latlong.dart';
 
 class RunData extends StatefulWidget {
   final double distance;
   final Duration duration;
+  final List<LatLng> points;
 
-  RunData({required this.distance, required this.duration});
+  RunData({required this.distance, required this.duration, required this.points});
 
   @override
   _RunDataState createState() => _RunDataState();
@@ -25,6 +27,16 @@ class _RunDataState extends State<RunData> {
 
   var sizedbox = SizedBox(height: 30);
   var document;
+
+  List<GeoPoint> latlngToGeopoint(List<LatLng> initialPoints){
+    initialPoints = widget.points;
+    List<GeoPoint> geopoints = <GeoPoint>[]; // List Literal
+
+    for (LatLng latLng in initialPoints){
+      geopoints.add(GeoPoint(latLng.latitude, latLng.longitude));
+    }
+    return geopoints;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +77,7 @@ class _RunDataState extends State<RunData> {
               ElevatedButton(
                 onPressed: ()  => {
                       //TODO: SEND RUN-DATA TO DATABASE
-                      saveRun(title, desc, widget.duration, widget.distance),
+                      saveRun(title, desc, widget.duration, widget.distance, latlngToGeopoint(widget.points)),
                       Navigator.of(context).popUntil((route) => route.isFirst),
                     },
                 child: const Text("Save Run"),
@@ -76,13 +88,14 @@ class _RunDataState extends State<RunData> {
   final CollectionReference runs = FirebaseFirestore.instance.collection('runs'); //reference to the users collection.
 
   //Add LATLNG
-  Future<void> saveRun(String title, String desc, Duration duration, double distance) async {
+  Future<void> saveRun(String title, String desc, Duration duration, double distance, List<GeoPoint> points) async {
     if(title.isEmpty) title = "Went for a run today!";
     await runs.doc().set({
       "title" : title,
       "description" : desc,
       "duration" : duration.toString(),
       "distance" : distance.toString(),
+      "geopoints" : points,
     });
   }
 

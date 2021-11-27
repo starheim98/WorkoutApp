@@ -132,10 +132,10 @@ class _RunningState extends State<Running> {
         _positionStreamSubscription?.cancel();
         _positionStreamSubscription = null;
       }).listen((position) => {
-        _updatePositionList(position),
-        refreshToCurrentPosition(),
-        updatePoints(),
-      });
+            _updatePositionList(position),
+            refreshToCurrentPosition(),
+            updatePoints(),
+          });
       _positionStreamSubscription?.pause();
     }
     setState(() {
@@ -173,7 +173,7 @@ class _RunningState extends State<Running> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Running"),
+        title: const Text("Running"),
       ),
       body: IntrinsicHeight(
         child: Row(
@@ -193,6 +193,7 @@ class _RunningState extends State<Running> {
                       layers: [
                         TileLayerOptions(
                           //Map box data for tile layer.
+
 
                         ),
                         MarkerLayerOptions(
@@ -225,52 +226,49 @@ class _RunningState extends State<Running> {
                     height: 50,
                     child: Text("Distance: " + distance().toString() + " km/h"),
                   ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:[
-                        ElevatedButton(
-                          child: (_positionStreamSubscription == null ||
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    ElevatedButton(
+                      child: (_positionStreamSubscription == null ||
                               _positionStreamSubscription!.isPaused)
-                              ? const Icon(Icons.play_arrow)
-                              : const Icon(Icons.pause),
-                          onPressed: () {
-                            positionStreamStarted = !positionStreamStarted;
-                            if (positionStreamStarted) {
-                              startTimer();
-                            } else {
-                              stopTimer(resets: false);
-                            }
-                            _toggleListening();
-                          },
+                          ? const Icon(Icons.play_arrow)
+                          : const Icon(Icons.pause),
+                      onPressed: () {
+                        positionStreamStarted = !positionStreamStarted;
+                        if (positionStreamStarted) {
+                          startTimer();
+                        } else {
+                          stopTimer(resets: false);
+                        }
+                        _toggleListening();
+                      },
+                    ),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      child: const Icon(Icons.stop),
+                      onPressed: () async => {
+                        stopTimer(resets: false),
+                        if (positionStreamStarted) {_toggleListening()},
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RunData(
+                                    distance: distance(),
+                                    duration: duration,
+                                    points: points,
+                                  )),
                         ),
-                        const SizedBox(width: 20),
-                        ElevatedButton(
-                          child: const Icon(Icons.stop),
-                            onPressed: () async => {
-                                stopTimer(resets: false),
-                              if(positionStreamStarted){
-                                _toggleListening()
-                              },
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => RunData(distance: distance(),duration: duration,)),
-                              ),
-                            },
-                        ),
-                      ]
-                  ),
+                      },
+                    ),
+                  ]),
                   const Text("( * Y * )"),
                 ]),
               ),
             ]),
-
       ),
-
     );
   }
 
-
-  ///TIMER
+  //////////////////////// TIMER //////////////////////////////
   static const countdownDuration = Duration();
   Duration duration = Duration();
   Timer? timer;
@@ -280,12 +278,12 @@ class _RunningState extends State<Running> {
     if (countDown) {
       setState(() => duration = countdownDuration);
     } else {
-      setState(() => duration = Duration());
+      setState(() => duration = const Duration());
     }
   }
 
   void startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
+    timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
   }
 
   void addTime() {
@@ -314,11 +312,11 @@ class _RunningState extends State<Running> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       buildTimeCard(time: hours, header: 'HOURS'),
-      SizedBox(
+      const SizedBox(
         width: 8,
       ),
       buildTimeCard(time: minutes, header: 'MINUTES'),
-      SizedBox(
+      const SizedBox(
         width: 8,
       ),
       buildTimeCard(time: seconds, header: 'SECONDS'),
@@ -330,28 +328,21 @@ class _RunningState extends State<Running> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(20)),
             child: Text(
               time,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                   fontSize: 50),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 24,
           ),
-          Text(header, style: TextStyle(color: Colors.black45)),
+          Text(header, style: const TextStyle(color: Colors.black45)),
         ],
       );
 }
-
-/*
-
-
-City city = new City("Los Angeles", "CA", "USA", false, 5000000L,
-          {"field2", Arrays.asList(123123), {"field2", Arrays.asList(123123)}});
-*/
