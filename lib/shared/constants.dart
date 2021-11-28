@@ -35,10 +35,3 @@ appbar(AuthService _auth, String title) => AppBar(
   ],
 );
 
-workoutTile(WeightWorkout weightWorkout) => Card(
-  child: ListTile(
-    title: Text(weightWorkout.name!),
-    subtitle: Text("Date: " + weightWorkout.getDate()),
-    trailing: const Icon(Icons.more_vert),
-  ),
-);
