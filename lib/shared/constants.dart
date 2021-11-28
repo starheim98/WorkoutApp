@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:workout_app/models/weight_lifting/weight_workout.dart';
+import 'package:workout_app/screens/home/home.dart';
+import 'package:workout_app/screens/new_workout/choose_new_or_template.dart';
+import 'package:workout_app/screens/new_workout/running/running_screen.dart';
+import 'package:workout_app/screens/new_workout/weights/weightlift_screen.dart';
 import 'package:workout_app/services/auth.dart';
+
 
 const textInputDecoration = InputDecoration(
     fillColor: Colors.white,
@@ -11,6 +17,7 @@ const textInputDecoration = InputDecoration(
         borderSide: BorderSide(color: Colors.pink, width: 2.0)
     )
 );
+
 
 /// AppBar - TODO: Move to better named file? or not
 appbar(AuthService _auth, String title) => AppBar(
@@ -26,4 +33,12 @@ appbar(AuthService _auth, String title) => AppBar(
       icon: const Icon(Icons.person),
     ),
   ],
+);
+
+workoutTile(WeightWorkout weightWorkout) => Card(
+  child: ListTile(
+    title: Text(weightWorkout.name!),
+    subtitle: Text("Date: " + weightWorkout.getDate()),
+    trailing: const Icon(Icons.more_vert),
+  ),
 );

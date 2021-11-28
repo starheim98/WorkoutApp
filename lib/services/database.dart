@@ -48,7 +48,8 @@ class DatabaseService {
 
   Future<List<WeightWorkout>> getWeightWorkouts() async {
     List<WeightWorkout> weightWorkouts = [];
-    QuerySnapshot snapshot = await weightWorkoutCollection.get();
+    DocumentReference userReference = userCollection.doc(uid);
+    QuerySnapshot snapshot = await weightWorkoutCollection.where('userId', isEqualTo: userReference).get();
     for (var document in snapshot.docs) {
       WeightWorkout weightWorkout =
           WeightWorkout.fromJson(document.data() as Map<String, dynamic>);

@@ -8,6 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
+import 'package:workout_app/shared/constants.dart';
 
 
 class MyWorkouts extends StatefulWidget {
@@ -29,29 +30,30 @@ class _MyWorkoutsState extends State<MyWorkouts> {
     databaseService = DatabaseService();
     fetchData();
 
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: ToggleSwitch(
-            initialLabelIndex: toggleValue,
-            totalSwitches: 2,
-            activeBgColor: const [Colors.amber],
-            labels: const ["Weights", "Runs"],
-            onToggle: (index) => toggleWorkout(index),
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: ToggleSwitch(
+              initialLabelIndex: toggleValue,
+              totalSwitches: 2,
+              activeBgColor: const [Colors.amber],
+              labels: const ["Weights", "Runs"],
+              onToggle: (index) => toggleWorkout(index),
+            )
+          ),
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: weightWorkouts.length,
+            itemBuilder: (BuildContext context, int index) {
+              return workoutTile(weightWorkouts[index]);
+            },
           )
-        ),
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: weightWorkouts.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: Text(weightWorkouts[index].name!),
-            );
-          },
-        )
-      ],
+        ],
+      ),
     );
   }
 
