@@ -1,35 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:workout_app/models/account.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
-
-
-
-///
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:math';
+import 'package:latlong2/latlong.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:workout_app/models/account.dart';
-import 'package:workout_app/models/weight_lifting/exercise.dart';
-import 'package:workout_app/models/weight_lifting/weight_set.dart';
-import 'package:workout_app/models/weight_lifting/weight_workout.dart';
-///
-///
 class DatabaseService {
-
-  final String uid;
-  DatabaseService({required this.uid});
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
 
   // collection reference
-  final CollectionReference weightWorkoutCollection = FirebaseFirestore.instance.collection('weight_workouts');
-  final CollectionReference userCollection = FirebaseFirestore.instance.collection('user');
+  final CollectionReference weightWorkoutCollection =
+      FirebaseFirestore.instance.collection('weight_workouts');
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('user');
+  final CollectionReference runsCollection =
+      FirebaseFirestore.instance.collection('runs');
 
-  final DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
+  final DatabaseReference databaseReference =
+      FirebaseDatabase.instance.reference();
 
+  List<LatLng> getRunsData() {
+    DocumentReference runsReference = runsCollection.doc(uid);
+    List<LatLng> points = <LatLng>[];
+
+    runsReference.get().then((value) => {
+          for (GeoPoint geoPoint in value.get('geopoints'))
+            {points.add(LatLng(geoPoint.latitude, geoPoint.longitude))}
+        });
+    return points;
+  }
 
   /// Easy.
   Future addWeightWorkout(WeightWorkout weightWorkout) async {
@@ -37,12 +36,12 @@ class DatabaseService {
     DocumentReference userReference = userCollection.doc(uid);
     return weightWorkoutCollection
         .add({
-      'name': weightWorkout.name,
-      'startDate': weightWorkout.startDate.toString(),
-      'duration': weightWorkout.duration,
-      'exercises': exerciseJson,
-      'userId' : userReference,
-    })
+          'name': weightWorkout.name,
+          'startDate': weightWorkout.startDate.toString(),
+          'duration': weightWorkout.duration,
+          'exercises': exerciseJson,
+          'userId': userReference,
+        })
         .then((value) => print("added workout"))
         .catchError((error) => print("Failed to add workout $error"));
   }
@@ -51,7 +50,8 @@ class DatabaseService {
     List<WeightWorkout> weightWorkouts = [];
     QuerySnapshot snapshot = await weightWorkoutCollection.get();
     for (var document in snapshot.docs) {
-      WeightWorkout weightWorkout = WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
+      WeightWorkout weightWorkout =
+          WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
       weightWorkouts.add(weightWorkout);
     }
     return weightWorkouts;

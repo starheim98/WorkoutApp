@@ -90,7 +90,7 @@ class _RunDataState extends State<RunData> {
   //Add LATLNG
   Future<void> saveRun(String title, String desc, Duration duration, double distance, List<GeoPoint> points) async {
     if(title.isEmpty) title = "Went for a run today!";
-    await runs.doc().set({
+    await runs.doc(_firebaseAuth.currentUser!.uid).set({
       "title" : title,
       "description" : desc,
       "duration" : duration.toString(),
@@ -99,13 +99,13 @@ class _RunDataState extends State<RunData> {
     });
   }
 
-  Future<String> getEmailOfCurrentUser() async {
-    var docSnapshot = await users.doc(_firebaseAuth.currentUser!.email).get();
+  Future<String> getUidOfCurrentUser() async {
+    var docSnapshot = await users.doc(_firebaseAuth.currentUser!.uid).get();
     String value = "";
 
     if(docSnapshot.exists){
       Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
-      value = data?["email"];
+      value = data?["uid"];
       print(value);
     }
     return value;

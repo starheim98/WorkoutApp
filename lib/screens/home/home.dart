@@ -19,9 +19,11 @@ import 'package:workout_app/screens/new_workout/running/running_save_run.dart';
 ///
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../top_secret.dart'; //Mathias top secret
 import 'my_page/friends.dart';
 import 'my_page/progression.dart';
 
+import 'package:workout_app/services/database.dart';
 ///
 
 class Home extends StatefulWidget {
@@ -47,13 +49,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //NB: fjernet const under her for det skapte trøbbel med 'column'. La også til const bak "TEXT".
      final List<Widget> _widgetOptions = <Widget>[
-      // hometest(context),
-       const Text(
-         'HOME',
-         style: optionStyle,
-       ),
+      hometest(context),
 
-      newWorkoutFragment(context),
+       newWorkoutFragment(context),
 
       DefaultTabController(
         length: 3,
@@ -112,28 +110,22 @@ class _HomeState extends State<Home> {
 }
 
 /////////////////////////////////
-/*
-final String uid;
-
-final CollectionReference runCollection =
-FirebaseFirestore.instance.collection('runs');
-
-DocumentReference document = runCollection.get("123");
 
 MapController? mapController;
+double longitude = 6.235902420311039;
+double latitude = 62.472207764237886;
+
 List<LatLng> getPoints(){
-  var points = <LatLng>[];
-
-
-  return points;
+  return DatabaseService().getRunsData();
 }
 
-Column hometest(context) => Column(
-  children: [
+Container hometest(context) => Container(
+  height: 300,
+  child:
     FlutterMap(
       options: MapOptions(
         center: LatLng(latitude, longitude),
-        zoom: 15.0,
+        zoom: 16.0,
       ),
       mapController: mapController,
       layers: [
@@ -151,17 +143,16 @@ Column hometest(context) => Column(
         PolylineLayerOptions(
           polylines: [
             Polyline(
-                points: points,
+                points: getPoints(),
                 strokeWidth: 4.0,
                 color: Colors.purple),
           ],
         ),
       ],
     ),
-  ],
 );
 /////////////////////////////////
-*/
+
 
 /// New Workout/Record screen.
 Column newWorkoutFragment(context) => Column(

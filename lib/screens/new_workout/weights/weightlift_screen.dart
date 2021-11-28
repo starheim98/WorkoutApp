@@ -84,7 +84,7 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   finishWorkout() {
     weightWorkout.finishWorkout();
-    DatabaseService(uid: _firebaseAuth.currentUser!.uid).addWeightWorkout(weightWorkout); //TODO keep?
+    DatabaseService().addWeightWorkout(weightWorkout);
     Navigator.pop(this.context);
     Navigator.pop(this.context);
   }
