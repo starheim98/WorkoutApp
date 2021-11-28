@@ -51,6 +51,8 @@ class DatabaseService {
     DocumentReference userReference = userCollection.doc(uid);
     QuerySnapshot snapshot = await weightWorkoutCollection.where('userId', isEqualTo: userReference).get();
     for (var document in snapshot.docs) {
+      var json = document.data() as Map<String, dynamic>;
+      print(json['name']);
       WeightWorkout weightWorkout =
           WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
       weightWorkouts.add(weightWorkout);
