@@ -26,7 +26,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
 
   @override
   Widget build(BuildContext context) {
-    databaseService = DatabaseService(uid: _firebaseAuth.currentUser!.uid);
+    databaseService = DatabaseService();
     fetchData();
 
     return Column(
