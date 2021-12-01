@@ -1,11 +1,50 @@
 
+class RunWorkout {
+   String _title;
+   String _description;
+   String _distance;
+   String _duration;
+   List<dynamic> _geopoints;
 
-/*
-import 'package:workout_app/models/workout.dart';
+   RunWorkout(this._title, this._description, this._distance, this._duration,
+      this._geopoints);
 
-class RunWorkout extends Workout {
+   factory RunWorkout.fromJson(Map<String, dynamic> json){
+     String title = json['title'];
+     String description = json['description'];
+     String distance = json['distance'];
+     String duration = json['duration'];
+     List<dynamic> geopoints = json['geopoints'];
+     return RunWorkout(title, description, distance, duration, geopoints);
+   }
 
+   List<dynamic> get geopoints => _geopoints;
 
-  RunWorkout(String name, DateTime date, DateTime duration)
-      : super(name, date, duration);
-}*/
+  set geopoints(List<dynamic> value) {
+    _geopoints = value;
+  }
+
+  String get duration => _duration;
+
+  set duration(String value) {
+    _duration = value;
+  }
+
+  String get distance => _distance;
+
+  set distance(String value) {
+    _distance = value;
+  }
+
+  String get description => _description;
+
+  set description(String value) {
+    _description = value;
+  }
+
+  String get title => _title;
+
+  set title(String value) {
+    _title = value;
+  }
+}
