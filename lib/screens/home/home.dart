@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'package:charts_flutter/flutter.dart' as charts;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/running/run_workout.dart';
@@ -32,6 +35,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   DatabaseService? databaseService = DatabaseService();
+
   List<RunWorkout> runWorkouts = [];
   MapController? mapController;
   double longitude = 6.235902420311039;
@@ -40,9 +44,6 @@ class _HomeState extends State<Home> {
   void _onItemTapped(int index) {
     setState(() => _selectedIndex = index);
   }
-
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   @override
   void initState() {
@@ -56,6 +57,32 @@ class _HomeState extends State<Home> {
       setState(() {
         runWorkouts = result;
       });
+  }
+
+  List<charts.Series<LinearGraphData, num>> setupGraphData() {
+    final data = <LinearGraphData>[];
+    int index = 0;
+
+    for(RunWorkout runWorkout in runWorkouts ) {
+      Duration duration = parseDuration(runWorkout.duration);
+      int perminute = duration.inSeconds;
+      if (perminute!=0){
+        double kmh = double.parse(runWorkout.distance) / perminute;
+        print("km/h:"+kmh.toString());
+        index ++;
+        data.add(LinearGraphData(index, kmh.round()));
+      }
+    }
+
+    return [
+      charts.Series<LinearGraphData, int>(
+        id: 'WeightGraph',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (LinearGraphData sales, _) => sales.week,
+        measureFn: (LinearGraphData sales, _) => sales.weight,
+        data: data,
+      )
+    ];
   }
 
   @override
@@ -79,11 +106,11 @@ class _HomeState extends State<Home> {
               Tab(text: "Friends"),
             ],
           ),
-          const Expanded(
+           Expanded(
             child: TabBarView(
-              children: [
+              children: <Widget>[
                 MyWorkouts(),
-                Progression(),
+                Progression(setupGraphData()),
                 Friends(),
               ],
             ),
@@ -91,6 +118,7 @@ class _HomeState extends State<Home> {
         ]),
       ),
     ];
+
 
     return Scaffold(
       backgroundColor: Colors.brown[50],
@@ -220,3 +248,18 @@ Column newWorkoutFragment(context) => Column(
       ],
     );
 ////
+
+Duration parseDuration(String s) {
+  int hours = 0;
+  int minutes = 0;
+  int micros;
+  List<String> parts = s.split(':');
+  if (parts.length > 2) {
+    hours = int.parse(parts[parts.length - 3]);
+  }
+  if (parts.length > 1) {
+    minutes = int.parse(parts[parts.length - 2]);
+  }
+  micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
+  return Duration(hours: hours, minutes: minutes, microseconds: micros);
+}

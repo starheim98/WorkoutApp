@@ -1,22 +1,24 @@
+import 'dart:math';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
-class Progression extends StatefulWidget {
-  const Progression({Key? key}) : super(key: key);
+class Progression extends StatelessWidget {
+  final List<charts.Series<dynamic, num>> seriesList;
+  final bool animate;
 
-  @override
-  _ProgressionState createState() => _ProgressionState();
-}
+  Progression(this.seriesList, {this.animate = false});
 
-class _ProgressionState extends State<Progression> {
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: Text("Progression", style: TextStyle(fontSize: 25,)),
-        ),
-      ],
-    );
+    return charts.LineChart(seriesList, animate: animate);
   }
+}
+
+/// Sample linear data type.
+class LinearGraphData {
+  final int week;
+  final int weight;
+
+  LinearGraphData(this.week, this.weight);
 }

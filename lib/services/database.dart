@@ -33,6 +33,20 @@ class DatabaseService {
     return runWorkouts;
   }
 
+  Future<List<RunWorkout>> getRunsData2() async {
+    DocumentReference userReference = userCollection.doc(uid);
+    QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: userReference).get();
+    List<RunWorkout> runWorkouts = [];
+
+    for(var document in snapshot.docs){
+      RunWorkout runWorkout =
+      RunWorkout.fromJson(document.data() as Map<String, dynamic>);
+      runWorkouts.add(runWorkout);
+    }
+    return runWorkouts;
+  }
+
+
   /// Easy.
   Future addWeightWorkout(WeightWorkout weightWorkout) async {
     var exerciseJson = json.decode(json.encode(weightWorkout.getExercises()));
