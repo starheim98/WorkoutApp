@@ -8,7 +8,6 @@ import 'package:workout_app/screens/new_workout/weights/select_exercise.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
-import 'package:workout_app/services/databasev2_test.dart';
 
 import 'exercise_list.dart';
 
