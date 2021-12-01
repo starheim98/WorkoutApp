@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'dart:convert';
 import 'package:latlong2/latlong.dart';
@@ -19,15 +20,17 @@ class DatabaseService {
   final DatabaseReference databaseReference =
       FirebaseDatabase.instance.reference();
 
-  List<LatLng> getRunsData() {
-    DocumentReference runsReference = runsCollection.doc(uid);
-    List<LatLng> points = <LatLng>[];
+  Future<List<RunWorkout>> getRunsData() async {
+    DocumentReference userReference = userCollection.doc(uid);
+    QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: userReference).get();
+    List<RunWorkout> runWorkouts = [];
 
-    runsReference.get().then((value) => {
-          for (GeoPoint geoPoint in value.get('geopoints'))
-            {points.add(LatLng(geoPoint.latitude, geoPoint.longitude))}
-        });
-    return points;
+    for(var document in snapshot.docs){
+      RunWorkout runWorkout =
+      RunWorkout.fromJson(document.data() as Map<String, dynamic>);
+      runWorkouts.add(runWorkout);
+    }
+    return runWorkouts;
   }
 
   /// Easy.
@@ -59,4 +62,34 @@ class DatabaseService {
     }
     return weightWorkouts;
   }
+
+  //Add LATLNG
+  Future saveRun(String title, String desc, Duration duration, double distance, List<GeoPoint> points) async {
+    if(title.isEmpty) title = "Went for a run today!";
+    DocumentReference userReference = userCollection.doc(uid);
+
+    await runsCollection.doc().set({
+      "title" : title,
+      "description" : desc,
+      "duration" : duration.toString(),
+      "distance" : distance.toString(),
+      "geopoints" : points,
+      "userId" : userReference,
+    });
+  }
 }
+
+/*  Future<List<LatLng>> getLatLngPointData() async {
+    DocumentReference userReference = userCollection.doc(uid);
+    QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: userReference).get();
+    List<RunWorkout> runWorkouts = [];
+
+    for(var document in snapshot.docs){
+      RunWorkout runWorkout =
+      RunWorkout.fromJson(document.data() as Map<String, dynamic>);
+      runWorkouts.add(runWorkout);
+      print(runWorkout.geopoints);
+      print("CUm");
+    }
+    return runWorkouts;
+  }*/
