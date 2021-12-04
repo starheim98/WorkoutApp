@@ -4,6 +4,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/running/run_workout.dart';
+import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/home/home_tab/workout_list.dart';
 import 'package:workout_app/screens/home/my_page/tab_bar_top.dart';
 import 'package:workout_app/screens/home/my_page/workouts.dart';
@@ -32,43 +33,49 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   int _selectedIndex = 0;
 
-  DatabaseService? databaseService = DatabaseService();
+  DatabaseService? databaseService;
 
   List<RunWorkout> runWorkouts = [];
+  List<WeightWorkout> weightWorkouts = [];
+
   MapController? mapController;
   double longitude = 6.235902420311039;
   double latitude = 62.472207764237886;
 
   void _onItemTapped(int index) {
-    setState(() => _selectedIndex = index);
+    setState(() => {
+      _selectedIndex= index,
+      fetchData(),
+    });
   }
 
   @override
   void initState() {
     super.initState();
     databaseService = DatabaseService();
-    fetchRunWorkouts();
+    fetchData();
   }
 
-  Future fetchRunWorkouts() async {
-    var result = await databaseService!.getRunsData();
+  Future fetchData() async {
+    var runsData = await databaseService!.getRunsData();
+    var weightWorkoutData = await databaseService!.getWeightWorkouts();
+    if(mounted) {
       setState(() {
-        runWorkouts = result;
+        runWorkouts = runsData;
+        weightWorkouts = weightWorkoutData;
       });
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     //NB: fjernet const under her for det skapte trøbbel med 'column'. La også til const bak "TEXT".
     final List<Widget> _widgetOptions = <Widget>[
       // runListView(context),
-      HomeWorkoutList(runWorkouts: runWorkouts),
+      HomeWorkoutList(runWorkouts: runWorkouts, weightWorkouts: weightWorkouts),
       newWorkoutWidget(context),
       myPageTabBar()
     ];
-
 
     return Scaffold(
       backgroundColor: Colors.brown[50],

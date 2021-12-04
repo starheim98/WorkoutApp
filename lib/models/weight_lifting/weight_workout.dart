@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 class WeightWorkout {
   String? _name;
-  final DateTime _startDate = DateTime.now();
+  final DateTime _date = DateTime.now();
   int _duration = 0;
   List<Exercise> _exercises = [];
   DatabaseReference? _id;
@@ -33,7 +33,7 @@ class WeightWorkout {
     return WeightWorkout.complete(name, duration, exercices);
   }
 
-  DateTime get startDate => _startDate;
+  DateTime get date => _date;
 
   void addExercise(Exercise exercise){
     _exercises.add(exercise);
@@ -44,7 +44,7 @@ class WeightWorkout {
   }
 
   void finishWorkout(){
-    _duration = DateTime.now().difference(startDate).inMinutes;
+    _duration = DateTime.now().difference(date).inMinutes;
   }
 
   List<Exercise> getExercises(){
@@ -55,7 +55,7 @@ class WeightWorkout {
 
   String getDate(){
     DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-    return dateFormat.format(_startDate);
+    return dateFormat.format(_date);
   }
 
   void setName(String value) {
@@ -69,7 +69,7 @@ class WeightWorkout {
   Map<String, dynamic> toJson() {
     return {
       'name': _name,
-      'startDate': _startDate,
+      'date': _date,
       'duration': _duration,
       'exercises': exercises.toList()
     };
@@ -77,7 +77,7 @@ class WeightWorkout {
 
   @override
   String toString() {
-    return 'WeightWorkout{name: $_name, startDate: $_startDate, duration: $_duration, exercises: $_exercises}';
+    return 'WeightWorkout{name: $_name, date: $_date, duration: $_duration, exercises: $_exercises}';
   }
 
   int get duration => _duration;

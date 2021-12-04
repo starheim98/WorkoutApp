@@ -33,19 +33,6 @@ class DatabaseService {
     return runWorkouts;
   }
 
-  Future<List<RunWorkout>> getRunsData2() async {
-    DocumentReference userReference = userCollection.doc(uid);
-    QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: userReference).get();
-    List<RunWorkout> runWorkouts = [];
-
-    for(var document in snapshot.docs){
-      RunWorkout runWorkout =
-      RunWorkout.fromJson(document.data() as Map<String, dynamic>);
-      runWorkouts.add(runWorkout);
-    }
-    return runWorkouts;
-  }
-
 
   /// Easy.
   Future addWeightWorkout(WeightWorkout weightWorkout) async {
@@ -54,7 +41,7 @@ class DatabaseService {
     return weightWorkoutCollection
         .add({
           'name': weightWorkout.name,
-          'startDate': weightWorkout.startDate.toString(),
+          'startDate': weightWorkout.date.toString(),
           'duration': weightWorkout.duration,
           'exercises': exerciseJson,
           'userId': userReference,
@@ -77,7 +64,6 @@ class DatabaseService {
     return weightWorkouts;
   }
 
-  //Add LATLNG
   Future saveRun(String title, String desc, Duration duration, double distance, List<GeoPoint> points) async {
     if(title.isEmpty) title = "Went for a run today!";
     DocumentReference userReference = userCollection.doc(uid);
@@ -85,6 +71,7 @@ class DatabaseService {
     await runsCollection.doc().set({
       "title" : title,
       "description" : desc,
+      "date" : DateTime.now().toString(),
       "duration" : duration.toString(),
       "distance" : distance.toString(),
       "geopoints" : points,
