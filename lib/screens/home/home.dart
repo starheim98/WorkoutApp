@@ -4,6 +4,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/running/run_workout.dart';
+import 'package:workout_app/screens/home/home_tab/workout_list.dart';
 import 'package:workout_app/screens/home/my_page/workouts.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
@@ -89,7 +90,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //NB: fjernet const under her for det skapte trøbbel med 'column'. La også til const bak "TEXT".
     final List<Widget> _widgetOptions = <Widget>[
-      runListView(context),
+      // runListView(context),
+      HomeWorkoutList(runWorkouts: runWorkouts),
       newWorkoutFragment(context),
       DefaultTabController(
         length: 3,
@@ -99,9 +101,7 @@ class _HomeState extends State<Home> {
             unselectedLabelColor: Colors.grey[800],
             labelStyle: TextStyle(fontSize: 18),
             tabs: const [
-              Tab(
-                text: "Workouts",
-              ),
+              Tab(text: "Workouts",),
               Tab(text: "Progression"),
               Tab(text: "Friends"),
             ],
@@ -148,105 +148,37 @@ class _HomeState extends State<Home> {
     );
   }
 
-  List<LatLng> getPoints(RunWorkout runWorkout)  {
-    try {
-      List<LatLng> points = <LatLng>[];
-      for (GeoPoint geopoint in runWorkout.geopoints){
-        points.add(LatLng(geopoint.latitude, geopoint.longitude));
-      }
-      return points;
-    } on Exception catch (e) {
-      return []; //If there is no run connected to the data there will be no data to draw.
-    }
-  }
-
-SingleChildScrollView runListView(context) => SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: runWorkouts.length,
-            itemBuilder: (BuildContext context, int index) {
-              return runTile(runWorkouts[index], LatLng(latitude, longitude), mapController, getPoints(runWorkouts[index]));
-            },
-          )
-        ],
-      ),
-    );
+  /// New Workout/Record screen.
+  Column newWorkoutFragment(context) => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: <Widget>[
+      const Text("Select form of training:"),
+      const SizedBox(height: 50.0),
+      ElevatedButton(
+          onPressed: () async => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Running()),
+            )
+          },
+          child:
+          const Text("Running", style: TextStyle(color: Colors.white))),
+      ElevatedButton(
+          onPressed: () async => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const WeightLifting()),
+            )
+          },
+          child: const Text("Weightlifting",
+              style: TextStyle(color: Colors.white))),
+    ],
+  );
 }
 
 
-runTile(RunWorkout runWorkout, LatLng latLng, MapController? mapController, List<LatLng> points) => Card (
-    child: ListTile(
-      title: Text(runWorkout.title),
-      subtitle: Text("Desc: " + runWorkout.description +
-          ". Duration: " + runWorkout.duration + ". Distance: "
-          + runWorkout.distance),
-      leading: SizedBox(
-        height: 50,
-        width: 50,
-        child: FlutterMap(
-          options: MapOptions(
-            center: latLng,
-            zoom: 15.0,
-          ),
-          mapController: mapController,
-          layers: [
-            tileLayerOptions,
-            MarkerLayerOptions(
-              markers: [
-                Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: latLng,
-                  builder: (ctx) => const Icon(Icons.pin_drop),
-                ),
-              ],
-            ),
-            PolylineLayerOptions(
-              polylines: [
-                Polyline(
-                    points: points,
-                    strokeWidth: 4.0,
-                    color: Colors.purple),
-              ],
-            ),
-          ],
-        ),
-      ),
-    )
-);
-
-/// New Workout/Record screen.
-Column newWorkoutFragment(context) => Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        const Text("Select form of training:"),
-        const SizedBox(height: 50.0),
-        ElevatedButton(
-            onPressed: () async => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Running()),
-                  )
-                },
-            child:
-                const Text("Running", style: TextStyle(color: Colors.white))),
-        ElevatedButton(
-            onPressed: () async => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const WeightLifting()),
-                  )
-                },
-            child: const Text("Weightlifting",
-                style: TextStyle(color: Colors.white))),
-      ],
-    );
 ////
 
 Duration parseDuration(String s) {

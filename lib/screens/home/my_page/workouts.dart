@@ -90,8 +90,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
         shrinkWrap: true,
         itemCount: runWorkouts.length,
         itemBuilder: (BuildContext context, int index) {
-          return runTile(runWorkouts[index], LatLng(latitude, longitude),
-              mapController, getPoints(runWorkouts[index]));
+          return runTile(runWorkouts[index], LatLng(latitude, longitude), getPoints(runWorkouts[index]));
         },
       )
     ];
@@ -152,24 +151,23 @@ class _MyWorkoutsState extends State<MyWorkouts> {
             builder: (context) => RunWorkoutDetailsPage(runWorkout: runWorkout)));
   }
 
-  SingleChildScrollView runListView(context) => SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: runWorkouts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return runTile(runWorkouts[index], LatLng(latitude, longitude),
-                    mapController, getPoints(runWorkouts[index]));
-              },
-            )
-          ],
-        ),
-      );
+  // SingleChildScrollView runListView(context) => SingleChildScrollView(
+  //       child: Column(
+  //         children: <Widget>[
+  //           ListView.builder(
+  //             physics: const NeverScrollableScrollPhysics(),
+  //             scrollDirection: Axis.vertical,
+  //             shrinkWrap: true,
+  //             itemCount: runWorkouts.length,
+  //             itemBuilder: (BuildContext context, int index) {
+  //               return runTile(runWorkouts[index], LatLng(latitude, longitude), getPoints(runWorkouts[index]));
+  //             },
+  //           )
+  //         ],
+  //       ),
+  //     );
 
-  runTile(RunWorkout runWorkout, LatLng latLng, MapController? mapController, List<LatLng> points) => Card (
+  runTile(RunWorkout runWorkout, LatLng latLng, List<LatLng> points) => Card (
       child: ListTile(
         title: Text(runWorkout.title),
         onTap: () =>  runDetailRoute(runWorkout) ,
