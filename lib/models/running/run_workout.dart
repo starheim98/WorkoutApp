@@ -1,13 +1,18 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:latlong2/latlong.dart';
+
 class RunWorkout {
    String _title;
    String _description;
    String _distance;
    String _duration;
-   List<dynamic> _geopoints;
+   String _date;
+
+  List<dynamic> _geopoints;
 
    RunWorkout(this._title, this._description, this._distance, this._duration,
-      this._geopoints);
+      this._geopoints, this._date);
 
    factory RunWorkout.fromJson(Map<String, dynamic> json){
      String title = json['title'];
@@ -15,12 +20,31 @@ class RunWorkout {
      String distance = json['distance'];
      String duration = json['duration'];
      List<dynamic> geopoints = json['geopoints'];
-     return RunWorkout(title, description, distance, duration, geopoints);
+     String _date = json['date'];
+     return RunWorkout(title, description, distance, duration, geopoints, _date);
    }
 
    List<dynamic> get geopoints => _geopoints;
 
-  set geopoints(List<dynamic> value) {
+   List<LatLng> getPoints() {
+     try {
+       List<LatLng> points = <LatLng>[];
+       for (GeoPoint geopoint in geopoints) {
+         points.add(LatLng(geopoint.latitude, geopoint.longitude));
+       }
+       return points;
+     } on Exception catch (e) {
+       return []; //If there is no run connected to the data there will be no data to draw.
+     }
+   }
+
+   String get date => _date;
+
+   set date(String value) {
+     date = value;
+   }
+
+   set geopoints(List<dynamic> value) {
     _geopoints = value;
   }
 

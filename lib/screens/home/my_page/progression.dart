@@ -38,16 +38,16 @@ class _ProgressionState extends State<Progression> {
     final data = <LinearGraphData>[];
     int index = 0;
 
-    // for(RunWorkout runWorkout in runWorkouts ) {
-    //   Duration duration = parseDuration(runWorkout.duration);
-    //   int perminute = duration.inSeconds;
-    //   if (perminute!=0){
-    //     double kmh = double.parse(runWorkout.distance) / perminute;
-    //     print("km/h:"+kmh.toString());
-    //     index ++;
-    //     data.add(LinearGraphData(index, kmh.round()));
-    //   }
-    // }
+/*    for(RunWorkout runWorkout in runWorkouts ) {
+       Duration duration = parseDuration(runWorkout.duration);
+       int perminute = duration.inSeconds;
+       if (perminute!=0){
+         double kmh = double.parse(runWorkout.distance) / perminute;
+         print("km/h:"+kmh.toString());
+         index ++;
+         data.add(LinearGraphData(index, kmh.round()));
+       }
+      }*/
 
     return [
       charts.Series<LinearGraphData, int>(
