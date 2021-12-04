@@ -127,7 +127,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Date: " + weightWorkout.getDate()),
+              Text("Date: " + weightWorkout.date!),
               Text("Duration: " + weightWorkout.duration.toString() + " min")
             ],
           ),

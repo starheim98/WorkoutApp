@@ -47,7 +47,7 @@ class WeightWorkout {
   }
 
   void finishWorkout(){
-    _duration = DateTime.now().difference(date).inMinutes;
+    _duration = DateTime.now().difference(DateTime.parse(date!)).inMinutes;
   }
 
   List<Exercise> getExercises(){
