@@ -26,7 +26,7 @@ class _HomeWorkoutListState extends State<HomeWorkoutList> {
     List<WeightWorkout> weightWorkouts = widget.weightWorkouts;
 
     var newList = List.from(runWorkouts)..addAll(weightWorkouts);
-    newList.sort((a, b) => a.date.compareTo(b.date));
+    newList.sort((a, b) => a.date.compareTo(b.date)); //EZCLAP
 
     return ListView.builder(
       itemCount: newList.length,
@@ -47,7 +47,7 @@ class _HomeWorkoutListState extends State<HomeWorkoutList> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Date: " + weightWorkout.getDate()),
+              Text("Date: " + weightWorkout.date!),
               Text("Duration: " + weightWorkout.duration.toString() + " min")
             ],
           ),

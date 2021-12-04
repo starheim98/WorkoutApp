@@ -27,7 +27,7 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   @override
   void initState() {
-    weightWorkout.setName("Workout " + weightWorkout.getDate());
+    weightWorkout.setName("Workout " + weightWorkout.date!);
     super.initState();
   }
 
