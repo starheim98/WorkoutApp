@@ -1,12 +1,15 @@
 //
 // abstract class Workout {
-//   String? name;
-//   DateTime? date, duration;
+//   String? _name;
+//   final DateTime _startDate = DateTime.now();
+//   int _duration = 0;
 //
-//   Workout({required this.name, required this.date, required this.duration});
+//   Workout(this._name, this._duration);
 //
-//   Workout.startWorkout(){
-//     date = DateTime.now();
-//     name = "Workout " + date.toString();
-//   }
+// // Workout.startWorkout(){
+//   //   _date = DateTime.now();
+//   //   _name = "Workout " + _date.toString();
+//   // }
+//
+//
 // }

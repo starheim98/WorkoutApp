@@ -41,7 +41,7 @@ class DatabaseService {
     return weightWorkoutCollection
         .add({
           'name': weightWorkout.name,
-          'startDate': weightWorkout.date.toString(),
+          'startDate': weightWorkout.date,
           'duration': weightWorkout.duration,
           'exercises': exerciseJson,
           'userId': userReference,

@@ -11,7 +11,6 @@ class Account{
 class AccountData{
   final String uid; //Unique ID of user.
   final String email; //User's name.
-  List<WeightWorkout> weightWorkouts = [];
   List<String> friends = []; // List of UIDs
 
   AccountData({required this.uid, required this.email}); //Constructor
