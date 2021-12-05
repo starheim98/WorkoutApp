@@ -4,7 +4,7 @@ import 'package:workout_app/screens/home/my_page/workouts.dart';
 
 import 'friends.dart';
 
-DefaultTabController myPageTabBar() =>
+DefaultTabController myPageTab() =>
     DefaultTabController(
       length: 3,
       child: Column(children: <Widget>[

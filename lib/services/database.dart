@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:workout_app/models/account.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'dart:convert';
@@ -14,11 +15,10 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('weight_workouts');
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('user');
+  final CollectionReference usersCollection =
+    FirebaseFirestore.instance.collection('users');
   final CollectionReference runsCollection =
       FirebaseFirestore.instance.collection('runs');
-
-  final DatabaseReference databaseReference =
-      FirebaseDatabase.instance.reference();
 
   Future<List<RunWorkout>> getRunsData() async {
     DocumentReference userReference = userCollection.doc(uid);
@@ -31,6 +31,16 @@ class DatabaseService {
       runWorkouts.add(runWorkout);
     }
     return runWorkouts;
+  }
+
+  Future<List<AccountData>> findAccounts(String query) async{
+    List<AccountData> foundAccouts = [];
+    print(query);
+    QuerySnapshot snapshot = await usersCollection.get();
+    for (var doc in snapshot.docs) {
+      print(doc.data());
+    }
+    return foundAccouts;
   }
 
 

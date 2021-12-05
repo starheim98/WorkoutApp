@@ -20,6 +20,8 @@ class _RegisterState extends State<Register> {
   String email = "";
   String password = "";
   String error = "";
+  String firstName = "";
+  String lastName = "";
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,22 @@ class _RegisterState extends State<Register> {
           child: Form(
               key: _formkey,
               child: Column(children: <Widget>[
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  decoration: textInputDecoration.copyWith(hintText: "First name"),
+                  validator: (val)=> val!.isEmpty ? 'Enter first name' : null,
+                  onChanged: (val) {
+                    setState(() => firstName = val);
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  decoration: textInputDecoration.copyWith(hintText: "Last name"),
+                  validator: (val)=> val!.isEmpty ? 'Enter last mail' : null,
+                  onChanged: (val) {
+                    setState(() => lastName = val);
+                  },
+                ),
                 const SizedBox(height: 20.0),
                 TextFormField(
                   decoration: textInputDecoration.copyWith(hintText: "Email"),
@@ -64,7 +82,7 @@ class _RegisterState extends State<Register> {
                         setState(() => loading = true);
 
                         //valid form
-                        dynamic result = await _auth.registerEmailPassword(email, password);
+                        dynamic result = await _auth.registerEmailPassword(firstName, lastName, email, password);
                         if (result == null) {
                           setState(() => {error = 'Please enter a valid email. (Remember @, etc)', loading = false});
                         } // do not need an else. WE have a listener for auth changes so it will automatically change.
