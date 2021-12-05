@@ -48,7 +48,7 @@ class AuthService {
   }
 
   //register email&password
-  Future registerEmailPassword(String email, String password) async {
+  Future registerEmailPassword(String firstName, String lastName, String email, String password) async {
     try{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
@@ -56,10 +56,11 @@ class AuthService {
       ///// Create collection of users -> create document with the registered users uid + email.
       // Will not override - cause our AUTH uses unique emails.
       await users.doc(user!.uid).set({
+        "firstName" : firstName,
+        "lastName" : lastName,
         "uid" : user.uid,
         "email" : email,
-        "weight_workouts" : [],
-        "runs" : [],
+        "friends" : [],
       });
       /////
 

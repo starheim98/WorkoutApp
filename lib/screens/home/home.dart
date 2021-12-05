@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/home/home_tab/workout_list.dart';
-import 'package:workout_app/screens/home/my_page/tab_bar_top.dart';
+import 'package:workout_app/screens/home/my_page/my_page.dart';
 import 'package:workout_app/screens/home/my_page/workouts.dart';
 import 'package:workout_app/screens/home/new_workout_tab/new_workout_screen.dart';
 import 'package:workout_app/services/auth.dart';
@@ -38,10 +38,6 @@ class _HomeState extends State<Home> {
   List<RunWorkout> runWorkouts = [];
   List<WeightWorkout> weightWorkouts = [];
 
-  MapController? mapController;
-  double longitude = 6.235902420311039;
-  double latitude = 62.472207764237886;
-
   void _onItemTapped(int index) {
     setState(() => {
       _selectedIndex= index,
@@ -72,9 +68,9 @@ class _HomeState extends State<Home> {
     //NB: fjernet const under her for det skapte trøbbel med 'column'. La også til const bak "TEXT".
     final List<Widget> _widgetOptions = <Widget>[
       // runListView(context),
-      HomeWorkoutList(runWorkouts: runWorkouts, weightWorkouts: weightWorkouts),
-      newWorkoutWidget(context),
-      myPageTabBar()
+      HomeTab(runWorkouts: runWorkouts, weightWorkouts: weightWorkouts),
+      newWorkoutTab(context),
+      myPageTab()
     ];
 
     return Scaffold(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:workout_app/screens/new_workout/choose_new_or_template.dart';
 import 'package:workout_app/screens/new_workout/running/running_screen.dart';
 
-Column newWorkoutWidget(BuildContext context) =>
+Column newWorkoutTab(BuildContext context) =>
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

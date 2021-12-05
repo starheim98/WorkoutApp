@@ -7,19 +7,19 @@ import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 
 import '../../../top_secret.dart';
 
-class HomeWorkoutList extends StatefulWidget {
+class HomeTab extends StatefulWidget {
   List<RunWorkout> runWorkouts;
   List<WeightWorkout> weightWorkouts;
 
-  HomeWorkoutList(
+  HomeTab(
       {Key? key, required this.runWorkouts, required this.weightWorkouts})
       : super(key: key);
 
   @override
-  _HomeWorkoutListState createState() => _HomeWorkoutListState();
+  _HomeTabState createState() => _HomeTabState();
 }
 
-class _HomeWorkoutListState extends State<HomeWorkoutList> {
+class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     List<RunWorkout> runWorkouts = widget.runWorkouts;
