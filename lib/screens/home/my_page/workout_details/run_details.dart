@@ -20,7 +20,7 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
   Widget build(BuildContext context) {
     SizedBox sizedBox = SizedBox(height: 12, width: MediaQuery.of(context).size.width);
     return Scaffold(
-      appBar: appbar(_auth, widget.runWorkout.title),
+      appBar: appbar(_auth, widget.runWorkout.title, context),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

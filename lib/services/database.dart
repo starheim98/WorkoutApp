@@ -98,17 +98,3 @@ class DatabaseService {
   }
 }
 
-/*  Future<List<LatLng>> getLatLngPointData() async {
-    DocumentReference userReference = userCollection.doc(uid);
-    QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: userReference).get();
-    List<RunWorkout> runWorkouts = [];
-
-    for(var document in snapshot.docs){
-      RunWorkout runWorkout =
-      RunWorkout.fromJson(document.data() as Map<String, dynamic>);
-      runWorkouts.add(runWorkout);
-      print(runWorkout.geopoints);
-      print("CUm");
-    }
-    return runWorkouts;
-  }*/
