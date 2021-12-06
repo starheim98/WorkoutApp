@@ -40,7 +40,9 @@ class _RunDataState extends State<RunData> {
   @override
   Widget build(BuildContext context) {
     String sDuration =
-        "${widget.duration.inHours.toString().padLeft(2, '0')}:${widget.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${(widget.duration.inSeconds.remainder(60).toString().padLeft(2, '0'))}";
+        "${widget.duration.inHours.toString().padLeft(2, '0')}:"
+        "${widget.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:"
+        "${(widget.duration.inSeconds.remainder(60).toString().padLeft(2, '0'))}";
     print(sDuration);
     return Scaffold(
         appBar: appbar(_auth, "Home", context),

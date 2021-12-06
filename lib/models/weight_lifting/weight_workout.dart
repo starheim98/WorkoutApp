@@ -10,6 +10,7 @@ class WeightWorkout {
   String? _date;
   int _duration = 0;
   List<Exercise> _exercises = [];
+  String? _uid;
 
   /// Initializes an empty workout session
   WeightWorkout() {
@@ -23,7 +24,7 @@ class WeightWorkout {
     _exercises = template.getExercices();
   }
 
-  WeightWorkout.complete(this._name, this._date, this._duration, this._exercises);
+  WeightWorkout.complete(this._name, this._date, this._duration, this._exercises, this._uid);
 
   factory WeightWorkout.fromJson(Map<String, dynamic> json) {
     String name = json['name'];
@@ -33,8 +34,11 @@ class WeightWorkout {
     for (var exercise in json['exercises']){
       exercices.add(Exercise.fromJson(exercise));
     }
-    return WeightWorkout.complete(name, date, duration, exercices);
+    String uid = json['userId'];
+    return WeightWorkout.complete(name, date, duration, exercices, uid);
   }
+
+  String? get uid => _uid;
 
   String? get date => _date;
 
