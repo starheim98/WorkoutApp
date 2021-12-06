@@ -35,10 +35,18 @@ class DatabaseService {
 
   Future<List<AccountData>> findAccounts(String query) async{
     List<AccountData> foundAccouts = [];
-    print(query);
     QuerySnapshot snapshot = await usersCollection.get();
     for (var doc in snapshot.docs) {
-      print(doc.data());
+      var json = doc.data() as Map<String, dynamic>;
+      String firstName = json["firstName"];
+      String lastName = json["lastName"];
+      if (query.isNotEmpty && (firstName.toLowerCase().startsWith(query.toLowerCase())
+          || lastName.toLowerCase().startsWith(query.toLowerCase()))){
+        foundAccouts.add(AccountData.fromJson(json));
+        if(foundAccouts.length >= 10) {
+          break;
+        }
+      }
     }
     return foundAccouts;
   }

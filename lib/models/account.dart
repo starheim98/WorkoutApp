@@ -9,20 +9,51 @@ class Account{
 
 // Account data class.
 class AccountData{
-  final String uid; //Unique ID of user.
-  final String email; //User's name.
-  List<String> friends = []; // List of UIDs
+  String _firstName;
+  String _lastName;
+  final String _uid; //Unique ID of user.
+  final String _email; //User's name.
+  List<String> _friends = [];
 
-  AccountData({required this.uid, required this.email}); //Constructor
+  AccountData(this._firstName, this._lastName, this._uid, this._email,
+      this._friends); // List of UIDs
+
+  factory AccountData.fromJson(Map<String, dynamic> json) {
+    String firstName = json['firstName'];
+    String lastName = json['lastName'];
+    String uid = json['uid'];
+    String email = json['email'];
+    List<String> friends = [];
+    for (var uid in json['friends']) {
+      friends.add(uid);
+    }
+    return AccountData(firstName, lastName, uid, email, friends);
+  }
+
+  String getName() {
+    return _firstName + " " + _lastName;
+  }
+
+  String get firstName => _firstName;
+
+  bool isFriendWith(String uid) {
+    return _friends.contains(uid);
+  }
 
   bool addFriend(String uid){
     bool success = false;
-    if(friends.contains(uid)){
-      friends.add(uid);
+    if(_friends.contains(uid)){
+      _friends.add(uid);
       success = true;
     }
     return success;
   }
 
+  String get lastName => _lastName;
 
+  String get uid => _uid;
+
+  String get email => _email;
+
+  List<String> get friends => _friends;
 }
