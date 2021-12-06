@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:workout_app/models/account.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
@@ -43,7 +44,9 @@ class DatabaseService {
       String lastName = json["lastName"];
       if (query.isNotEmpty && (firstName.toLowerCase().startsWith(query.toLowerCase())
           || lastName.toLowerCase().startsWith(query.toLowerCase()))){
-        foundAccouts.add(AccountData.fromJson(json));
+        if (json['uid'] != uid) {
+          foundAccouts.add(AccountData.fromJson(json));
+        }
         if(foundAccouts.length >= 10) {
           break;
         }
@@ -52,6 +55,24 @@ class DatabaseService {
     return foundAccouts;
   }
 
+  Future<bool> addFriend(String friendUid) async {
+
+    var userDoc = await usersCollection.doc(uid).get();
+    var friendDoc = await usersCollection.doc(friendUid).get();
+
+    var userJson = userDoc.data() as Map<String, dynamic>;
+    var friendJson = friendDoc.data() as Map<String, dynamic>;
+
+    AccountData user = AccountData.fromJson(userJson);
+    AccountData friend = AccountData.fromJson(friendJson);
+    if(!user.friends.contains(friendUid) && !friend.friends.contains(uid)){
+      user.addFriend(friend.uid);
+      usersCollection.doc(user.uid).update({"friends": user.friends});
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   /// Easy.
   Future addWeightWorkout(WeightWorkout weightWorkout) async {
@@ -105,4 +126,3 @@ class DatabaseService {
     return account;
   }
 }
-
