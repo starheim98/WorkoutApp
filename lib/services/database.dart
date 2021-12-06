@@ -22,12 +22,13 @@ class DatabaseService {
 
   Future<List<RunWorkout>> getRunsData() async {
     DocumentReference userReference = userCollection.doc(uid);
-    QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: userReference).get();
+    QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: uid).get();
     List<RunWorkout> runWorkouts = [];
 
     for(var document in snapshot.docs){
       RunWorkout runWorkout =
       RunWorkout.fromJson(document.data() as Map<String, dynamic>);
+
       runWorkouts.add(runWorkout);
     }
     return runWorkouts;
@@ -62,7 +63,7 @@ class DatabaseService {
           'date': weightWorkout.date,
           'duration': weightWorkout.duration,
           'exercises': exerciseJson,
-          'userId': userReference,
+          'userId': uid.toString(),
         })
         .then((value) => print("added workout"))
         .catchError((error) => print("Failed to add workout $error"));
@@ -71,7 +72,7 @@ class DatabaseService {
   Future<List<WeightWorkout>> getWeightWorkouts() async {
     List<WeightWorkout> weightWorkouts = [];
     DocumentReference userReference = userCollection.doc(uid);
-    QuerySnapshot snapshot = await weightWorkoutCollection.where('userId', isEqualTo: userReference).get();
+    QuerySnapshot snapshot = await weightWorkoutCollection.where('userId', isEqualTo: uid).get();
     for (var document in snapshot.docs) {
       var json = document.data() as Map<String, dynamic>;
       print(json['name']);
@@ -93,8 +94,15 @@ class DatabaseService {
       "duration" : duration,
       "distance" : distance.toString(),
       "geopoints" : points,
-      "userId" : userReference,
+      "userId" : uid.toString(),
     });
+  }
+
+  Future getUser(String userID) async {
+    var user = await usersCollection.doc(userID).get();
+    var userJson = user.data() as Map<String, dynamic>;
+    AccountData account = AccountData.fromJson(userJson);
+    return account;
   }
 }
 

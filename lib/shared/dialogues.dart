@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 class Dialogues {
 
   confirmResult(bool isYes, BuildContext context){
-    if(isYes){
-      Navigator.pop(context, isYes);
-      print("YES");
-    } else {
-      print("!");
-        Navigator.pop(context, isYes);
-    }
+    if (isYes) Navigator.pop(context, isYes);
+    else Navigator.pop(context, isYes);
+    
   }
     confirmDialogue(BuildContext context, String title, String description){
       return showDialog(
