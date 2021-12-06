@@ -42,7 +42,7 @@ class AccountData{
 
   bool addFriend(String uid){
     bool success = false;
-    if(_friends.contains(uid)){
+    if(!_friends.contains(uid)){
       _friends.add(uid);
       success = true;
     }

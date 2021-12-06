@@ -17,6 +17,7 @@ class _FriendsState extends State<Friends> {
   List<AccountData> foundAccounts = [];
   List<AccountData> friends = [];
   DatabaseService databaseService = DatabaseService();
+  String query = "";
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +25,16 @@ class _FriendsState extends State<Friends> {
       children: <Widget>[
         const SizedBox(height: 30),
         TextField(
-          onChanged: (query) => onSearch(query),
-          decoration: const InputDecoration(hintText: "Find friends")
-        ),
+            onChanged: (query) => onSearch(query),
+            decoration: const InputDecoration(hintText: "Find friends")),
         const SizedBox(height: 20),
         ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: foundAccounts.length,
           itemBuilder: (BuildContext context, int index) {
-            if(foundAccounts[index].isFriendWith(_firebaseAuth.currentUser!.uid)) {
+            if (foundAccounts[index]
+                .isFriendWith(_firebaseAuth.currentUser!.uid)) {
               return friendTile(foundAccounts[index]);
             } else {
               return notFriendTile(foundAccounts[index]);
@@ -44,20 +45,17 @@ class _FriendsState extends State<Friends> {
     );
   }
 
-
-
   ListTile friendTile(AccountData account) => ListTile(
-    title: Text(account.getName()),
-    trailing: const Icon(Icons.person_remove),
-  );
+        title: Text(account.getName()),
+        trailing: const Icon(Icons.person_remove),
+      );
 
   ListTile notFriendTile(AccountData account) => ListTile(
-    title: Text(account.getName()),
-    trailing: IconButton(
-      onPressed: () => addFriend(account.uid),
-      icon: const Icon(Icons.person_add)
-    ),
-  );
+        title: Text(account.getName()),
+        trailing: IconButton(
+            onPressed: () => addFriend(account.uid),
+            icon: const Icon(Icons.person_add)),
+      );
 
   void onSearch(String query) async {
     var result = await databaseService.findAccounts(query);
@@ -67,6 +65,7 @@ class _FriendsState extends State<Friends> {
   }
 
   Future addFriend(String uid) async {
-    // await result
+    var result = await databaseService.addFriend(uid);
+    print(result);
   }
 }
