@@ -180,21 +180,11 @@ class _MyWorkoutsState extends State<MyWorkouts> {
           child: FlutterMap(
             options: MapOptions(
               center: latLng,
-              zoom: 15.0,
+              zoom: 13.0,
             ),
             mapController: mapController,
             layers: [
               tileLayerOptions,
-              MarkerLayerOptions(
-                markers: [
-                  Marker(
-                    width: 80.0,
-                    height: 80.0,
-                    point: latLng,
-                    builder: (ctx) => const Icon(Icons.pin_drop),
-                  ),
-                ],
-              ),
               PolylineLayerOptions(
                 polylines: [
                   Polyline(

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:workout_app/shared/constants.dart';
+
 import '../../../top_secret.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,27 +74,37 @@ class _RunningState extends State<Running> {
   var points = <LatLng>[];
   var pointsGradient = <LatLng>[];
 
+  bool recording = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   void initState() {
+    _toggleListening();
     super.initState();
     reset();
     mapController = MapController();
   }
 
   void refreshToCurrentPosition() {
-    _determinePosition().then((value) => position = value);
-    if (position?.longitude != null) {
-      setState(() {
-        // USE SET STATE
-        longitude = position!.longitude;
-      });
+    if (mounted) {
+      _determinePosition().then((value) => position = value);
+      if (position?.longitude != null) {
+        setState(() {
+          // USE SET STATE
+          longitude = position!.longitude;
+        });
+      }
+      if (position?.latitude != null) {
+        setState(() {
+          latitude = position!.latitude;
+        });
+      }
+      mapController?.move(LatLng(latitude, longitude), 17);
     }
-    if (position?.latitude != null) {
-      setState(() {
-        latitude = position!.latitude;
-      });
-    }
-    mapController?.move(LatLng(latitude, longitude), 17);
   }
 
   void updatePoints() {
@@ -109,20 +121,12 @@ class _RunningState extends State<Running> {
     _positionItems.clear();
   }
 
-  bool _isListening() => !(_positionStreamSubscription == null ||
-      _positionStreamSubscription!.isPaused);
-
-  Color _determineButtonColor() {
-    return _isListening() ? Colors.green : Colors.red;
-  }
-
   void _updatePositionList(Position position) {
     if (!_positionItems.contains(position)) {
+      print(position);
       _positionItems.add(position);
-    } else {
-      print("Duplicate!");
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void _toggleListening() {
@@ -133,9 +137,13 @@ class _RunningState extends State<Running> {
         _positionStreamSubscription?.cancel();
         _positionStreamSubscription = null;
       }).listen((position) => {
-            _updatePositionList(position),
+            if (recording && mounted){
+                setState(() {
+                  _updatePositionList(position);
+                  updatePoints();
+                }),
+              },
             refreshToCurrentPosition(),
-            updatePoints(),
           });
       _positionStreamSubscription?.pause();
     }
@@ -143,13 +151,12 @@ class _RunningState extends State<Running> {
       if (_positionStreamSubscription == null) {
         return;
       }
-      String statusDisplayValue;
       if (_positionStreamSubscription!.isPaused) {
         _positionStreamSubscription!.resume();
-        statusDisplayValue = 'resumed';
+        print('resumed');
       } else {
         _positionStreamSubscription!.pause();
-        statusDisplayValue = 'paused';
+        print('paused');
       }
     });
   }
@@ -163,7 +170,10 @@ class _RunningState extends State<Running> {
           mapstool.LatLng(_positionItems.elementAt(i - 1).latitude,
               _positionItems.elementAt(i - 1).longitude));
     }
-    return distance / 1000.0;
+    distance = distance.floorToDouble(); //Rounding to make it readable
+    distance = distance / 1000; // M -> KM
+
+    return distance;
   }
 
   @override
@@ -199,7 +209,7 @@ class _RunningState extends State<Running> {
                               width: 80.0,
                               height: 80.0,
                               point: LatLng(latitude, longitude),
-                              builder: (ctx) => const Icon(Icons.pin_drop),
+                              builder: (ctx) => flutterMapIcon,
                             ),
                           ],
                         ),
@@ -221,22 +231,22 @@ class _RunningState extends State<Running> {
                   sizedBox,
                   Container(
                     height: 50,
-                    child: Text("Distance: " + distance().toString() + " km/h"),
+                    child: Text("Distance: " + distance().toString() + " km"),
                   ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     ElevatedButton(
-                      child: (_positionStreamSubscription == null ||
-                              _positionStreamSubscription!.isPaused)
+                      child: (_positionStreamSubscription == null || _positionStreamSubscription!.isPaused)
                           ? const Icon(Icons.play_arrow)
                           : const Icon(Icons.pause),
                       onPressed: () {
+                        recording = !recording;
                         positionStreamStarted = !positionStreamStarted;
                         if (positionStreamStarted) {
                           startTimer();
                         } else {
                           stopTimer(resets: false);
                         }
-                        _toggleListening();
+                        /*_toggleListening();*/
                       },
                     ),
                     const SizedBox(width: 20),
@@ -244,7 +254,10 @@ class _RunningState extends State<Running> {
                       child: const Icon(Icons.stop),
                       onPressed: () async => {
                         stopTimer(resets: false),
-                        if (positionStreamStarted) {_toggleListening()},
+                        if (positionStreamStarted)
+                          {
+                            /*_toggleListening()*/
+                          },
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -252,12 +265,12 @@ class _RunningState extends State<Running> {
                                     distance: distance(),
                                     duration: duration,
                                     points: points,
-                                  )),
+                                  )
+                          ),
                         ),
                       },
                     ),
                   ]),
-                  const Text("( * Y * )"),
                 ]),
               ),
             ]),
@@ -272,10 +285,12 @@ class _RunningState extends State<Running> {
   bool countDown = false;
 
   void reset() {
-    if (countDown) {
-      setState(() => duration = countdownDuration);
-    } else {
-      setState(() => duration = const Duration());
+    if (mounted) {
+      if (countDown) {
+        setState(() => duration = countdownDuration);
+      } else {
+        setState(() => duration = const Duration());
+      }
     }
   }
 
@@ -285,21 +300,25 @@ class _RunningState extends State<Running> {
 
   void addTime() {
     final addSeconds = countDown ? -1 : 1;
-    setState(() {
-      final seconds = duration.inSeconds + addSeconds;
-      if (seconds < 0) {
-        timer?.cancel();
-      } else {
-        duration = Duration(seconds: seconds);
-      }
-    });
+    if (mounted) {
+      setState(() {
+        final seconds = duration.inSeconds + addSeconds;
+        if (seconds < 0) {
+          timer?.cancel();
+        } else {
+          duration = Duration(seconds: seconds);
+        }
+      });
+    }
   }
 
   void stopTimer({bool resets = true}) {
-    if (resets) {
-      reset();
+    if (mounted) {
+      if (resets) {
+        reset();
+      }
+      setState(() => timer?.cancel());
     }
-    setState(() => timer?.cancel());
   }
 
   Widget buildTime() {

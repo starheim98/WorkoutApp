@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
+import 'package:workout_app/shared/constants.dart';
 
 import '../../../top_secret.dart';
 
@@ -75,16 +76,6 @@ class _HomeTabState extends State<HomeTab> {
             ),
             layers: [
               tileLayerOptions,
-              MarkerLayerOptions(
-                markers: [
-                  Marker(
-                    width: 80.0,
-                    height: 80.0,
-                    point: LatLng(62.472207764237886, 6.235902420311039),
-                    builder: (ctx) => const Icon(Icons.pin_drop),
-                  ),
-                ],
-              ),
               PolylineLayerOptions(
                 polylines: [
                   Polyline(

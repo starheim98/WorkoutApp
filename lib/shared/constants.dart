@@ -23,6 +23,10 @@ const textInputDecoration = InputDecoration(
     )
 );
 
+const flutterMapIcon = Icon(
+    Icons.radio_button_on_outlined,
+    color: Colors.blue,
+);
 
 const textStyle = TextStyle(
     fontWeight: FontWeight.bold,
