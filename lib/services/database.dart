@@ -74,7 +74,7 @@ class DatabaseService {
     return weightWorkouts;
   }
 
-  Future saveRun(String title, String desc, Duration duration, double distance, List<GeoPoint> points) async {
+  Future saveRun(String title, String desc, String duration, double distance, List<GeoPoint> points) async {
     if(title.isEmpty) title = "Went for a run today!";
     DocumentReference userReference = userCollection.doc(uid);
 
@@ -82,7 +82,7 @@ class DatabaseService {
       "title" : title,
       "description" : desc,
       "date" : DateTime.now().toString(),
-      "duration" : duration.toString(),
+      "duration" : duration,
       "distance" : distance.toString(),
       "geopoints" : points,
       "userId" : userReference,

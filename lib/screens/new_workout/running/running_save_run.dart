@@ -39,6 +39,9 @@ class _RunDataState extends State<RunData> {
 
   @override
   Widget build(BuildContext context) {
+    String sDuration =
+        "${widget.duration.inHours.toString().padLeft(2, '0')}:${widget.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${(widget.duration.inSeconds.remainder(60).toString().padLeft(2, '0'))}";
+    print(sDuration);
     return Scaffold(
         appBar: appbar(_auth, "Home"),
         body: SingleChildScrollView(
@@ -67,16 +70,16 @@ class _RunDataState extends State<RunData> {
                   )
               ),
                 sizedbox,
-                Text("Distance: " + widget.distance.toString()),
+                Text("Distance: " + widget.distance.toString() + " km"),
                 sizedbox,
-                Text("Duration: " + widget.duration.toString()),
+                Text("Duration: " + sDuration ),
                 sizedbox,
                 const Text("This is a sample photo. Your run will show after save.", style: TextStyle(fontStyle: FontStyle.italic)
                 ),
                 Image.asset('lib/assets/Sample.PNG',height: 240,),
                 ElevatedButton(
                   onPressed: ()  => {
-                        DatabaseService().saveRun(title, desc, widget.duration, widget.distance, latlngToGeopoint(widget.points)),
+                        DatabaseService().saveRun(title, desc, sDuration, widget.distance, latlngToGeopoint(widget.points)),
                         Navigator.of(context).popUntil((route) => route.isFirst),
                       },
                   child: const Text("Save Run"),
