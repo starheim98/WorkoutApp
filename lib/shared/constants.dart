@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:workout_app/models/running/run_workout.dart';
-import 'package:workout_app/models/weight_lifting/weight_workout.dart';
-import 'package:workout_app/screens/home/home.dart';
-import 'package:workout_app/screens/new_workout/choose_new_or_template.dart';
-import 'package:workout_app/screens/new_workout/running/running_screen.dart';
-import 'package:workout_app/screens/new_workout/weights/weightlift_screen.dart';
 import 'package:workout_app/services/auth.dart';
-
+import 'package:workout_app/shared/Dialogues.dart';
 import '../top_secret.dart';
 
 
@@ -34,14 +26,17 @@ const textStyle = TextStyle(
 );
 
 /// AppBar - TODO: Move to better named file? or not
-appbar(AuthService _auth, String title) => AppBar(
+appbar(AuthService _auth, String title, BuildContext context) => AppBar(
   title: Text(title),
   backgroundColor: Colors.red[400], //DEN VAR brown[400]
   elevation: 0.0, //no dropshadow / flat on the screen
   actions: <Widget>[
     TextButton.icon(
       onPressed: () async {
-        await _auth.signOut();
+        var value = await Dialogues().confirmDialogue(context, "Logout", "Are you sure you want to logout?");
+        if(value){
+          await _auth.signOut();
+        }
       },
       label: const Text("Logout"),
       icon: const Icon(Icons.person),
