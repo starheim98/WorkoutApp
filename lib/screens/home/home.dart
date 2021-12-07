@@ -19,8 +19,6 @@ import '../../top_secret.dart'; //Mathias top secret
 import 'dart:async';
 
 import '../../../top_secret.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -38,6 +36,7 @@ class _HomeState extends State<Home> {
   List<RunWorkout> runWorkouts = [];
   List<WeightWorkout> weightWorkouts = [];
   var friendsWorkouts = [];
+
 
   void _onItemTapped(int index) {
     setState(() => {
@@ -65,6 +64,7 @@ class _HomeState extends State<Home> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
