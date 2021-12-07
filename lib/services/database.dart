@@ -55,18 +55,27 @@ class DatabaseService {
     return foundAccouts;
   }
 
-  Future<bool> addFriend(String friendUid) async {
-
+  Future<bool> followUser(String friendUid) async {
     var userDoc = await usersCollection.doc(uid).get();
-    var friendDoc = await usersCollection.doc(friendUid).get();
-
     var userJson = userDoc.data() as Map<String, dynamic>;
-    var friendJson = friendDoc.data() as Map<String, dynamic>;
-
     AccountData user = AccountData.fromJson(userJson);
-    AccountData friend = AccountData.fromJson(friendJson);
-    if(!user.friends.contains(friendUid) && !friend.friends.contains(uid)){
-      user.addFriend(friend.uid);
+
+    if(!user.friends.contains(friendUid)){
+      user.addFriend(friendUid);
+      usersCollection.doc(user.uid).update({"friends": user.friends});
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> unfollowUser(String friendUid) async {
+    var userDoc = await usersCollection.doc(uid).get();
+    var userJson = userDoc.data() as Map<String, dynamic>;
+    AccountData user = AccountData.fromJson(userJson);
+
+    if(user.friends.contains(friendUid)){
+      user.unfollowFriend(friendUid);
       usersCollection.doc(user.uid).update({"friends": user.friends});
       return true;
     } else {
@@ -119,7 +128,7 @@ class DatabaseService {
     });
   }
 
-  Future getUser(String userID) async {
+  Future<AccountData> getUser(String userID) async {
     var user = await usersCollection.doc(userID).get();
     var userJson = user.data() as Map<String, dynamic>;
     AccountData account = AccountData.fromJson(userJson);

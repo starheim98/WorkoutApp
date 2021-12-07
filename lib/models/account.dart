@@ -41,12 +41,21 @@ class AccountData{
   }
 
   bool addFriend(String uid){
-    bool success = false;
     if(!_friends.contains(uid)){
       _friends.add(uid);
-      success = true;
+       return true;
+    } else {
+      return false;
     }
-    return success;
+  }
+
+  bool unfollowFriend(String uid) {
+    if(_friends.contains(uid)) {
+      _friends.remove(uid);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   String get lastName => _lastName;
