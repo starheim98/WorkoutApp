@@ -17,7 +17,20 @@ class _FriendsState extends State<Friends> {
   List<AccountData> foundAccounts = [];
   List<AccountData> friends = [];
   DatabaseService databaseService = DatabaseService();
-  String query = "";
+  AccountData? user;
+  String searchField = "";
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  Future getUser() async {
+    var result = await databaseService.getUser(_firebaseAuth.currentUser!.uid);
+    user = result;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,10 @@ class _FriendsState extends State<Friends> {
       children: <Widget>[
         const SizedBox(height: 30),
         TextField(
-            onChanged: (query) => onSearch(query),
+            onChanged: (query) => {
+              searchField = query,
+              onSearch(query)
+            },
             decoration: const InputDecoration(hintText: "Find friends")),
         const SizedBox(height: 20),
         ListView.builder(
@@ -33,8 +49,7 @@ class _FriendsState extends State<Friends> {
           shrinkWrap: true,
           itemCount: foundAccounts.length,
           itemBuilder: (BuildContext context, int index) {
-            if (foundAccounts[index]
-                .isFriendWith(_firebaseAuth.currentUser!.uid)) {
+            if (user!.isFriendWith(foundAccounts[index].uid)) {
               return friendTile(foundAccounts[index]);
             } else {
               return notFriendTile(foundAccounts[index]);
@@ -47,13 +62,16 @@ class _FriendsState extends State<Friends> {
 
   ListTile friendTile(AccountData account) => ListTile(
         title: Text(account.getName()),
-        trailing: const Icon(Icons.person_remove),
+        trailing: IconButton(
+          onPressed: () => unfollowUser(account.uid),
+          icon: const Icon(Icons.person_remove),
+        ),
       );
 
   ListTile notFriendTile(AccountData account) => ListTile(
         title: Text(account.getName()),
         trailing: IconButton(
-            onPressed: () => addFriend(account.uid),
+            onPressed: () => followUser(account.uid),
             icon: const Icon(Icons.person_add)),
       );
 
@@ -64,8 +82,21 @@ class _FriendsState extends State<Friends> {
     });
   }
 
-  Future addFriend(String uid) async {
-    var result = await databaseService.addFriend(uid);
-    print(result);
+  Future followUser(String uid) async {
+    bool result = await databaseService.followUser(uid);
+    if(result) {
+      setState(() {
+        onSearch(searchField);
+      });
+    }
+  }
+
+  Future unfollowUser(String uid) async {
+    bool result = await databaseService.unfollowUser(uid);
+    if(result) {
+      setState(() {
+        onSearch(searchField);
+      });
+    }
   }
 }
