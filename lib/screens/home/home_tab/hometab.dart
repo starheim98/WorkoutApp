@@ -5,8 +5,10 @@ import 'package:latlong2/latlong.dart';
 import 'package:workout_app/models/account.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
+import 'package:workout_app/screens/home/home_tab/custom_run_tile.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
+import 'package:workout_app/shared/loading.dart';
 
 import '../../../top_secret.dart';
 
@@ -15,7 +17,8 @@ class HomeTab extends StatefulWidget {
   List<WeightWorkout> weightWorkouts;
   List<dynamic> friendsWorkouts;
 
-  HomeTab({Key? key, required this.runWorkouts, required this.weightWorkouts, required this.friendsWorkouts})
+  HomeTab({Key? key, required this.runWorkouts, required this.weightWorkouts,
+    required this.friendsWorkouts})
       : super(key: key);
 
   @override
@@ -24,43 +27,46 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   DatabaseService databaseService = DatabaseService();
-  String currentName = "apekatt";
+  String currentName = "";
+  List<RunWorkout> runWorkouts = [];
+  List<WeightWorkout> weightWorkouts = [];
+  var friendsWorkouts = [];
+  var workoutsList = [];
+  bool loading = true;
+
+  @override
+  @mustCallSuper
+  @protected
+  void didUpdateWidget(covariant HomeTab oldWidget) {
+    runWorkouts = widget.runWorkouts;
+    weightWorkouts = widget.weightWorkouts;
+    friendsWorkouts = widget.friendsWorkouts;
+
+    // TODO: reverse sort
+    workoutsList = List.from(runWorkouts)
+      ..addAll(weightWorkouts)
+      ..addAll(friendsWorkouts);
+    workoutsList.sort((a, b) => a.date.compareTo(b.date));
+
+    // getNames(workoutsList);
+    super.didUpdateWidget(oldWidget);
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    List<RunWorkout> runWorkouts = widget.runWorkouts;
-    List<WeightWorkout> weightWorkouts = widget.weightWorkouts;
-    var friendsWorkouts = widget.friendsWorkouts;
-
-    print(friendsWorkouts.length);
-
-    var workoutsList = List.from(runWorkouts)
-      ..addAll(weightWorkouts)
-      ..addAll(friendsWorkouts);
-    workoutsList.sort((a, b) => a.date.compareTo(b.date)); //EZCLAP
-
 
     return ListView.builder(
       itemCount: workoutsList.length,
       itemBuilder: (BuildContext context, int index) {
-        getName(workoutsList[index].uid);
         if (workoutsList[index] is RunWorkout) {
-          return customRunTile(workoutsList[index], currentName);
+          return CustomRunTile(runWorkout: workoutsList[index]);
         } else if (workoutsList[index] is WeightWorkout) {
           return workoutTile(workoutsList[index]);
         }
         return const Text("No data");
       },
     );
-  }
-
-  Future<void> getName(String userID) async {
-    var result = await databaseService.getUser(userID);
-    if(mounted){
-      setState(() {
-        currentName = result.getName();
-      });
-    }
   }
 
   workoutTile(WeightWorkout weightWorkout) => Card(
