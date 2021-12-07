@@ -13,7 +13,6 @@ class Friends extends StatefulWidget {
 }
 
 class _FriendsState extends State<Friends> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   List<AccountData> foundAccounts = [];
   List<AccountData> friends = [];
   DatabaseService databaseService = DatabaseService();
@@ -27,7 +26,7 @@ class _FriendsState extends State<Friends> {
   }
 
   Future getUser() async {
-    var result = await databaseService.getUser(_firebaseAuth.currentUser!.uid);
+    var result = await databaseService.getThisUser();
     setState(() {
       user = result;
     });
@@ -87,7 +86,6 @@ class _FriendsState extends State<Friends> {
 
   Future followUser(String uid) async {
     bool result = await databaseService.followUser(uid);
-    print(result);
     if(result) {
       getUser();
     }

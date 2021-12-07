@@ -13,8 +13,9 @@ import '../../../top_secret.dart';
 class HomeTab extends StatefulWidget {
   List<RunWorkout> runWorkouts;
   List<WeightWorkout> weightWorkouts;
+  List<dynamic> friendsWorkouts;
 
-  HomeTab({Key? key, required this.runWorkouts, required this.weightWorkouts})
+  HomeTab({Key? key, required this.runWorkouts, required this.weightWorkouts, required this.friendsWorkouts})
       : super(key: key);
 
   @override
@@ -29,19 +30,24 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     List<RunWorkout> runWorkouts = widget.runWorkouts;
     List<WeightWorkout> weightWorkouts = widget.weightWorkouts;
+    var friendsWorkouts = widget.friendsWorkouts;
 
-    var newList = List.from(runWorkouts)..addAll(weightWorkouts);
-    newList.sort((a, b) => a.date.compareTo(b.date)); //EZCLAP
+    print(friendsWorkouts.length);
+
+    var workoutsList = List.from(runWorkouts)
+      ..addAll(weightWorkouts)
+      ..addAll(friendsWorkouts);
+    workoutsList.sort((a, b) => a.date.compareTo(b.date)); //EZCLAP
+
 
     return ListView.builder(
-      itemCount: newList.length,
+      itemCount: workoutsList.length,
       itemBuilder: (BuildContext context, int index) {
-        getName(newList[index].uid);
-        String name = currentName;
-        if (newList[index] is RunWorkout) {
-          return customRunTile(newList[index], name);
-        } else if (newList[index] is WeightWorkout) {
-          return workoutTile(newList[index]);
+        getName(workoutsList[index].uid);
+        if (workoutsList[index] is RunWorkout) {
+          return customRunTile(workoutsList[index], currentName);
+        } else if (workoutsList[index] is WeightWorkout) {
+          return workoutTile(workoutsList[index]);
         }
         return const Text("No data");
       },

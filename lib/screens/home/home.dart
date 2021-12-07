@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
 
   List<RunWorkout> runWorkouts = [];
   List<WeightWorkout> weightWorkouts = [];
+  var friendsWorkouts = [];
 
   void _onItemTapped(int index) {
     setState(() => {
@@ -55,10 +56,12 @@ class _HomeState extends State<Home> {
   Future fetchData() async {
     var runsData = await databaseService!.getRunsData();
     var weightWorkoutData = await databaseService!.getWeightWorkouts();
+    var friendsWO = await databaseService!.getFriendsWorkouts();
     if(mounted) {
       setState(() {
         runWorkouts = runsData;
         weightWorkouts = weightWorkoutData;
+        friendsWorkouts = friendsWO;
       });
     }
   }
@@ -68,7 +71,7 @@ class _HomeState extends State<Home> {
     //NB: fjernet const under her for det skapte trøbbel med 'column'. La også til const bak "TEXT".
     final List<Widget> _widgetOptions = <Widget>[
       // runListView(context),
-      HomeTab(runWorkouts: runWorkouts, weightWorkouts: weightWorkouts),
+      HomeTab(runWorkouts: runWorkouts, weightWorkouts: weightWorkouts, friendsWorkouts: friendsWorkouts),
       newWorkoutTab(context),
       myPageTab()
     ];

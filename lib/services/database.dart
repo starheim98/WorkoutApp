@@ -22,7 +22,6 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('runs');
 
   Future<List<RunWorkout>> getRunsData() async {
-    DocumentReference userReference = userCollection.doc(uid);
     QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: uid).get();
     List<RunWorkout> runWorkouts = [];
 
@@ -53,6 +52,32 @@ class DatabaseService {
       }
     }
     return foundAccouts;
+  }
+
+  Future getFriendsWorkouts() async {
+    var workouts = [];
+    List<RunWorkout> runWorkouts = [];
+    List<WeightWorkout> weightWorkouts = [];
+
+    // get collection of friends
+    AccountData user = await getThisUser();
+    for (String friend in user.friends) {
+      QuerySnapshot runSnapshot = await runsCollection.where('userId', isEqualTo: friend).get();
+      QuerySnapshot weightSnapshot = await weightWorkoutCollection.where('userId', isEqualTo: friend).get();
+
+      for(var document in runSnapshot.docs){
+        RunWorkout runWorkout =
+        RunWorkout.fromJson(document.data() as Map<String, dynamic>);
+        runWorkouts.add(runWorkout);
+      }
+      for (var document in weightSnapshot.docs) {
+        WeightWorkout weightWorkout =
+        WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
+        weightWorkouts.add(weightWorkout);
+      }
+    }
+    return List.from(runWorkouts)..addAll(weightWorkouts);
+
   }
 
   Future<bool> followUser(String friendUid) async {
@@ -101,11 +126,8 @@ class DatabaseService {
 
   Future<List<WeightWorkout>> getWeightWorkouts() async {
     List<WeightWorkout> weightWorkouts = [];
-    DocumentReference userReference = userCollection.doc(uid);
     QuerySnapshot snapshot = await weightWorkoutCollection.where('userId', isEqualTo: uid).get();
     for (var document in snapshot.docs) {
-      var json = document.data() as Map<String, dynamic>;
-      print(json['name']);
       WeightWorkout weightWorkout =
           WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
       weightWorkouts.add(weightWorkout);
@@ -128,8 +150,15 @@ class DatabaseService {
     });
   }
 
-  Future<AccountData> getUser(String userID) async {
-    var user = await usersCollection.doc(userID).get();
+  Future<AccountData> getThisUser() async {
+    var user = await usersCollection.doc(uid).get();
+    var userJson = user.data() as Map<String, dynamic>;
+    AccountData account = AccountData.fromJson(userJson);
+    return account;
+  }
+
+  Future<AccountData> getUser(String uid) async {
+    var user = await usersCollection.doc(uid).get();
     var userJson = user.data() as Map<String, dynamic>;
     AccountData account = AccountData.fromJson(userJson);
     return account;
