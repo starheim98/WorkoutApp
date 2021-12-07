@@ -4,12 +4,13 @@ import 'package:workout_app/shared/constants.dart';
 
 import '../../../top_secret.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mapstool;
 import 'package:workout_app/screens/new_workout/running/running_save_run.dart';
+import 'package:wakelock/wakelock.dart';
+
 
 /// https://github.com/Baseflow/flutter-geolocator/blob/master/geolocator_android/example/lib/main.dart GEOLOCATOR EXAMPLE
 /// https://pub.dev/packages/geolocator/example - ^
@@ -235,18 +236,20 @@ class _RunningState extends State<Running> {
                   ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     ElevatedButton(
-                      child: (_positionStreamSubscription == null || _positionStreamSubscription!.isPaused)
-                          ? const Icon(Icons.play_arrow)
-                          : const Icon(Icons.pause),
+                      child: icson(),
                       onPressed: () {
                         recording = !recording;
+                        if(mounted) {
+                          setState(() {
+                          Wakelock.toggle(enable: recording);
+                        });
+                        }
                         positionStreamStarted = !positionStreamStarted;
                         if (positionStreamStarted) {
                           startTimer();
                         } else {
                           stopTimer(resets: false);
                         }
-                        /*_toggleListening();*/
                       },
                     ),
                     const SizedBox(width: 20),
@@ -256,7 +259,8 @@ class _RunningState extends State<Running> {
                         stopTimer(resets: false),
                         if (positionStreamStarted)
                           {
-                            /*_toggleListening()*/
+                            _toggleListening(),
+                            recording = false,
                           },
                         Navigator.push(
                           context,
@@ -276,6 +280,21 @@ class _RunningState extends State<Running> {
             ]),
       ),
     );
+  }
+
+  Icon icson(){
+    Icon icon = Icon(Icons.play_arrow);
+    if (recording == false) {
+      setState(() {
+        icon = Icon(Icons.play_arrow);
+      });
+    }
+    else if (recording == true) {
+      setState(() {
+        icon = const Icon(Icons.pause);
+      });
+    }
+    return icon;
   }
 
   //////////////////////// TIMER //////////////////////////////
