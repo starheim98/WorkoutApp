@@ -28,7 +28,9 @@ class _FriendsState extends State<Friends> {
 
   Future getUser() async {
     var result = await databaseService.getUser(_firebaseAuth.currentUser!.uid);
-    user = result;
+    setState(() {
+      user = result;
+    });
   }
 
 
@@ -49,6 +51,7 @@ class _FriendsState extends State<Friends> {
           shrinkWrap: true,
           itemCount: foundAccounts.length,
           itemBuilder: (BuildContext context, int index) {
+            print(user!.friends);
             if (user!.isFriendWith(foundAccounts[index].uid)) {
               return friendTile(foundAccounts[index]);
             } else {
@@ -84,19 +87,16 @@ class _FriendsState extends State<Friends> {
 
   Future followUser(String uid) async {
     bool result = await databaseService.followUser(uid);
+    print(result);
     if(result) {
-      setState(() {
-        onSearch(searchField);
-      });
+      getUser();
     }
   }
 
   Future unfollowUser(String uid) async {
     bool result = await databaseService.unfollowUser(uid);
     if(result) {
-      setState(() {
-        onSearch(searchField);
-      });
+      getUser();
     }
   }
 }
