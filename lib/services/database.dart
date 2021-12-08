@@ -24,11 +24,9 @@ class DatabaseService {
   Future<List<RunWorkout>> getRunsData() async {
     QuerySnapshot snapshot = await runsCollection.where('userId', isEqualTo: uid).get();
     List<RunWorkout> runWorkouts = [];
-
     for(var document in snapshot.docs){
       RunWorkout runWorkout =
       RunWorkout.fromJson(document.data() as Map<String, dynamic>);
-
       runWorkouts.add(runWorkout);
     }
     return runWorkouts;
