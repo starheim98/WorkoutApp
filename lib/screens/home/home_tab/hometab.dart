@@ -4,8 +4,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:workout_app/models/account.dart';
 import 'package:workout_app/models/running/run_workout.dart';
+import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/home/home_tab/custom_run_tile.dart';
+import 'package:workout_app/screens/home/home_tab/custom_weightworkout_tile.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
 import 'package:workout_app/shared/loading.dart';
@@ -62,12 +64,57 @@ class _HomeTabState extends State<HomeTab> {
         if (workoutsList[index] is RunWorkout) {
           return CustomRunTile(runWorkout: workoutsList[index]);
         } else if (workoutsList[index] is WeightWorkout) {
-          return workoutTile(workoutsList[index]);
+          return CustomWeightworkoutTile(weightWorkout: workoutsList[index]);
         }
         return const Text("No data");
       },
     );
   }
+
+  customRunTile(RunWorkout runWorkout, String name) => Card(
+    child: SizedBox(
+      height: MediaQuery.of(context).size.height * 0.2,
+      width: MediaQuery.of(context).size.width * 1,
+      child: Row(
+        children: [
+          Container(
+            width:  MediaQuery.of(context).size.width * 0.3,
+            height: MediaQuery.of(context).size.width * 0.4,
+            padding: EdgeInsets.all(5),
+            child: FlutterMap(
+              options: MapOptions(
+                center: LatLng(62.472207764237886, 6.235902420311039),
+                zoom: 15.0,
+              ),
+              layers: [
+                tileLayerOptions,
+                PolylineLayerOptions(
+                  polylines: [
+                    Polyline(
+                        points: runWorkout.getPoints(),
+                        strokeWidth: 4.0,
+                        color: Colors.purple),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 10),
+          Column(
+            children: [
+              Text("name: " + name),
+              Text("Title: " + runWorkout.title),
+              Text("\nDescription: " + runWorkout.description),
+              Text("Time spent: " + runWorkout.duration),
+              Text("Distance: " + runWorkout.distance),
+              Text("\nDate: " + runWorkout.date),
+            ],
+          )
+        ],
+      ),
+    ),
+  );
+
 
   workoutTile(WeightWorkout weightWorkout) => Card(
         child: ListTile(
@@ -122,47 +169,4 @@ class _HomeTabState extends State<HomeTab> {
       ));
 
 
-  customRunTile(RunWorkout runWorkout, String name) => Card(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.2,
-        width: MediaQuery.of(context).size.width * 1,
-        child: Row(
-          children: [
-            Container(
-              width:  MediaQuery.of(context).size.width * 0.3,
-              height: MediaQuery.of(context).size.width * 0.4,
-              padding: EdgeInsets.all(5),
-              child: FlutterMap(
-                  options: MapOptions(
-                    center: LatLng(62.472207764237886, 6.235902420311039),
-                    zoom: 15.0,
-                  ),
-                  layers: [
-                    tileLayerOptions,
-                    PolylineLayerOptions(
-                      polylines: [
-                        Polyline(
-                            points: runWorkout.getPoints(),
-                            strokeWidth: 4.0,
-                            color: Colors.purple),
-                      ],
-                    ),
-                  ],
-                ),
-            ),
-            SizedBox(width: 10),
-            Column(
-              children: [
-                  Text("name: " + name),
-                  Text("Title: " + runWorkout.title),
-                  Text("\nDescription: " + runWorkout.description),
-                  Text("Time spent: " + runWorkout.duration),
-                  Text("Distance: " + runWorkout.distance),
-                  Text("\nDate: " + runWorkout.date),
-              ],
-            )
-          ],
-          ),
-        ),
-  );
 }
