@@ -57,7 +57,6 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView.builder(
       itemCount: workoutsList.length,
       itemBuilder: (BuildContext context, int index) {

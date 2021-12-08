@@ -13,7 +13,7 @@ DefaultTabController myPageTab() =>
           unselectedLabelColor: Colors.grey[800],
           labelStyle: TextStyle(fontSize: 18),
           tabs: const [
-            Tab(text: "Workouts",),
+            Tab(text: "Workouts"),
             Tab(text: "Progression"),
             Tab(text: "Friends"),
           ],
