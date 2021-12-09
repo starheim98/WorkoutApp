@@ -175,6 +175,10 @@ class DatabaseService {
 
   Future<void> deleteWorkout(String id) async {
     await weightWorkoutCollection.doc(id).delete();
-    print("Deleted: " + id);
+  }
+
+  Future<void> deleteRun(String id) async {
+    await runsCollection.doc(id).delete();
+    print("Deleted run: " + id);
   }
 }
