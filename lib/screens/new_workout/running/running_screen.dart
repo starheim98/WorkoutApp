@@ -79,6 +79,7 @@ class _RunningState extends State<Running> {
 
   @override
   void dispose() {
+    Wakelock.disable();
     super.dispose();
   }
 
@@ -241,7 +242,7 @@ class _RunningState extends State<Running> {
                         recording = !recording;
                         if(mounted) {
                           setState(() {
-                          Wakelock.toggle(enable: recording);
+                            Wakelock.enable();
                         });
                         }
                         positionStreamStarted = !positionStreamStarted;
@@ -256,6 +257,7 @@ class _RunningState extends State<Running> {
                     ElevatedButton(
                       child: const Icon(Icons.stop),
                       onPressed: () async => {
+                        Wakelock.disable(),
                         stopTimer(resets: false),
                         if (positionStreamStarted)
                           {
