@@ -30,7 +30,6 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
   @override
   Widget build(BuildContext context) {
     SizedBox sizedBox = SizedBox(height: 12, width: MediaQuery.of(context).size.width);
-
     return  Scaffold(
         appBar: appbar(_auth, runWorkout!.title, context),
         body: Padding(
@@ -54,7 +53,6 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
               const Text(
                   "Duration",
                 style: textStyle,
-
               ),
               Text(runWorkout!.duration),
               sizedBox,

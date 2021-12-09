@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
@@ -19,9 +17,9 @@ class RunData extends StatefulWidget {
 }
 
 class _RunDataState extends State<RunData> {
-  final CollectionReference users = FirebaseFirestore.instance.collection('users'); //reference to the users collection.
-
+  final CollectionReference users = FirebaseFirestore.instance.collection('users');
   final AuthService _auth = AuthService();
+
   String title = "";
   String desc = "";
 
@@ -31,7 +29,6 @@ class _RunDataState extends State<RunData> {
   List<GeoPoint> latlngToGeopoint(List<LatLng> initialPoints){
     initialPoints = widget.points;
     List<GeoPoint> geopoints = <GeoPoint>[]; // List Literal
-
     for (LatLng latLng in initialPoints){
       geopoints.add(GeoPoint(latLng.latitude, latLng.longitude));
     }
