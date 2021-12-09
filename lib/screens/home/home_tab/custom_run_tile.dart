@@ -51,7 +51,7 @@ class _CustomRunTileState extends State<CustomRunTile> {
                 padding: EdgeInsets.all(5),
                 child: FlutterMap(
                   options: MapOptions(
-                    center: LatLng(62.472207764237886, 6.235902420311039),
+                    center: LatLng(runWorkout!.getPoints().last.latitude, runWorkout!.getPoints().last.longitude),
                     zoom: 15.0,
                   ),
                   layers: [
