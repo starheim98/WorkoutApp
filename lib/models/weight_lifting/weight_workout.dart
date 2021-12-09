@@ -1,9 +1,6 @@
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/template.dart';
-import 'package:intl/intl.dart';
 
 class WeightWorkout {
   String? _name;
@@ -11,6 +8,7 @@ class WeightWorkout {
   int _duration = 0;
   List<Exercise> _exercises = [];
   String? _uid;
+  String? _id;
 
   /// Initializes an empty workout session
   WeightWorkout() {
@@ -24,7 +22,7 @@ class WeightWorkout {
     _exercises = template.getExercices();
   }
 
-  WeightWorkout.complete(this._name, this._date, this._duration, this._exercises, this._uid);
+  WeightWorkout.complete(this._name, this._date, this._duration, this._exercises, this._uid, this._id);
 
   factory WeightWorkout.fromJson(Map<String, dynamic> json) {
     String name = json['name'];
@@ -35,8 +33,11 @@ class WeightWorkout {
       exercices.add(Exercise.fromJson(exercise));
     }
     String uid = json['userId'];
-    return WeightWorkout.complete(name, date, duration, exercices, uid);
+    String id = json['id'];
+    return WeightWorkout.complete(name, date, duration, exercices, uid, id);
   }
+
+  String? get id => _id;
 
   String? get uid => _uid;
 

@@ -9,11 +9,12 @@ class RunWorkout {
    String _duration;
    String _date;
    String _uid;
+   String _id;
 
   List<dynamic> _geopoints;
 
    RunWorkout(this._title, this._description, this._distance, this._duration,
-      this._geopoints, this._date, this._uid);
+      this._geopoints, this._date, this._uid, this._id);
 
    factory RunWorkout.fromJson(Map<String, dynamic> json){
      String title = json['title'];
@@ -23,10 +24,13 @@ class RunWorkout {
      List<dynamic> geopoints = json['geopoints'];
      String date = json['date'];
      String uid = json['userId'];
-     return RunWorkout(title, description, distance, duration, geopoints, date, uid);
+     String id = json['id'];
+     return RunWorkout(title, description, distance, duration, geopoints, date, uid, id);
    }
 
    List<dynamic> get geopoints => _geopoints;
+
+   String get id => _id;
 
    String get uid => _uid;
 

@@ -24,7 +24,6 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
   void initState() {
     getName(widget.weightWorkout.uid!);
     weightWorkout = widget.weightWorkout;
-    print("potato");
     super.initState();
   }
 
