@@ -4,8 +4,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/account.dart';
 import 'package:workout_app/models/running/run_workout.dart';
+import 'package:workout_app/models/weight_lifting/exercise.dart';
+import 'package:workout_app/models/weight_lifting/weight_set.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'dart:convert';
+
+import 'package:workout_app/screens/home/my_page/graph.dart';
 
 
 class DatabaseService {
@@ -180,5 +184,25 @@ class DatabaseService {
   Future<void> deleteRun(String id) async {
     await runsCollection.doc(id).delete();
     print("Deleted run: " + id);
+  }
+
+  Future<List<DateAndWeight>> getExerciseData(String exercise) async {
+    List<DateAndWeight> data = [];
+    QuerySnapshot snapshot = await weightWorkoutCollection.where('userId', isEqualTo: uid).get();
+    for(var document in snapshot.docs) {
+      WeightWorkout workout = WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
+      for (Exercise ex in workout.exercises) {
+        if(ex.name == exercise) {
+          int max = 0;
+          for(WeightSet set in ex.sets!) {
+            if(set.getWeight() > max) {
+              max = set.getWeight();
+            }
+          }
+          data.add(DateAndWeight(DateTime.parse(workout.date!), max));
+        }
+      }
+    }
+    return data;
   }
 }

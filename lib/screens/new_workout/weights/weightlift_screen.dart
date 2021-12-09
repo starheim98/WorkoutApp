@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
-import 'package:workout_app/screens/new_workout/weights/select_exercise.dart';
+import 'package:workout_app/shared/select_exercise.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
@@ -23,7 +23,6 @@ class NewWorkout extends StatefulWidget {
 
 class _NewWorkoutState extends State<NewWorkout> {
   final AuthService _authService = AuthService();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   WeightWorkout weightWorkout = WeightWorkout();
 
   @override

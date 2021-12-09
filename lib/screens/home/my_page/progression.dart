@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/running/run_workout.dart';
+import 'package:workout_app/screens/home/my_page/graph.dart';
+import 'package:workout_app/shared/select_exercise.dart';
 
 class Progression extends StatefulWidget {
   // final List<charts.Series<dynamic, num>> seriesList;
@@ -13,10 +15,63 @@ class Progression extends StatefulWidget {
 }
 
 class _ProgressionState extends State<Progression> {
+  String selectedExercise = "";
+  bool isSelected = false;
+
   @override
   Widget build(BuildContext context) {
     // return charts.LineChart(seriesList, animate: animate);
-    return Container();
+    if(!isSelected) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 20),
+          ElevatedButton(
+              child: const Text("Select an exercise"),
+              onPressed: () => selectExercise(context)
+          ),
+          const SizedBox(height: 70),
+          const Text("Select an exercise to display your progression!",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+
+        ],
+      );
+    } else {
+      return Container(
+        child: Column (
+          children: <Widget>[
+            const SizedBox(height: 30),
+            ElevatedButton(
+              child: const Text("Select another exercise"),
+              onPressed: () => setState(() {
+                isSelected = false;
+                selectExercise(context);
+              }),
+            ),
+            const SizedBox(height: 30),
+            Text(selectedExercise,
+              style: const TextStyle(fontSize: 20),
+            ),
+            ConstrainedBox(
+                child: ProgressionGraph(exercise: selectedExercise, isSelected: isSelected),
+              constraints: const BoxConstraints(
+                maxHeight: 300
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  void selectExercise(BuildContext context) async {
+    final result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const SelectExercise()));
+    setState(() {
+      selectedExercise = result;
+      isSelected = true;
+    });
   }
 
   Duration parseDuration(String s) {
