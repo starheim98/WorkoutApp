@@ -27,7 +27,6 @@ class MyWorkouts extends StatefulWidget {
 }
 
 class _MyWorkoutsState extends State<MyWorkouts> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   DatabaseService? databaseService;
   List<WeightWorkout> weightWorkouts = [];
   int toggleValue = 0;
@@ -121,6 +120,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
     _selectedIndex = index,
   });
 }
+
   workoutTile(WeightWorkout weightWorkout) => Card(
         child: ListTile(
           title: Text(weightWorkout.name!),
@@ -132,10 +132,25 @@ class _MyWorkoutsState extends State<MyWorkouts> {
             ],
           ),
           leading: const Icon(Icons.fitness_center),
-          trailing: const Icon(Icons.more_vert),
+          trailing: IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () => {
+              //TODO dialogue
+              deleteWorkout(weightWorkout.id!)
+             },
+          ),
           onTap: () => workoutDetailRoute(weightWorkout),
         ),
       );
+
+  deleteWorkout(String id){
+  databaseService!.deleteWorkout(id);
+    if(mounted){
+      setState(() {
+        fetchData();
+      });
+    }
+  }
 
   workoutDetailRoute(weightWorkout) {
     Navigator.push(
@@ -150,22 +165,6 @@ class _MyWorkoutsState extends State<MyWorkouts> {
         MaterialPageRoute(
             builder: (context) => RunWorkoutDetailsPage(runWorkout: runWorkout)));
   }
-
-  // SingleChildScrollView runListView(context) => SingleChildScrollView(
-  //       child: Column(
-  //         children: <Widget>[
-  //           ListView.builder(
-  //             physics: const NeverScrollableScrollPhysics(),
-  //             scrollDirection: Axis.vertical,
-  //             shrinkWrap: true,
-  //             itemCount: runWorkouts.length,
-  //             itemBuilder: (BuildContext context, int index) {
-  //               return runTile(runWorkouts[index], LatLng(latitude, longitude), getPoints(runWorkouts[index]));
-  //             },
-  //           )
-  //         ],
-  //       ),
-  //     );
 
   runTile(RunWorkout runWorkout, LatLng latLng, List<LatLng> points) => Card (
       child: ListTile(

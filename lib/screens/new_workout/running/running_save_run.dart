@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
