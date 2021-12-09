@@ -16,6 +16,7 @@ import 'package:workout_app/screens/home/my_page/workout_details/weight_details.
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
+import 'package:workout_app/shared/dialogues.dart';
 
 import '../../../top_secret.dart';
 
@@ -36,6 +37,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
   double longitude = 6.235902420311039;
   double latitude = 62.472207764237886;
   List<RunWorkout> runWorkouts = [];
+
   //
   int _selectedIndex = 0;
 
@@ -49,7 +51,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
   Future fetchData() async {
     var weightWorkoutData = await databaseService!.getWeightWorkouts();
     var runWorkoutData = await databaseService!.getRunsData();
-    if(mounted){
+    if (mounted) {
       setState(() {
         weightWorkouts = weightWorkoutData;
         runWorkouts = runWorkoutData;
@@ -89,7 +91,8 @@ class _MyWorkoutsState extends State<MyWorkouts> {
         shrinkWrap: true,
         itemCount: runWorkouts.length,
         itemBuilder: (BuildContext context, int index) {
-          return runTile(runWorkouts[index], LatLng(latitude, longitude), getPoints(runWorkouts[index]));
+          return runTile(runWorkouts[index], LatLng(latitude, longitude),
+              getPoints(runWorkouts[index]));
         },
       )
     ];
@@ -98,16 +101,14 @@ class _MyWorkoutsState extends State<MyWorkouts> {
       child: Column(
         children: <Widget>[
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              child: ToggleSwitch(
-                initialLabelIndex: _selectedIndex,
-                totalSwitches: 2,
-                activeBgColor: const [Colors.amber],
-                labels: const ["Weights", "Runs"],
-                onToggle: (index) => {
-                  toggleStuff(index)
-                },
-              ),
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: ToggleSwitch(
+              initialLabelIndex: _selectedIndex,
+              totalSwitches: 2,
+              activeBgColor: const [Colors.amber],
+              labels: const ["Weights", "Runs"],
+              onToggle: (index) => {toggleStuff(index)},
+            ),
           ),
           workoutChoice.elementAt(_selectedIndex),
         ],
@@ -115,11 +116,11 @@ class _MyWorkoutsState extends State<MyWorkouts> {
     );
   }
 
-  void toggleStuff(int index){
-  setState(() => {
-    _selectedIndex = index,
-  });
-}
+  void toggleStuff(int index) {
+    setState(() => {
+          _selectedIndex = index,
+        });
+  }
 
   workoutTile(WeightWorkout weightWorkout) => Card(
         child: ListTile(
@@ -133,19 +134,26 @@ class _MyWorkoutsState extends State<MyWorkouts> {
           ),
           leading: const Icon(Icons.fitness_center),
           trailing: IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () => {
-              //TODO dialogue
-              deleteWorkout(weightWorkout.id!)
-             },
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
+              var result = await Dialogues().confirmDialogue(
+                  context, "Delete workout", "Are you sure you want to permanently remove the workout?");
+              if (result) {
+                deleteWorkout(weightWorkout.id!, true);
+              }
+            },
           ),
           onTap: () => workoutDetailRoute(weightWorkout),
         ),
       );
 
-  deleteWorkout(String id){
-  databaseService!.deleteWorkout(id);
-    if(mounted){
+  deleteWorkout(String id, bool isWeighWorkout) {
+    if(isWeighWorkout){
+      databaseService!.deleteWorkout(id);
+    } else {
+      databaseService!.deleteRun(id);
+    }
+    if (mounted) {
       setState(() {
         fetchData();
       });
@@ -159,20 +167,24 @@ class _MyWorkoutsState extends State<MyWorkouts> {
             builder: (context) => WorkoutDetailPage(workout: weightWorkout)));
   }
 
- runDetailRoute(runWorkout) {
+  runDetailRoute(runWorkout) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => RunWorkoutDetailsPage(runWorkout: runWorkout)));
+            builder: (context) =>
+                RunWorkoutDetailsPage(runWorkout: runWorkout)));
   }
 
-  runTile(RunWorkout runWorkout, LatLng latLng, List<LatLng> points) => Card (
-      child: ListTile(
+  runTile(RunWorkout runWorkout, LatLng latLng, List<LatLng> points) => Card(
+          child: ListTile(
         title: Text(runWorkout.title),
-        onTap: () =>  runDetailRoute(runWorkout) ,
-        subtitle: Text("Desc: " + runWorkout.description +
-            ". Duration: " + runWorkout.duration + ". Distance: "
-            + runWorkout.distance),
+        onTap: () => runDetailRoute(runWorkout),
+        subtitle: Text("Desc: " +
+            runWorkout.description +
+            ". Duration: " +
+            runWorkout.duration +
+            ". Distance: " +
+            runWorkout.distance),
         leading: SizedBox(
           height: 50,
           width: 50,
@@ -187,14 +199,21 @@ class _MyWorkoutsState extends State<MyWorkouts> {
               PolylineLayerOptions(
                 polylines: [
                   Polyline(
-                      points: points,
-                      strokeWidth: 4.0,
-                      color: Colors.purple),
+                      points: points, strokeWidth: 4.0, color: Colors.purple),
                 ],
               ),
             ],
           ),
         ),
-      )
-  );
+          trailing: IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () async {
+                var result = await Dialogues().confirmDialogue(
+                    context, "Delete workout", "Are you sure you want to permanently remove the workout?");
+                if (result) {
+                  deleteWorkout(runWorkout.id, false);
+                }
+              },
+            ),
+      ));
 }
