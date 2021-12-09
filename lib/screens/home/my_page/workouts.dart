@@ -34,8 +34,6 @@ class _MyWorkoutsState extends State<MyWorkouts> {
 
   //Run Data
   MapController? mapController;
-  double longitude = 6.235902420311039;
-  double latitude = 62.472207764237886;
   List<RunWorkout> runWorkouts = [];
 
   //
@@ -91,7 +89,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
         shrinkWrap: true,
         itemCount: runWorkouts.length,
         itemBuilder: (BuildContext context, int index) {
-          return runTile(runWorkouts[index], LatLng(latitude, longitude),
+          return runTile(runWorkouts[index], LatLng(runWorkouts[index].getPoints().last.latitude, runWorkouts[index].getPoints().last.longitude),
               getPoints(runWorkouts[index]));
         },
       )

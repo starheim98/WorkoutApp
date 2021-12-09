@@ -8,6 +8,7 @@ import 'package:workout_app/screens/new_workout/weights/select_exercise.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
+import 'package:workout_app/shared/dialogues.dart';
 
 import 'exercise_list.dart';
 
@@ -54,7 +55,13 @@ class _NewWorkoutState extends State<NewWorkout> {
             Align(
               alignment: Alignment.bottomRight,
               child: ElevatedButton(
-                onPressed: () => finishWorkout(),
+                onPressed: () async{
+                  var result = await Dialogues().confirmDialogue(
+                      context, "Finished?", "Do you want to finish your workout?");
+                  if (result) {
+                    finishWorkout();
+                  }
+                },
                 child: Text("Finish"),
               ),
             )
