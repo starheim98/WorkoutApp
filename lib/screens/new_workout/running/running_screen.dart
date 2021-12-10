@@ -125,7 +125,6 @@ class _RunningState extends State<Running> {
 
   void _updatePositionList(Position position) {
     if (!_positionItems.contains(position)) {
-      print(position);
       _positionItems.add(position);
     }
     if (mounted) setState(() {});
@@ -155,10 +154,8 @@ class _RunningState extends State<Running> {
       }
       if (_positionStreamSubscription!.isPaused) {
         _positionStreamSubscription!.resume();
-        print('resumed');
       } else {
         _positionStreamSubscription!.pause();
-        print('paused');
       }
     });
   }
