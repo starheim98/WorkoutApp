@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
+import 'package:workout_app/screens/new_workout/weights/save_workout.dart';
 import 'package:workout_app/shared/select_exercise.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
@@ -11,8 +13,6 @@ import 'package:workout_app/shared/constants.dart';
 import 'package:workout_app/shared/dialogues.dart';
 
 import 'exercise_list.dart';
-
-
 
 class NewWorkout extends StatefulWidget {
   const NewWorkout({Key? key}) : super(key: key);
@@ -34,36 +34,31 @@ class _NewWorkoutState extends State<NewWorkout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appbar(_authService, "Workout", context),
+        appBar: AppBar(
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(16.0),
+                primary: Colors.white,
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: () => finishWorkout(context),
+              child: const Text('Finish'),
+            ),
+          ],
+        ),
         body: SingleChildScrollView(
           physics: const ScrollPhysics(),
           child: Column(children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(weightWorkout.name!),
-                const Icon(Icons.create_outlined),
-              ],
-            ),
             ExerciseList(workout: weightWorkout),
             const SizedBox(height: 50),
-            ElevatedButton(
-                onPressed: () => setState(() => newExercise(context)),
-                child: Text("Add exercise")),
-            const SizedBox(height: 50),
-            Align(
-              alignment: Alignment.bottomRight,
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
               child: ElevatedButton(
-                onPressed: () async{
-                  var result = await Dialogues().confirmDialogue(
-                      context, "Finished?", "Do you want to finish your workout?");
-                  if (result) {
-                    finishWorkout();
-                  }
-                },
-                child: Text("Finish"),
-              ),
-            )
+                  onPressed: () => setState(() => newExercise(context)),
+                  child: const Text("Add exercise")),
+            ),
+            const SizedBox(height: 50),
           ]),
         ));
   }
@@ -87,10 +82,12 @@ class _NewWorkoutState extends State<NewWorkout> {
     return await result;
   }
 
-  finishWorkout() {
-    weightWorkout.finishWorkout();
-    DatabaseService().addWeightWorkout(weightWorkout);
-    Navigator.pop(this.context);
-    Navigator.pop(this.context);
+  finishWorkout(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SaveWeightWorkout(
+                  workout: weightWorkout,
+                )));
   }
 }
