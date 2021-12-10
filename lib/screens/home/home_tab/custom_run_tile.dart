@@ -87,8 +87,10 @@ class _CustomRunTileState extends State<CustomRunTile> {
 
   Future getName(String uid) async {
     var result = await databaseService.getUser(uid);
-    setState(() {
-      name = result.getName();
-    });
+    if (mounted){
+      setState(() {
+        name = result.getName();
+      });
+    }
   }
 }
