@@ -11,7 +11,6 @@ import 'package:maps_toolkit/maps_toolkit.dart' as mapstool;
 import 'package:workout_app/screens/new_workout/running/running_save_run.dart';
 import 'package:wakelock/wakelock.dart';
 
-
 /// https://github.com/Baseflow/flutter-geolocator/blob/master/geolocator_android/example/lib/main.dart GEOLOCATOR EXAMPLE
 /// https://pub.dev/packages/geolocator/example - ^
 /// https://github.com/fleaflet/flutter_map/blob/master/example/lib/pages/map_controller.dart CONTROLLER EXAMPLE
@@ -138,7 +137,8 @@ class _RunningState extends State<Running> {
         _positionStreamSubscription?.cancel();
         _positionStreamSubscription = null;
       }).listen((position) => {
-            if (recording && mounted){
+            if (recording && mounted)
+              {
                 setState(() {
                   _updatePositionList(position);
                   updatePoints();
@@ -180,7 +180,6 @@ class _RunningState extends State<Running> {
     const sizedBox = SizedBox(
       height: 10,
     );
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Running"),
@@ -230,20 +229,24 @@ class _RunningState extends State<Running> {
                   sizedBox,
                   Container(
                     height: 50,
-                    child: Text("Distance: " + distance().toString() + " km"),
-                  ),
+                    child: Text(distance().toString() + " km",
+                      style:
+                        const TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold)),
+                          ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     ElevatedButton(
                       child: icson(),
                       onPressed: () {
                         recording = !recording;
-                        if(mounted) {
+                        if (mounted) {
                           setState(() {
                             Wakelock.enable();
-                        });
+                          });
                         }
                         positionStreamStarted = !positionStreamStarted;
-                        if (positionStreamStarted) {
+                        if (recording) {
                           startTimer();
                         } else {
                           stopTimer(resets: false);
@@ -268,8 +271,7 @@ class _RunningState extends State<Running> {
                                     distance: distance(),
                                     duration: duration,
                                     points: points,
-                                  )
-                          ),
+                                  )),
                         ),
                       },
                     ),
@@ -281,14 +283,18 @@ class _RunningState extends State<Running> {
     );
   }
 
-  Icon icson(){
+  Icon icson() {
+    // :S
+    if(positionStreamStarted){
+      _toggleListening();
+    }
+
     Icon icon = Icon(Icons.play_arrow);
     if (recording == false) {
       setState(() {
         icon = Icon(Icons.play_arrow);
       });
-    }
-    else if (recording == true) {
+    } else if (recording == true) {
       setState(() {
         icon = const Icon(Icons.pause);
       });

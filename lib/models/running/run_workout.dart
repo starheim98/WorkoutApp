@@ -40,6 +40,10 @@ class RunWorkout {
        for (GeoPoint geopoint in geopoints) {
          points.add(LatLng(geopoint.latitude, geopoint.longitude));
        }
+       if(geopoints.isEmpty){
+         points.add(LatLng(62.4725696,6.2362148)); //NTNU
+       }
+
        return points;
      } on Exception catch (e) {
        return []; //If there is no run connected to the data there will be no data to draw.

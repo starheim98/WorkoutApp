@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/Dialogues.dart';
-import '../top_secret.dart';
 
 
 const textInputDecoration = InputDecoration(
@@ -23,11 +22,12 @@ const flutterMapIcon = Icon(
 const textStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 24.0,
+    fontFamily: 'Georgia',
 );
 
 /// AppBar - TODO: Move to better named file? or not
-appbar(AuthService _auth, String title, BuildContext context) => AppBar(
-  title: Text(title),
+appbar(AuthService _auth, String name, BuildContext context) => AppBar(
+  title: Text(name),
   backgroundColor: Colors.red[400], //DEN VAR brown[400]
   elevation: 0.0, //no dropshadow / flat on the screen
   actions: <Widget>[
