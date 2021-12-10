@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workout_app/screens/new_workout/weights/workout_templates/template_page.dart';
 import 'package:workout_app/screens/new_workout/weights/weightlift_screen.dart';
 
 class WeightLifting extends StatefulWidget {
@@ -21,8 +22,12 @@ class _WeightLiftingState extends State<WeightLifting> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: () {
-                    // Navigate back to first route when tapped.
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const TemplatePage()),
+                    )
                   },
                   child: const Text('Select from template'),
                 ),
