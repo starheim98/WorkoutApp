@@ -25,6 +25,21 @@ const textStyle = TextStyle(
     fontFamily: 'Georgia',
 );
 
+//Tiles
+const tileName = TextStyle(
+    overflow: TextOverflow.ellipsis,
+    fontSize: 12,
+    fontFamily: "Georgia",
+);
+
+const tileDate = TextStyle(fontSize: 10);
+const tileTitle = TextStyle(
+  fontWeight: FontWeight.bold,
+  overflow: TextOverflow.ellipsis,
+    fontSize: 15,
+);
+//
+
 /// AppBar - TODO: Move to better named file? or not
 appbar(AuthService _auth, String name, BuildContext context) => AppBar(
   title: Text(name),
