@@ -45,10 +45,20 @@ class _CustomRunTileState extends State<CustomRunTile> {
           width: MediaQuery.of(context).size.width * 1,
           child: Row(
             children: [
+              Column(
+                children: [
+                  Text(name, style: TextStyle(fontSize: 12), overflow: TextOverflow.ellipsis,),
+                  Text("Date: " + runWorkout!.date, style: TextStyle(fontSize: 10)),
+                  Text("\nTitle: " + runWorkout!.title, style: TextStyle(),),
+                  Text("\nDescription: " + runWorkout!.description, style: TextStyle(), overflow: TextOverflow.ellipsis,),
+                  Text("Time spent: " + runWorkout!.duration, style: TextStyle()),
+                  Text("Distance: " + runWorkout!.distance, style: TextStyle()),
+                ],
+              ),
+              SizedBox(width: 10),
               Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.width * 0.4,
-                padding: EdgeInsets.all(5),
+                width: MediaQuery.of(context).size.width * 0.43,
+                padding: EdgeInsets.all(2),
                 child: FlutterMap(
                   options: MapOptions(
                     center: LatLng(runWorkout!.getPoints().last.latitude, runWorkout!.getPoints().last.longitude),
@@ -67,17 +77,6 @@ class _CustomRunTileState extends State<CustomRunTile> {
                   ],
                 ),
               ),
-              SizedBox(width: 10),
-              Column(
-                children: [
-                  Text("name: " + name),
-                  Text("Title: " + runWorkout!.title),
-                  Text("\nDescription: " + runWorkout!.description),
-                  Text("Time spent: " + runWorkout!.duration),
-                  Text("Distance: " + runWorkout!.distance),
-                  Text("\nDate: " + runWorkout!.date),
-                ],
-              )
             ],
           ),
         ),

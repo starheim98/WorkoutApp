@@ -43,7 +43,7 @@ class _RunDataState extends State<RunData> {
         "${(widget.duration.inSeconds.remainder(60).toString().padLeft(2, '0'))}";
     print(sDuration);
     return Scaffold(
-        appBar: appbar(_auth, "Home", context),
+        appBar: appbar(_auth, "Save your run", context),
         body: SingleChildScrollView(
           child: Center(
             child: Column(

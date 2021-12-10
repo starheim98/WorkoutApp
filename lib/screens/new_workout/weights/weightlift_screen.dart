@@ -34,7 +34,7 @@ class _NewWorkoutState extends State<NewWorkout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appbar(_authService, "NEW WORKOUT", context),
+        appBar: appbar(_authService, "Workout", context),
         body: SingleChildScrollView(
           physics: const ScrollPhysics(),
           child: Column(children: <Widget>[
