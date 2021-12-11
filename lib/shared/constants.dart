@@ -21,7 +21,7 @@ const flutterMapIcon = Icon(
 
 const textStyle = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 24.0,
+    fontSize: 20.0,
     fontFamily: 'Georgia',
 );
 
