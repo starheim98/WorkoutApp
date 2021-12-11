@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
+
+import '../../../top_secret.dart';
 
 class RunData extends StatefulWidget {
   final double distance;
@@ -34,14 +37,19 @@ class _RunDataState extends State<RunData> {
     }
     return geopoints;
   }
-
+  @override
+  void initState() {
+    if(widget.points.isEmpty){
+      widget.points.add(LatLng(62.4693179, 6.2419502));
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     String sDuration =
         "${widget.duration.inHours.toString().padLeft(2, '0')}:"
         "${widget.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:"
         "${(widget.duration.inSeconds.remainder(60).toString().padLeft(2, '0'))}";
-    print(sDuration);
     return Scaffold(
         appBar: appbar(_auth, "Save your run", context),
         body: SingleChildScrollView(
@@ -76,7 +84,26 @@ class _RunDataState extends State<RunData> {
                 sizedbox,
                 const Text("This is a sample photo. Your run will show after save.", style: TextStyle(fontStyle: FontStyle.italic)
                 ),
-                Image.asset('lib/assets/Sample.PNG',height: 240,),
+                SizedBox(
+                    height: 240,
+                    child: FlutterMap(
+                      options: MapOptions(
+                        center: LatLng(widget.points.last.latitude, widget.points.last.longitude),
+                        zoom: 15.0,
+                      ),
+                      layers: [
+                        tileLayerOptions,
+                        PolylineLayerOptions(
+                          polylines: [
+                            Polyline(
+                                points: widget.points,
+                                strokeWidth: 4.0,
+                                color: Colors.purple),
+                          ],
+                        ),
+                      ],
+                    ),
+                ),
                 ElevatedButton(
                   onPressed: ()  => {
                         DatabaseService().saveRun(title, desc, sDuration, widget.distance, latlngToGeopoint(widget.points)),
