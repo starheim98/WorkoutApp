@@ -98,6 +98,16 @@ class _CustomRunTileState extends State<CustomRunTile> {
     );
   }
 
+  Future getName(String uid) async {
+    var result = await databaseService.getUser(uid);
+    if (mounted) {
+      setState(() {
+        name = result.getName();
+      });
+    }
+  }
+
+  //Kilometer per minute code////////////////////////
   Duration parseDuration(String s) {
     int hours = 0;
     int minutes = 0;
@@ -113,27 +123,26 @@ class _CustomRunTileState extends State<CustomRunTile> {
     return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
 
-  //minutt + sekund, per kilometer
-  //05:20 per
-  // SECONDS PER KM
-  double timePerKm(RunWorkout runWorkout){
-    Duration duration = parseDuration(runWorkout.duration);
-
-    int persecond = duration.inSeconds;
-
-    double kms = 0.0;
-    if (persecond!=0) {
-      kms = persecond/double.parse(runWorkout.distance);
+  String timePerKm(RunWorkout runWorkout){
+      var formatting = Duration(hours: 0, minutes: 0, seconds: 0);
+    if(runWorkout.distance != "0" || runWorkout.distance != null){
+      Duration duration = parseDuration(runWorkout.duration);
+      int inseconds = duration.inSeconds;
+      double secondsPerKm = 0.0;
+      if (inseconds!=0) {
+        secondsPerKm = inseconds/double.parse(runWorkout.distance);
+        formatting = parseDuration(secondsPerKm.toString());
+      }
+      return _printDuration(formatting);
+    } else {
+      return _printDuration(formatting);
     }
-    return kms;
   }
 
-  Future getName(String uid) async {
-    var result = await databaseService.getUser(uid);
-    if (mounted) {
-      setState(() {
-        name = result.getName();
-      });
-    }
+  String _printDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 }
