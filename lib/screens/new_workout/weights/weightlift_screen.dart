@@ -15,7 +15,10 @@ import 'package:workout_app/shared/dialogues.dart';
 import 'exercise_list.dart';
 
 class NewWorkout extends StatefulWidget {
-  const NewWorkout({Key? key}) : super(key: key);
+  WeightWorkout? workout;
+  
+  NewWorkout({Key? key}) : super(key: key);
+  NewWorkout.template({Key? key, required this.workout}) : super(key: key);
 
   @override
   _NewWorkoutState createState() => _NewWorkoutState();
@@ -23,11 +26,15 @@ class NewWorkout extends StatefulWidget {
 
 class _NewWorkoutState extends State<NewWorkout> {
   final AuthService _authService = AuthService();
-  WeightWorkout weightWorkout = WeightWorkout();
+  WeightWorkout? weightWorkout;
 
   @override
   void initState() {
-    weightWorkout.setName("Workout " + weightWorkout.date!);
+    if(widget.workout == null){
+      weightWorkout = WeightWorkout();
+    } else {
+      weightWorkout = widget.workout!;
+    }
     super.initState();
   }
 
@@ -50,7 +57,7 @@ class _NewWorkoutState extends State<NewWorkout> {
         body: SingleChildScrollView(
           physics: const ScrollPhysics(),
           child: Column(children: <Widget>[
-            ExerciseList(workout: weightWorkout),
+            ExerciseList(workout: weightWorkout!),
             const SizedBox(height: 50),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
@@ -65,15 +72,17 @@ class _NewWorkoutState extends State<NewWorkout> {
 
   void newExercise(BuildContext context) {
     Future<String> future = selectExercise(context);
-    future.then((value) => {
-          setState(() {
-            Exercise exercise = Exercise(value);
-            exercise.addSet();
-            exercise.addSet();
-            exercise.addSet();
-            weightWorkout.addExercise(exercise);
-          })
-        });
+    future.then((value) => addExercise(value));
+  }
+
+  void addExercise(String exericse) {
+    setState(() {
+      Exercise exercise = Exercise(exericse);
+      exercise.addSet();
+      exercise.addSet();
+      exercise.addSet();
+      weightWorkout!.addExercise(exercise);
+    });
   }
 
   Future<String> selectExercise(BuildContext context) async {
@@ -87,7 +96,7 @@ class _NewWorkoutState extends State<NewWorkout> {
         context,
         MaterialPageRoute(
             builder: (context) => SaveWeightWorkout(
-                  workout: weightWorkout,
+                  workout: weightWorkout!,
                 )));
   }
 }
