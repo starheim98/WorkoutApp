@@ -38,6 +38,11 @@ const tileTitle = TextStyle(
   overflow: TextOverflow.ellipsis,
     fontSize: 15,
 );
+
+const numberStyle = TextStyle(
+  overflow: TextOverflow.ellipsis,
+  fontFamily: "comic-sans",
+);
 //
 
 /// AppBar - TODO: Move to better named file? or not
