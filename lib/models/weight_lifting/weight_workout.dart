@@ -1,6 +1,7 @@
 
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/template.dart';
+import 'package:workout_app/models/weight_lifting/workout_template.dart';
 
 class WeightWorkout {
   String? _name;
@@ -16,10 +17,18 @@ class WeightWorkout {
   }
 
   /// Initializes a workout session from existing template
-  WeightWorkout.template(Template template){
+  WeightWorkout.template(WorkoutTemplate template){
     _date = DateTime.now().toString();
-    _name = template.getName();
-    _exercises = template.getExercices();
+    _name = template.name;
+    List<Exercise> exercises = [];
+    for (String ex in template.exercises) {
+      Exercise exercise = Exercise(ex);
+      exercise.addSet();
+      exercise.addSet();
+      exercise.addSet();
+      exercises.add(exercise);
+    }
+    _exercises = exercises;
   }
 
   WeightWorkout.complete(this._name, this._date, this._duration, this._exercises, this._uid, this._id);
