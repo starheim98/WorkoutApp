@@ -24,7 +24,6 @@ class _SaveWeightWorkoutState extends State<SaveWeightWorkout> {
       body: SingleChildScrollView(
         child: Center(
           child: Column(
-
             children: <Widget>[
               const SizedBox(height: 30),
               SizedBox(
@@ -66,9 +65,14 @@ class _SaveWeightWorkoutState extends State<SaveWeightWorkout> {
   }
 
   finishWorkout() {
-    widget.workout.setName(title);
+    if(title.isEmpty) {
+      widget.workout.setName("Workout " + widget.workout.date!);
+    } else {
+      widget.workout.setName(title);
+    }
     widget.workout.finishWorkout();
     DatabaseService().addWeightWorkout(widget.workout);
+    Navigator.pop(context);
     Navigator.pop(context);
     Navigator.pop(context);
   }
