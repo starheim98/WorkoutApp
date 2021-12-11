@@ -11,6 +11,7 @@ class WeightLifting extends StatefulWidget {
 }
 
 class _WeightLiftingState extends State<WeightLifting> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +37,7 @@ class _WeightLiftingState extends State<WeightLifting> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NewWorkout()),
+                          builder: (context) => NewWorkout()),
                     )
                   },
                   child: const Text('New workout'),

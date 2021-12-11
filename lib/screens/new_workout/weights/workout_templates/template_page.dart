@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:workout_app/models/weight_lifting/template.dart';
+import 'package:workout_app/models/weight_lifting/workout_template.dart';
 import 'package:workout_app/screens/new_workout/weights/workout_templates/create_template.dart';
+import 'package:workout_app/services/database.dart';
 
 class TemplatePage extends StatefulWidget {
   const TemplatePage({Key? key}) : super(key: key);
@@ -10,7 +13,14 @@ class TemplatePage extends StatefulWidget {
 }
 
 class _TemplatePageState extends State<TemplatePage> {
+  DatabaseService databaseService = DatabaseService();
   List<WorkoutTemplate> templates = [];
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +38,13 @@ class _TemplatePageState extends State<TemplatePage> {
               itemCount: templates.length,
               itemBuilder: (BuildContext context, int index) {
                 WorkoutTemplate template = templates[index];
-                return ListTile(
-                  title: Text(template.name),
-                  trailing: IconButton(
-                    onPressed: () => deleteTemplate(template.id), icon: Icon(Icons.delete),
+                return Card(
+                  child: ListTile(
+                    onTap: () => selectTemplate(template, context),
+                    title: Text(template.name),
+                    trailing: IconButton(
+                      onPressed: () => deleteTemplate(template.id!), icon: const Icon(Icons.delete),
+                    ),
                   ),
                 );
               },
@@ -53,21 +66,33 @@ class _TemplatePageState extends State<TemplatePage> {
     );
   }
 
-  void addTemplate() {
-    // todo
+
+  void selectTemplate(WorkoutTemplate template, BuildContext context){
+    // Navigator.push(context)
   }
 
-  void deleteTemplate(String id) {
-    // todo
+  void addTemplate() async {
+    bool result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const CreateTemplate()),
+    );
+    if(result){
+      print("test=");
+      fetchData();
+    }
+  }
+
+  void fetchData() async {
+    var result = await databaseService.getTemplates();
+    setState(() {
+      templates = result;
+    });
+  }
+  void deleteTemplate(String id) async {
+    var result = await databaseService.deleteTemplate(id);
+    fetchData();
   }
 }
 
-class WorkoutTemplate {
-  String name;
-  List<String> exercises = [];
-  String userId;
-  String id;
 
-
-  WorkoutTemplate(this.name, this.exercises, this.userId, this.id);
-}
