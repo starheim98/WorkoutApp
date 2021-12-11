@@ -263,11 +263,8 @@ class _RunningState extends State<Running> {
                       onPressed: () async => {
                         Wakelock.disable(),
                         stopTimer(resets: false),
-                        if (positionStreamStarted)
-                          {
-                            _toggleListening(),
+
                             recording = false,
-                          },
                         Navigator.push(
                           context,
                           MaterialPageRoute(
