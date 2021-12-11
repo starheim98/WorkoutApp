@@ -25,7 +25,6 @@ class NewWorkout extends StatefulWidget {
 }
 
 class _NewWorkoutState extends State<NewWorkout> {
-  final AuthService _authService = AuthService();
   WeightWorkout? weightWorkout;
 
   @override

@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/weight_lifting/template.dart';
+import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/models/weight_lifting/workout_template.dart';
+import 'package:workout_app/screens/new_workout/weights/weightlift_screen.dart';
 import 'package:workout_app/screens/new_workout/weights/workout_templates/create_template.dart';
 import 'package:workout_app/services/database.dart';
 
@@ -40,6 +42,17 @@ class _TemplatePageState extends State<TemplatePage> {
                 WorkoutTemplate template = templates[index];
                 return Card(
                   child: ListTile(
+                    subtitle: ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 60, minHeight: 60),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: template.exercises.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Text(template.exercises[index]);
+                        },
+                      ),
+                    ),
                     onTap: () => selectTemplate(template, context),
                     title: Text(template.name),
                     trailing: IconButton(
@@ -68,7 +81,13 @@ class _TemplatePageState extends State<TemplatePage> {
 
 
   void selectTemplate(WorkoutTemplate template, BuildContext context){
-    // Navigator.push(context)
+    WeightWorkout workout = WeightWorkout.template(template);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NewWorkout.template(
+              workout: workout,
+            )));
   }
 
   void addTemplate() async {
