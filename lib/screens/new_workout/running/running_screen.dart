@@ -175,6 +175,10 @@ class _RunningState extends State<Running> {
     return distance;
   }
 
+  onBuild(){
+    _toggleListening();
+  }
+
   @override
   Widget build(BuildContext context) {
     const sizedBox = SizedBox(
@@ -284,11 +288,6 @@ class _RunningState extends State<Running> {
   }
 
   Icon icson() {
-    // :S
-    if(positionStreamStarted){
-      _toggleListening();
-    }
-
     Icon icon = Icon(Icons.play_arrow);
     if (recording == false) {
       setState(() {
