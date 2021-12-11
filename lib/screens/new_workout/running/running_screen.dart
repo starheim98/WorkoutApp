@@ -348,13 +348,9 @@ class _RunningState extends State<Running> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       buildTimeCard(time: hours, header: 'HOURS'),
-      const SizedBox(
-        width: 8,
-      ),
+      buildTimeCard2(),
       buildTimeCard(time: minutes, header: 'MINUTES'),
-      const SizedBox(
-        width: 8,
-      ),
+      buildTimeCard2(),
       buildTimeCard(time: seconds, header: 'SECONDS'),
     ]);
   }
@@ -379,6 +375,27 @@ class _RunningState extends State<Running> {
             height: 24,
           ),
           Text(header, style: const TextStyle(color: Colors.black45)),
+        ],
+      );
+
+  Widget buildTimeCard2() =>
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            child: const Text(
+              ":",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 50),
+            ),
+          ),
+          const SizedBox(
+            height: 45,
+          ),
         ],
       );
 }
