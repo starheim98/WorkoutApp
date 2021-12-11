@@ -38,7 +38,7 @@ class _SaveWeightWorkoutState extends State<SaveWeightWorkout> {
                   )
               ),
               const SizedBox(height: 30),
-              const Text("Summay"),
+              const Text("Summary"),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 300),
                 child: ListView.builder(

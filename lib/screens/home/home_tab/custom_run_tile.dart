@@ -5,7 +5,7 @@ import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/screens/home/my_page/workout_details/run_details.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
-import 'dart:math';
+import 'package:intl/intl.dart';
 
 import '../../../top_secret.dart';
 
@@ -45,27 +45,42 @@ class _CustomRunTileState extends State<CustomRunTile> {
         child: Container(
           height: MediaQuery.of(context).size.height * 0.2,
           width: MediaQuery.of(context).size.width * 1,
-          padding: EdgeInsets.all(6),
+          padding: EdgeInsets.all(10),
           child: Row(
             children: [
               Flexible(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(name, style: tileName),
                     Text(runWorkout!.title, style: tileTitle),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(runWorkout!.duration, style: TextStyle()),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(runWorkout!.distance, style: TextStyle()),
-                      ],
+                    Text(formattedDate(runWorkout!.date), style: tileDate),
+                    Container(
+                      padding: const EdgeInsets.all(2.0),
+                      width: MediaQuery.of(context).size.width *0.22,
+                      child: Text(runWorkout!.duration, style: numberStyle),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black)),
                     ),
-                    Text(timePerKm(runWorkout!).toString()),
-                    Text("\n\n"),
-                    Text(runWorkout!.date, style: tileDate),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(2.0),
+                      width: MediaQuery.of(context).size.width *0.22,
+                      child: Text(runWorkout!.distance + " km",
+                          style: numberStyle),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black)),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(2.0),
+                      width: MediaQuery.of(context).size.width *0.22,
+                      child: Text(timePerKm(runWorkout!).toString() + "/km",
+                          style: numberStyle),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black)),
+                    ),
                   ],
                 ),
               ),
@@ -107,6 +122,13 @@ class _CustomRunTileState extends State<CustomRunTile> {
     }
   }
 
+  String formattedDate(String now) {
+    DateTime haha = DateTime.parse(now);
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(haha);
+    return formatted;
+  }
+
   //Kilometer per minute code////////////////////////
   Duration parseDuration(String s) {
     int hours = 0;
@@ -123,14 +145,14 @@ class _CustomRunTileState extends State<CustomRunTile> {
     return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
 
-  String timePerKm(RunWorkout runWorkout){
-      var formatting = Duration(hours: 0, minutes: 0, seconds: 0);
-    if(runWorkout.distance != "0" || runWorkout.distance != null){
+  String timePerKm(RunWorkout runWorkout) {
+    var formatting = Duration(hours: 0, minutes: 0, seconds: 0);
+    if (runWorkout.distance != "0" || runWorkout.distance != null) {
       Duration duration = parseDuration(runWorkout.duration);
       int inseconds = duration.inSeconds;
       double secondsPerKm = 0.0;
-      if (inseconds!=0) {
-        secondsPerKm = inseconds/double.parse(runWorkout.distance);
+      if (inseconds != 0) {
+        secondsPerKm = inseconds / double.parse(runWorkout.distance);
         formatting = parseDuration(secondsPerKm.toString());
       }
       return _printDuration(formatting);

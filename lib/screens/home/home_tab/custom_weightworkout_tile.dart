@@ -4,6 +4,7 @@ import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/home/my_page/workout_details/weight_details.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
+import 'package:intl/intl.dart';
 
 class CustomWeightworkoutTile extends StatefulWidget {
   WeightWorkout weightWorkout;
@@ -49,54 +50,71 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
                     WorkoutDetailPage(workout: weightWorkout!)),
           )
         },
-        child: SizedBox(
+        child: Container(
+          padding: EdgeInsets.all(10),
           height: MediaQuery.of(context).size.height * 0.2,
           width: MediaQuery.of(context).size.width * 1,
           child: Row(
             children: [
-              Container(
-                height: MediaQuery.of(context).size.width * 0.2,
-                padding: EdgeInsets.all(5),
-                child: Icon(Icons.train), // RANDOM ICON TODO: Find something better
-              ),
-
               Flexible( //Flexible for overflowing text
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(name, style: tileName),
-                      Text("\nWorkout name: " + weightWorkout!.name!, style: tileTitle),
-                      Text(weightWorkout!.date!, style: tileDate),
-                      Text("Time spent: " + weightWorkout!.duration.toString(), style: const TextStyle(overflow: TextOverflow.ellipsis)),
+                      Text(weightWorkout!.name!, style: tileTitle),
+                      Text(formattedDate(weightWorkout!.date!), style: tileDate),
+                      Text("Workout duration: " + weightWorkout!.duration.toString(), style: numberStyle),
                     ],
                   ),
                 ),
               ),
+              Container(
 
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.width * 0.4,
-                child: Column(
-                  children: [
-                    ListView.builder(
-                        padding: const EdgeInsets.all(12.0),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: weightWorkout!.exercises.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Center(
-                              child: Text(
-                                  getExerciseNames(weightWorkout!)[index]));
-                        }),
-                  ],
+                decoration: BoxDecoration(border: Border.all(color: Colors.black12)),
+
+                width: MediaQuery.of(context).size.width * 0.43,
+                child: ConstrainedBox(
+                constraints:  BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.175),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: weightWorkout!.exercises.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      dense: true,
+                      title: Text(weightWorkout!.exercises[index].name, style: TextStyle(fontSize: 12), textAlign: TextAlign.center,),
+                      subtitle: Text(weightWorkout!.exercises[index].sets!.length.toString() + " sets", style: TextStyle(fontSize: 12), textAlign: TextAlign.center,),
+                    );
+                  },
                 ),
-              ),
+              )
+                ),
             ],
           ),
         ),
       ),
     );
+  }
+
+/*  ListView.builder(
+  padding: const EdgeInsets.all(12.0),
+  scrollDirection: Axis.vertical,
+  shrinkWrap: true,
+  itemCount: weightWorkout!.exercises.length,
+  itemBuilder: (BuildContext context, int index) {
+  return Center(
+  child: Text(
+  getExerciseNames(weightWorkout!)[index]));
+  }),
+  */
+
+  String formattedDate(String now){
+    DateTime haha = DateTime.parse(now);
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(haha);
+    return formatted;
   }
 
   Future getName(String uid) async {
