@@ -51,7 +51,6 @@ const numberStyle = TextStyle(
 /// AppBar - TODO: Move to better named file? or not
 appbar(AuthService _auth, String name, BuildContext context) => AppBar(
   title: Text(name),
-  backgroundColor: Colors.red[400], //DEN VAR brown[400]
   elevation: 0.0, //no dropshadow / flat on the screen
   actions: <Widget>[
     TextButton.icon(
@@ -61,8 +60,8 @@ appbar(AuthService _auth, String name, BuildContext context) => AppBar(
           await _auth.signOut();
         }
       },
-      label: const Text("Logout"),
-      icon: const Icon(Icons.person),
+      label: const Text("Log out", style: TextStyle(color: Colors.white),),
+      icon: const Icon(Icons.person, color: Colors.white),
     ),
   ],
 );

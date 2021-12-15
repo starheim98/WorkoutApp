@@ -24,6 +24,10 @@ class MyApp extends StatelessWidget {
       catchError: (context, error) => null,
       value: AuthService().user,
       child: MaterialApp(
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(color: Color(0xff245CB6)),
+          primaryColor: const Color(0xff245CB6)
+        ),
         home: Wrapper(),
         routes: {
           'home': (context) => const Wrapper(),

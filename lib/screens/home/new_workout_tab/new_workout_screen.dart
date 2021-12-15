@@ -42,7 +42,7 @@ Column newWorkoutTab(BuildContext context) =>
             ),
             child: Row(
               children: <Widget>[
-                Expanded(child: Image.asset('lib/assets/weight.png', height: 80,), flex: 4),
+                Expanded(child: Image.asset('lib/assets/weight.png'), flex: 4),
                 const Expanded(
                   child: Text("Weightlifting", style: TextStyle(
                     fontSize: 22,
