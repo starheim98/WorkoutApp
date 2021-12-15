@@ -13,7 +13,7 @@ const textInputDecoration = InputDecoration(
     )
 );
 
-final backgroundColor = Colors.brown[50];
+const backgroundColor = Color(0xffEFEBE9);
 
 
 const flutterMapIcon = Icon(
