@@ -88,7 +88,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.fiber_manual_record_rounded),
-            label: 'New Workout/Record',
+            label: 'New Workout',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

@@ -78,6 +78,7 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
                                         fontWeight: FontWeight.bold,
                                         height: 1.5,
                                       ),
+                                      gradientDirection: GradientDirection.btt,
                                       colors: const [
                                         Color(0xFFC9082B),
                                         Color(0xFF6C0A39),
