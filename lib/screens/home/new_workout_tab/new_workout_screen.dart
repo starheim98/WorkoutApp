@@ -35,10 +35,9 @@ Column newWorkoutTab(BuildContext context) =>
                   color: Colors.black.withOpacity(0.1),
                   spreadRadius: 5,
                   blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
+                  offset: const Offset(0, 3), // changes position of shadow
                 )
               ]
-
             ),
             child: Row(
               children: <Widget>[

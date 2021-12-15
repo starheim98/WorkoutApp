@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:workout_app/shared/constants.dart';
 import 'models/account.dart';
 import 'screens/wrapper.dart';
 import 'services/auth.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       child: MaterialApp(
         theme: ThemeData(
+          backgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(color: Color(0xff245CB6)),
           primaryColor: const Color(0xff245CB6)
         ),
