@@ -64,7 +64,7 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
                     children: [
                       Text(name, style: tileName),
                       Text(weightWorkout!.name!, style: tileTitle),
-                      Text(formattedDate(weightWorkout!.date!), style: tileDate),
+                      Text(formattedDate(weightWorkout!.date!), style: numberStyle),
                       Text("Workout duration: " + weightWorkout!.duration.toString(), style: numberStyle),
                     ],
                   ),

@@ -6,6 +6,7 @@ import 'package:workout_app/screens/home/my_page/workout_details/run_details.dar
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
 import 'package:intl/intl.dart';
+import 'package:workout_app/shared/km_per_minute_parser.dart';
 
 import '../../../top_secret.dart';
 
@@ -54,7 +55,7 @@ class _CustomRunTileState extends State<CustomRunTile> {
                   children: [
                     Text(name, style: tileName),
                     Text(runWorkout!.title, style: tileTitle),
-                    Text(formattedDate(runWorkout!.date), style: tileDate),
+                    Text((runWorkout!.getDate()), style: numberStyle),
                     Container(
                       padding: const EdgeInsets.all(2.0),
                       width: MediaQuery.of(context).size.width *0.22,
@@ -120,51 +121,5 @@ class _CustomRunTileState extends State<CustomRunTile> {
         name = result.getName();
       });
     }
-  }
-
-  String formattedDate(String now) {
-    DateTime haha = DateTime.parse(now);
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    final String formatted = formatter.format(haha);
-    return formatted;
-  }
-
-  //Kilometer per minute code////////////////////////
-  Duration parseDuration(String s) {
-    int hours = 0;
-    int minutes = 0;
-    int micros;
-    List<String> parts = s.split(':');
-    if (parts.length > 2) {
-      hours = int.parse(parts[parts.length - 3]);
-    }
-    if (parts.length > 1) {
-      minutes = int.parse(parts[parts.length - 2]);
-    }
-    micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
-    return Duration(hours: hours, minutes: minutes, microseconds: micros);
-  }
-
-  String timePerKm(RunWorkout runWorkout) {
-    var formatting = const Duration(hours: 0, minutes: 0, seconds: 0);
-    if (runWorkout.distance != "0" || runWorkout.distance != "0.0" || runWorkout.distance != null) {
-      Duration duration = parseDuration(runWorkout.duration);
-      int inseconds = duration.inSeconds;
-      double secondsPerKm = 0.0;
-      if (inseconds != 0) {
-        secondsPerKm = inseconds / double.parse(runWorkout.distance);
-        formatting = parseDuration(secondsPerKm.toString());
-      }
-      return _printDuration(formatting);
-    } else {
-      return _printDuration(formatting);
-    }
-  }
-
-  String _printDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/Dialogues.dart';
 
-
 const textInputDecoration = InputDecoration(
     fillColor: Colors.white,
     filled: true,
@@ -22,31 +21,40 @@ const flutterMapIcon = Icon(
     color: Colors.blue,
 );
 
-const textStyle = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 20.0,
-    fontFamily: 'Georgia',
-);
+const durationDistanceAvgPaceText = TextStyle(
+    fontFamily: "Roboto",
+    fontWeight: FontWeight.normal,
+    fontSize: 12 + 2,
+    color: Color(0xFF737373),
+    );
 
 //Tiles
 const tileName = TextStyle(
     overflow: TextOverflow.ellipsis,
-    fontSize: 12,
-    fontFamily: "Georgia",
+    fontSize: 12 + 2,
+    fontFamily: "Roboto",
 );
 
-const tileDate = TextStyle(fontSize: 10);
 const tileTitle = TextStyle(
   fontWeight: FontWeight.bold,
   overflow: TextOverflow.ellipsis,
-    fontSize: 15,
+    fontSize: 16 + 2,
 );
 
 const numberStyle = TextStyle(
   overflow: TextOverflow.ellipsis,
-  fontFamily: "comic-sans",
+  fontFamily: "Roboto",
+  fontSize: 12 + 2,
+  fontWeight: FontWeight.normal,
+  height: 1.3,
 );
-//
+
+const detailsName = TextStyle(
+    fontFamily: "Roboto",
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.bold,
+    fontSize: 16 + 2,
+);
 
 /// AppBar - TODO: Move to better named file? or not
 appbar(AuthService _auth, String name, BuildContext context) => AppBar(
