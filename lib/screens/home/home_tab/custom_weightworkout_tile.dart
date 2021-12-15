@@ -42,6 +42,7 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(left: 16, right: 16, top: 18),
       elevation: 3,
       child: GestureDetector(
         onTap: () => {
@@ -165,16 +166,6 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
     );
   }
 
-/*  ListTile(
-  dense: true,
-  title: Text(
-  weightWorkout!.exercises[index].name,
-  style: const TextStyle(fontSize: 12),
-  ),
-  subtitle: Text(weightWorkout!.exercises[index].sets!.length.toString() + " sets",
-  style: const TextStyle(fontSize: 12),
-  ),
-  );*/
 
   Future getName(String uid) async {
     var result = await databaseService.getUser(uid);
