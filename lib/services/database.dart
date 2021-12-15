@@ -152,9 +152,6 @@ class DatabaseService {
   Future saveRun(String title, String desc, String duration, double distance,
       List<GeoPoint> points) async {
     if (title.isEmpty) title = "Went for a run today!";
-/*    if(distance == 0.0){
-      distance = 0.0001;
-    }*/
 
     return runsCollection.add({
       "title": title,
