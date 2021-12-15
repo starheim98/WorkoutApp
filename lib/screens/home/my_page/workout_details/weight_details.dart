@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/shared/constants.dart';
@@ -31,15 +32,23 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text(
-                  "Title",
-                  style: textStyle,
+                GradientText(
+                    widget.workout.name!,
+                    style: const TextStyle(
+                      fontFamily: "Roboto",
+                      fontSize: 16.0 + 2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    colors: const [
+                      Color(0xFF4574EB),
+                      Color(0xFF005FB7),
+                    ]
                 ),
                 Text(widget.workout.name!),
                 sizedBox,
                 const Text(
                   "Exercises",
-                  style: textStyle,
+                  style: detailsName,
                 ),
                 ListView.builder(
                     padding: const EdgeInsets.all(12.0),
@@ -52,13 +61,13 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                 sizedBox,
                 const Text(
                   "Duration",
-                  style: textStyle,
+                  style: numberStyle,
                 ),
                 Text(widget.workout.getDuration()),
                 sizedBox,
                 const Text(
                   "Date:",
-                  style: textStyle,
+                  style: numberStyle,
                 ),
                 Text(widget.workout.getDate()!),
                 sizedBox,
