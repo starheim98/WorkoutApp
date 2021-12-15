@@ -29,7 +29,7 @@ class _RunDataState extends State<RunData> {
   var sizedbox = SizedBox(height: 30);
   var document;
 
-  List<GeoPoint> latlngToGeopoint(List<LatLng> initialPoints){
+  List<GeoPoint> latlngToGeopoint(List<LatLng> initialPoints) {
     initialPoints = widget.points;
     List<GeoPoint> geopoints = <GeoPoint>[]; // List Literal
     for (LatLng latLng in initialPoints){
@@ -37,6 +37,7 @@ class _RunDataState extends State<RunData> {
     }
     return geopoints;
   }
+
   @override
   void initState() {
     if(widget.points.isEmpty){
