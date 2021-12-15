@@ -66,7 +66,7 @@ class _SaveWeightWorkoutState extends State<SaveWeightWorkout> {
 
   finishWorkout() {
     if(title.isEmpty) {
-      widget.workout.setName("Workout " + widget.workout.date!);
+      widget.workout.setName("Workout " + widget.workout.getDate()!);
     } else {
       widget.workout.setName(title);
     }

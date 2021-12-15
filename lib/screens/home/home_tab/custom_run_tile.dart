@@ -34,6 +34,8 @@ class _CustomRunTileState extends State<CustomRunTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 3,
+
       child: GestureDetector(
         onTap: () => {
           Navigator.push(
