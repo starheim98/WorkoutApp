@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   List<RunWorkout> runWorkouts = [];
   List<WeightWorkout> weightWorkouts = [];
   var friendsWorkouts = [];
+  bool loading = true;
 
   String firstName = "";
 
@@ -55,6 +56,7 @@ class _HomeState extends State<Home> {
         runWorkouts = runsData;
         weightWorkouts = weightWorkoutData;
         friendsWorkouts = friendsWO;
+        loading = false;
       });
     }
   }
@@ -65,7 +67,9 @@ class _HomeState extends State<Home> {
       HomeTab(
           runWorkouts: runWorkouts,
           weightWorkouts: weightWorkouts,
-          friendsWorkouts: friendsWorkouts),
+          friendsWorkouts: friendsWorkouts,
+          loading: loading,
+      ),
       newWorkoutTab(context),
       myPageTab()
     ];

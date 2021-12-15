@@ -11,9 +11,10 @@ class HomeTab extends StatefulWidget {
   List<RunWorkout> runWorkouts;
   List<WeightWorkout> weightWorkouts;
   List<dynamic> friendsWorkouts;
+  bool loading;
 
   HomeTab({Key? key, required this.runWorkouts, required this.weightWorkouts,
-    required this.friendsWorkouts})
+    required this.friendsWorkouts, required this.loading})
       : super(key: key);
 
   @override
@@ -33,16 +34,11 @@ class _HomeTabState extends State<HomeTab> {
   @mustCallSuper
   @protected
   void didUpdateWidget(covariant HomeTab oldWidget) {
+    loading = widget.loading;
     runWorkouts = widget.runWorkouts;
     weightWorkouts = widget.weightWorkouts;
     friendsWorkouts = widget.friendsWorkouts;
-
-    setState(() {
-      if(runWorkouts.length >= 1){
-        loading = false;
-      }
-    });
-
+    fetchData();
     // TODO: reverse sort
     workoutsList = List.from(runWorkouts)
       ..addAll(weightWorkouts)
@@ -53,17 +49,46 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   @override
+  @protected
+  @mustCallSuper
+  void dispose() {
+    loading = true;
+    super.dispose();
+  }
+
+  Future fetchData() async {
+    var runsData = await databaseService.getRunsData();
+    var weightWorkoutData = await databaseService.getWeightWorkouts();
+    var friendsWO = await databaseService.getFriendsWorkouts();
+    if (mounted) {
+      setState(() {
+        runWorkouts = runsData;
+        weightWorkouts = weightWorkoutData;
+        friendsWorkouts = friendsWO;
+        loading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : ListView.builder(
-      itemCount: workoutsList.length,
-      itemBuilder: (BuildContext context, int index) {
-        if (workoutsList[index] is RunWorkout) {
-          return CustomRunTile(runWorkout: workoutsList[index]);
-        } else if (workoutsList[index] is WeightWorkout) {
-          return CustomWeightworkoutTile(weightWorkout: workoutsList[index]);
-        }
-        return const Text("No data");
-      },
-    );
+    if(loading) {
+      return const Loading();
+    } else if (workoutsList.length >= 1) {
+      return ListView.builder(
+        itemCount: workoutsList.length,
+        itemBuilder: (BuildContext context, int index) {
+          if (workoutsList[index] is RunWorkout) {
+            return CustomRunTile(runWorkout: workoutsList[index]);
+          } else if (workoutsList[index] is WeightWorkout) {
+            return CustomWeightworkoutTile(weightWorkout: workoutsList[index]);
+          } else {
+            return const Text("no data");
+          }
+        },
+      );
+    } else {
+      return const Text("Follow someone you know to see their workouts");
+    }
   }
 }

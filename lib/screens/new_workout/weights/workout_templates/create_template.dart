@@ -136,5 +136,4 @@ class _CreateTemplateState extends State<CreateTemplate> {
       Navigator.pop(context, true);
     }
   }
-
 }
