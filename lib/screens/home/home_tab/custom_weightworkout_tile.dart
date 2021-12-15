@@ -42,7 +42,7 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(left: 16, right: 16, top: 18),
+      margin: EdgeInsets.only(left: 16, right: 16, top: 9, bottom: 9),
       elevation: 3,
       child: GestureDetector(
         onTap: () => {
