@@ -95,9 +95,11 @@ class WeightWorkout {
     String secondsLeft =
     s.toString().length < 2 ? "0" + s.toString() : s.toString();
 
-    String result = "$hourLeft:$minuteLeft:$secondsLeft";
-
-    return result;
+    if(hourLeft == "00"){
+      return "$minuteLeft'$secondsLeft''";
+    } else {
+    return "$hourLeft'$minuteLeft'$secondsLeft''";
+    }
   }
 
   void setName(String value) {

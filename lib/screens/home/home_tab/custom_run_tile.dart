@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/screens/home/my_page/workout_details/run_details.dart';
 import 'package:workout_app/services/database.dart';
@@ -35,7 +36,6 @@ class _CustomRunTileState extends State<CustomRunTile> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-
       child: GestureDetector(
         onTap: () => {
           Navigator.push(
@@ -48,48 +48,92 @@ class _CustomRunTileState extends State<CustomRunTile> {
         child: Container(
           height: MediaQuery.of(context).size.height * 0.2,
           width: MediaQuery.of(context).size.width * 1,
-          padding: EdgeInsets.all(10),
           child: Row(
             children: [
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(name, style: tileName),
-                    Text(runWorkout!.title, style: tileTitle),
-                    Text((runWorkout!.getDate()), style: numberStyle),
-                    Container(
-                      padding: const EdgeInsets.all(2.0),
-                      width: MediaQuery.of(context).size.width *0.22,
-                      child: Text(runWorkout!.duration, style: numberStyle),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black)),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(2.0),
-                      width: MediaQuery.of(context).size.width *0.22,
-                      child: Text(runWorkout!.distance + " km",
-                          style: numberStyle),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black)),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(2.0),
-                      width: MediaQuery.of(context).size.width *0.22,
-                      child: Text(timePerKm(runWorkout!).toString() + "/km",
-                          style: numberStyle),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black)),
-                    ),
-                  ],
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            'lib/assets/run.png',
+                            height: 40,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(name, style: tileName),
+                              GradientText(runWorkout!.title,
+                                  gradientDirection: GradientDirection.btt,
+                                  style: const TextStyle(
+                                    fontFamily: "Roboto",
+                                    fontSize: 14.0 + 2,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.5,
+                                  ),
+                                  colors: const [
+                                    Color(0xFFC9082B),
+                                    Color(0xFF6C0A39),
+                                  ]),
+                              Text((runWorkout!.getDate()),
+                                  style: numberStyle.copyWith(height: 1.5)),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                               const Text(
+                                "Duration",
+                                style: durationDistanceAvgPaceText,
+                              ),
+                              Text(
+                                runWorkout!.duration,
+                                style: numberStyle,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            children: [
+                              const Text(
+                                "Distance",
+                                style: durationDistanceAvgPaceText,
+                              ),
+                              Text(runWorkout!.distance + " km",
+                                  style: numberStyle),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            children: [
+                              const Text(
+                                "Avg. pace",
+                                style: durationDistanceAvgPaceText,
+                              ),
+                              Text(timePerKm(runWorkout!).toString() + " /km",
+                                  style: numberStyle),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(width: 10),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.43,
+
+              Expanded(
+                flex:2,
                 child: FlutterMap(
                   options: MapOptions(
                     center: LatLng(runWorkout!.getPoints().last.latitude,

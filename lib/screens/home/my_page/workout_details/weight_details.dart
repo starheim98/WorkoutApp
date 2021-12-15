@@ -130,6 +130,7 @@ thing(Exercise exercise) => Card(
         children: [
           GradientText(
             exercise.name,
+            gradientDirection: GradientDirection.btt,
             colors: const [
               Color(0xFF4574EB),
               Color(0XFF005FB7),

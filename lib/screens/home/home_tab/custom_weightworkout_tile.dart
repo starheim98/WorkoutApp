@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/home/my_page/workout_details/weight_details.dart';
@@ -53,45 +54,110 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
         },
         child: Container(
           padding: EdgeInsets.all(10),
-          height: MediaQuery.of(context).size.height * 0.2,
+          height: MediaQuery.of(context).size.height * 0.15,
           width: MediaQuery.of(context).size.width * 1,
           child: Row(
             children: [
-              Flexible( //Flexible for overflowing text
+              Expanded(
+                flex: 3,
+                //Flexible for overflowing text
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(name, style: tileName),
-                      Text(weightWorkout!.name!, style: tileTitle),
-                      Text(formattedDate(weightWorkout!.date!), style: numberStyle),
-                      Text("Workout duration: " + weightWorkout!.duration.toString(), style: numberStyle),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Image.asset(
+                                'lib/assets/weight.png',
+                                alignment: Alignment.topLeft,
+                                height: 45,
+                              ),
+                              flex: 1),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  name,
+                                  style: tileName,
+                                ),
+                                GradientText(weightWorkout!.name!,
+                                    gradientDirection: GradientDirection.btt,
+                                    style: const TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 14.0 + 2,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.5,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    colors: const [
+                                      Color(0xFF4574EB),
+                                      Color(0xFF005FB7),
+                                    ]),
+                                Text(
+                                  weightWorkout!.getDate()!,
+                                  style: numberStyle.copyWith(height: 1.5),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Duration",
+                                      style: durationDistanceAvgPaceText
+                                          .copyWith(height: 1.5),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      weightWorkout!.getDuration(),
+                                      style: numberStyle.copyWith(height: 1.5),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ),
-              Container(
-
-                decoration: BoxDecoration(border: Border.all(color: Colors.black12)),
-
-                width: MediaQuery.of(context).size.width * 0.43,
-                child: ConstrainedBox(
-                constraints:  BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.175),
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: weightWorkout!.exercises.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      dense: true,
-                      title: Text(weightWorkout!.exercises[index].name, style: TextStyle(fontSize: 12), textAlign: TextAlign.center,),
-                      subtitle: Text(weightWorkout!.exercises[index].sets!.length.toString() + " sets", style: TextStyle(fontSize: 12), textAlign: TextAlign.center,),
-                    );
-                  },
-                ),
-              )
-                ),
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                    height: double.infinity, //match parent POG
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: weightWorkout!.exercises.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Row(
+                          children: [
+                            Expanded(
+                                flex: 2,
+                                child: Text(
+                                  weightWorkout!.exercises[index].name,
+                                  style:
+                                      TextStyle(fontSize: 12 + 2, height: 1.5),
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                    weightWorkout!.exercises[index].sets!.length
+                                            .toString() +
+                                        "sets ",
+                                    style: TextStyle(
+                                        fontSize: 12 + 2,
+                                        color: Color(0xFF737373)))),
+                          ],
+                        );
+                      },
+                    ),
+                  )),
             ],
           ),
         ),
@@ -99,28 +165,20 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
     );
   }
 
-/*  ListView.builder(
-  padding: const EdgeInsets.all(12.0),
-  scrollDirection: Axis.vertical,
-  shrinkWrap: true,
-  itemCount: weightWorkout!.exercises.length,
-  itemBuilder: (BuildContext context, int index) {
-  return Center(
-  child: Text(
-  getExerciseNames(weightWorkout!)[index]));
-  }),
-  */
-
-  String formattedDate(String now){
-    DateTime haha = DateTime.parse(now);
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    final String formatted = formatter.format(haha);
-    return formatted;
-  }
+/*  ListTile(
+  dense: true,
+  title: Text(
+  weightWorkout!.exercises[index].name,
+  style: const TextStyle(fontSize: 12),
+  ),
+  subtitle: Text(weightWorkout!.exercises[index].sets!.length.toString() + " sets",
+  style: const TextStyle(fontSize: 12),
+  ),
+  );*/
 
   Future getName(String uid) async {
     var result = await databaseService.getUser(uid);
-    if (mounted){
+    if (mounted) {
       setState(() {
         name = result.getName();
       });

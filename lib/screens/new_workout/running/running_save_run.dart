@@ -83,8 +83,6 @@ class _RunDataState extends State<RunData> {
                 sizedbox,
                 Text("Duration: " + sDuration ),
                 sizedbox,
-                const Text("This is a sample photo. Your run will show after save.", style: TextStyle(fontStyle: FontStyle.italic)
-                ),
                 SizedBox(
                     height: 240,
                     child: FlutterMap(
