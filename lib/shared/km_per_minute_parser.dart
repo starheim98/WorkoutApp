@@ -17,7 +17,7 @@ Duration parseDuration(String s) {
 
 String timePerKm(RunWorkout runWorkout) {
   var formatting = const Duration(hours: 0, minutes: 0, seconds: 0);
-  if (runWorkout.distance != "0" || runWorkout.distance != "0.0" || runWorkout.distance != null) {
+  if (runWorkout.distance != "0" && runWorkout.distance != "0.0" && runWorkout.distance != null) {
     Duration duration = parseDuration(runWorkout.duration);
     int inseconds = duration.inSeconds;
     double secondsPerKm = 0.0;
