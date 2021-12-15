@@ -30,6 +30,7 @@ class _CreateTemplateState extends State<CreateTemplate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         title: const Text("New template"),
@@ -41,7 +42,7 @@ class _CreateTemplateState extends State<CreateTemplate> {
               textStyle: const TextStyle(fontSize: 20),
             ),
             onPressed: () => saveTemplate(context),
-            child: const Text('Save',),
+            child: const Text('Save'),
           ),
         ],
 
@@ -51,10 +52,13 @@ class _CreateTemplateState extends State<CreateTemplate> {
           child: Column(
             children: <Widget>[
               const SizedBox(height: 20),
-              SizedBox(
-                  width: 350,
+              Container(
+                  margin: const EdgeInsets.only(left: 16, right: 16, bottom: 10),
                   child: Column(
                     children: [
+                      const Padding(padding: EdgeInsets.only(top: 22, bottom: 10),
+                        child: Text("Name", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,))
+                      ),
                       TextFormField(
                         decoration: textInputDecoration.copyWith(hintText: "Title your template"),
                         validator: (val)=> val!.isEmpty ? 'Title...' : null,
@@ -73,7 +77,7 @@ class _CreateTemplateState extends State<CreateTemplate> {
                   )
               ),
               const SizedBox(height: 20),
-              const Text("Exercises", style: TextStyle(fontSize: 25)),
+              const Text("Exercises", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Text(
                   errorExercises, style:const TextStyle(color:Colors.red, fontSize: 14.0)
               ),
@@ -83,6 +87,7 @@ class _CreateTemplateState extends State<CreateTemplate> {
                 itemCount: selectedExercises.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
+                    margin: const EdgeInsets.only(left: 16, right: 16, bottom: 10),
                     child: ListTile(
                       title: Text(selectedExercises[index]),
                       trailing: IconButton(
@@ -98,8 +103,9 @@ class _CreateTemplateState extends State<CreateTemplate> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text("Add exercise"),
-        onPressed: () => addExercise(context),
+          onPressed: () => addExercise(context),
+          label: const Text("         Add exercise         "),
+          backgroundColor: const Color(0xff0068C8),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

@@ -38,6 +38,7 @@ class _WeightLiftingState extends State<WeightLifting> {
                     child: Center(
                       child: GradientText(
                         "Select from template",
+                        gradientDirection: GradientDirection.btt,
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold
@@ -65,6 +66,7 @@ class _WeightLiftingState extends State<WeightLifting> {
                     child: Center(
                       child: GradientText(
                         "New workout",
+                        gradientDirection: GradientDirection.btt,
                         style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold
