@@ -35,6 +35,7 @@ class _CustomRunTileState extends State<CustomRunTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(left: 16, right: 16, top: 18),
       elevation: 3,
       child: GestureDetector(
         onTap: () => {
@@ -51,9 +52,9 @@ class _CustomRunTileState extends State<CustomRunTile> {
           child: Row(
             children: [
               Expanded(
-                flex: 3,
+                flex: 50,
                 child: Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
                   child: Column(
                     children: [
                       Row(
@@ -133,7 +134,7 @@ class _CustomRunTileState extends State<CustomRunTile> {
               ),
 
               Expanded(
-                flex:2,
+                flex:33,
                 child: FlutterMap(
                   options: MapOptions(
                     center: LatLng(runWorkout!.getPoints().last.latitude,
