@@ -26,12 +26,16 @@ class _ProgressionState extends State<Progression> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),
-          ElevatedButton(
+          SizedBox(
+            width: 250,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: const Color(0xff0068C8)),
               child: const Text("Select an exercise"),
               onPressed: () => selectExercise(context)
+            ),
           ),
           const SizedBox(height: 70),
-          const Text("Select an exercise to display your progression!",
+          const Text("Select an exercise to display your progression",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
 
@@ -42,12 +46,16 @@ class _ProgressionState extends State<Progression> {
         child: Column (
           children: <Widget>[
             const SizedBox(height: 30),
-            ElevatedButton(
-              child: const Text("Select another exercise"),
-              onPressed: () => setState(() {
-                isSelected = false;
-                selectExercise(context);
-              }),
+            SizedBox(
+              width: 250,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: const Color(0xff0068C8)),
+                child: const Text("Select another exercise"),
+                onPressed: () => setState(() {
+                  isSelected = false;
+                  selectExercise(context);
+                }),
+              ),
             ),
             const SizedBox(height: 30),
             Text(selectedExercise,
@@ -92,17 +100,6 @@ class _ProgressionState extends State<Progression> {
   List<charts.Series<LinearGraphData, num>> setupGraphData() {
     final data = <LinearGraphData>[];
     int index = 0;
-
-/*    for(RunWorkout runWorkout in runWorkouts ) {
-       Duration duration = parseDuration(runWorkout.duration);
-       int perminute = duration.inSeconds;
-       if (perminute!=0){
-         double kmh = double.parse(runWorkout.distance) / perminute;
-         print("km/h:"+kmh.toString());
-         index ++;
-         data.add(LinearGraphData(index, kmh.round()));
-       }
-      }*/
 
     return [
       charts.Series<LinearGraphData, int>(

@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +30,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
   DatabaseService? databaseService;
   List<WeightWorkout> weightWorkouts = [];
   int toggleValue = 0;
+  Color activeColor = const Color(0xff4574EB);
 
   //Run Data
   MapController? mapController;
@@ -101,9 +101,10 @@ class _MyWorkoutsState extends State<MyWorkouts> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: ToggleSwitch(
+              minWidth: 125,
               initialLabelIndex: _selectedIndex,
               totalSwitches: 2,
-              activeBgColor: const [Colors.amber],
+              activeBgColors: const [[Color(0xff4574EB), Color(0xff005FB7)], [Color(0xffC9082B), Color(0xff6C0A39)]] ,
               labels: const ["Weights", "Runs"],
               onToggle: (index) => {toggleStuff(index)},
             ),
@@ -116,8 +117,8 @@ class _MyWorkoutsState extends State<MyWorkouts> {
 
   void toggleStuff(int index) {
     setState(() => {
-          _selectedIndex = index,
-        });
+      _selectedIndex = index,
+    });
   }
 
   workoutTile(WeightWorkout weightWorkout) => Card(

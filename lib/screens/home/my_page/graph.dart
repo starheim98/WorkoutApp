@@ -41,7 +41,7 @@ class _ProgressionGraphState extends State<ProgressionGraph> {
     if(data.length <= 1) {
       return Column(children: const <Widget>[
         SizedBox(height: 30),
-        Text("need more data ellerno")
+        Text("Not enough data collected")
       ],);
     } else {
       return charts.TimeSeriesChart(series,

@@ -7,18 +7,18 @@ import 'friends.dart';
 DefaultTabController myPageTab() =>
     DefaultTabController(
       length: 3,
-      child: Column(children: <Widget>[
+      child: Column(children: const <Widget>[
         TabBar(
-          labelColor: Colors.amber[800],
-          unselectedLabelColor: Colors.grey[800],
+          labelColor: Color(0xff28A8F0),
+          unselectedLabelColor: Colors.black,
           labelStyle: TextStyle(fontSize: 18),
-          tabs: const [
+          tabs: [
             Tab(text: "Workouts"),
             Tab(text: "Progression"),
             Tab(text: "Friends"),
           ],
         ),
-        const Expanded(
+        Expanded(
           child: TabBarView(
             children: <Widget>[
               MyWorkouts(),
