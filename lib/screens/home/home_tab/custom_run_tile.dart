@@ -146,8 +146,8 @@ class _CustomRunTileState extends State<CustomRunTile> {
   }
 
   String timePerKm(RunWorkout runWorkout) {
-    var formatting = Duration(hours: 0, minutes: 0, seconds: 0);
-    if (runWorkout.distance != "0" || runWorkout.distance != null) {
+    var formatting = const Duration(hours: 0, minutes: 0, seconds: 0);
+    if (runWorkout.distance != "0" || runWorkout.distance != "0.0" || runWorkout.distance != null) {
       Duration duration = parseDuration(runWorkout.duration);
       int inseconds = duration.inSeconds;
       double secondsPerKm = 0.0;
