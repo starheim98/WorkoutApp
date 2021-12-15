@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:intl/intl.dart';
 
 class RunWorkout {
    String _title;
@@ -51,6 +52,33 @@ class RunWorkout {
    }
 
    String get date => _date;
+
+   String getDate() {
+       DateTime parsedDateTime = DateTime.parse(date);
+       final DateFormat formatter = DateFormat('yyyy-MM-dd');
+       final String formattedDate = formatter.format(parsedDateTime);
+       return formattedDate;
+   }
+
+   String getDuration() {
+     int hours = 0;
+     int minutes = 0;
+     int micros;
+     List<String> parts = _duration.split(':');
+     if (parts.length > 2) {
+       hours = int.parse(parts[parts.length - 3]);
+     }
+     if (parts.length > 1) {
+       minutes = int.parse(parts[parts.length - 2]);
+     }
+     micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
+     Duration duration = Duration(hours: hours, minutes: minutes, microseconds: micros);
+
+     String twoDigits(int n) => n.toString().padLeft(2, "0");
+     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+   }
 
    set date(String value) {
      date = value;

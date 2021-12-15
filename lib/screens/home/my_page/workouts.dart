@@ -126,8 +126,8 @@ class _MyWorkoutsState extends State<MyWorkouts> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Date: " + weightWorkout.date!),
-              Text("Duration: " + weightWorkout.duration.toString() + " min")
+              Text("Date: " + weightWorkout.getDate()!),
+              Text("Duration: " + weightWorkout.getDuration())
             ],
           ),
           leading: const Icon(Icons.fitness_center),
@@ -180,7 +180,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
         subtitle: Text("Desc: " +
             runWorkout.description +
             ". Duration: " +
-            runWorkout.duration +
+            runWorkout.getDuration() +
             ". Distance: " +
             runWorkout.distance),
         leading: SizedBox(

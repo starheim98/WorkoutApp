@@ -5,7 +5,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../top_secret.dart';
 
@@ -49,7 +48,7 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
                     style: textStyle,
                   ),
                   Text(
-                    formattedDate(runWorkout!.date),
+                    runWorkout!.getDate(),
                     style: tileDate.copyWith(fontSize: 15),
                   ),
                   sizedBox,
@@ -107,12 +106,6 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
     );
   }
 
-  String formattedDate(String now) {
-    DateTime haha = DateTime.parse(now);
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    final String formatted = formatter.format(haha);
-    return formatted;
-  }
 
   //Kilometer per minute code////////////////////////
   Duration parseDuration(String s) {
@@ -130,6 +123,13 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
     return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
 
+  String _reformattedDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
   String timePerKm(RunWorkout runWorkout) {
     var formatting = Duration(hours: 0, minutes: 0, seconds: 0);
     if (runWorkout.distance != "0" || runWorkout.distance != null) {
@@ -140,16 +140,10 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
         secondsPerKm = inseconds / double.parse(runWorkout.distance);
         formatting = parseDuration(secondsPerKm.toString());
       }
-      return _printDuration(formatting);
+      return _reformattedDuration(formatting);
     } else {
-      return _printDuration(formatting);
+      return _reformattedDuration(formatting);
     }
   }
 
-  String _printDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
-  }
 }
