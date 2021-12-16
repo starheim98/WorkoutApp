@@ -58,12 +58,6 @@ class _NewWorkoutState extends State<NewWorkout> {
           child: Column(children: <Widget>[
             ExerciseList(workout: weightWorkout!),
             const SizedBox(height: 50),
-            // SizedBox(
-            //   width: MediaQuery.of(context).size.width * 0.7,
-            //   child: ElevatedButton(
-            //       onPressed: () => setState(() => newExercise(context)),
-            //       child: const Text("Add exercise")),
-            // ),
             const SizedBox(height: 50),
           ]),
         ),
@@ -73,6 +67,7 @@ class _NewWorkoutState extends State<NewWorkout> {
           backgroundColor: const Color(0xff0068C8),
         ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      resizeToAvoidBottomInset: false,
       );
   }
 

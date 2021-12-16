@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
-import 'package:workout_app/shared/loading.dart';
 
 class Login extends StatefulWidget {
 
@@ -16,7 +15,6 @@ class _LoginState extends State<Login> {
 
   final AuthService _auth = AuthService();
   final _formkey = GlobalKey<FormState>();
-  bool loading = false;
 
   String email = "";
   String password = "";
@@ -24,17 +22,16 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold( //if loading is true, show loading. Else show the scaffold.
-      backgroundColor: Colors.brown[100],
+    return Scaffold( //if loading is true, show loading. Else show the scaffold.
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-          backgroundColor: Colors.brown[400],
           elevation:0.0,
           title: const Text('Sign in to this app'),
           actions: <Widget>[
             TextButton.icon(
                 onPressed: () =>  widget.toggleView(),
-                icon: const Icon(Icons.person),
-                label: const Text('Register'))
+                icon: const Icon(Icons.person, color: Colors.white,),
+                label: const Text('Register', style: TextStyle(color: Colors.white),))
           ]
       ),
       body: Container(
@@ -62,13 +59,13 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height:20.0),
                     ElevatedButton(
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff0068C8))),
                         onPressed: () async {
                           if(_formkey.currentState!.validate()){
-                            setState(() => loading = true);
                             //valid form
                             dynamic result = await _auth.signInEmailPassword(email, password);
                             if (result == null) {
-                              setState(() => {error = 'COULD NOT SIGN IN WITH THAT', loading = false});
+                              setState(() => {error = 'Invalid email or password'});
                             } // do not need an else. WE have a listener for auth changes so it will automatically change.
                           } else {
                             print("Invalid register-form");
