@@ -35,30 +35,35 @@ class _FriendsState extends State<Friends> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        const SizedBox(height: 30),
-        TextField(
-            onChanged: (query) => {
-              searchField = query,
-              onSearch(query)
-            },
-            decoration: const InputDecoration(hintText: "Find friends")),
-        const SizedBox(height: 20),
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: foundAccounts.length,
-          itemBuilder: (BuildContext context, int index) {
-            print(user!.friends);
-            if (user!.isFriendWith(foundAccounts[index].uid)) {
-              return friendTile(foundAccounts[index]);
-            } else {
-              return notFriendTile(foundAccounts[index]);
-            }
-          },
-        )
-      ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+        child: Column(
+          children: <Widget>[
+            const SizedBox(height: 30),
+            TextField(
+                onChanged: (query) => {
+                  searchField = query,
+                  onSearch(query)
+                },
+                decoration: const InputDecoration(hintText: "Find friends")),
+            const SizedBox(height: 20),
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: foundAccounts.length,
+              itemBuilder: (BuildContext context, int index) {
+                print(user!.friends);
+                if (user!.isFriendWith(foundAccounts[index].uid)) {
+                  return friendTile(foundAccounts[index]);
+                } else {
+                  return notFriendTile(foundAccounts[index]);
+                }
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 
