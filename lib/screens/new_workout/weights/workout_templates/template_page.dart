@@ -50,11 +50,9 @@ class _TemplatePageState extends State<TemplatePage> {
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                          child: Container(
-                            child: Padding(
-                                padding: const EdgeInsets.only(top: 10, left: 10),
-                                child: Image.asset('lib/assets/weight.png')),
-                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.only(top: 10, left: 10),
+                              child: Image.asset('lib/assets/weight.png')),
                           flex: 2),
                       Expanded(
                         flex: 8,
@@ -114,13 +112,7 @@ class _TemplatePageState extends State<TemplatePage> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color(0xff0068C8),
         label: Text("Create new template"),
-        onPressed: () => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const CreateTemplate()),
-          )
-        },
+        onPressed: () => addTemplate(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -144,7 +136,6 @@ class _TemplatePageState extends State<TemplatePage> {
           builder: (context) => const CreateTemplate()),
     );
     if(result){
-      print("test=");
       fetchData();
     }
   }
