@@ -82,6 +82,7 @@ class _CreateTemplateState extends State<CreateTemplate> {
                   errorExercises, style:const TextStyle(color:Colors.red, fontSize: 14.0)
               ),
               ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: selectedExercises.length,
@@ -97,7 +98,6 @@ class _CreateTemplateState extends State<CreateTemplate> {
                   );
                 },
               ),
-
             ],
           ),
         ),
