@@ -50,8 +50,7 @@ class _NewWorkoutState extends State<NewWorkout> {
         physics: const ScrollPhysics(),
         child: Column(children: <Widget>[
           ExerciseList(workout: weightWorkout!),
-          const SizedBox(height: 50),
-          const SizedBox(height: 50),
+          const SizedBox(height: 200),
         ]),
       ),
       floatingActionButton: FloatingActionButton.extended(
