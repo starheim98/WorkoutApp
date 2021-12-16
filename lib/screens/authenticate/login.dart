@@ -4,7 +4,6 @@ import 'package:workout_app/shared/constants.dart';
 
 class Login extends StatefulWidget {
   final Function toggleView;
-
   Login({required this.toggleView});
 
   @override
