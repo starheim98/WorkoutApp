@@ -59,33 +59,41 @@ class _CustomRunTileState extends State<CustomRunTile> {
                     children: [
                       Row(
                         children: [
-                          Image.asset(
-                            'lib/assets/run.png',
-                            height: 40,
+                          Expanded(
+                            flex: 1,
+                            child: Image.asset(
+                              'lib/assets/run.png',
+                              height: 40,
+                            ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(name, style: tileName),
-                              GradientText(runWorkout!.title,
-                                  gradientDirection: GradientDirection.btt,
-                                  style: const TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14.0 + 2,
-                                    fontWeight: FontWeight.bold,
-                                    height: 1.5,
-                                  ),
-                                  colors: const [
-                                    Color(0xFFC9082B),
-                                    Color(0xFF6C0A39),
-                                  ]),
-                              Text((runWorkout!.getDate()),
-                                  style: numberStyle.copyWith(height: 1.5)),
-                            ],
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(name, style: tileName),
+                                GradientText(
+                                    runWorkout!.title,
+                                    gradientDirection: GradientDirection.btt,
+                                    style: const TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 14.0 + 2,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.5,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    colors: const [
+                                      Color(0xFFC9082B),
+                                      Color(0xFF6C0A39),
+                                    ]),
+                                Text((runWorkout!.getDate()),
+                                    style: numberStyle.copyWith(height: 1.5)),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                       Row(
                         children: [
                           Column(
