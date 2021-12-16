@@ -17,7 +17,9 @@ Duration parseDuration(String s) {
 
 String timePerKm(RunWorkout runWorkout) {
   var formatting = const Duration(hours: 0, minutes: 0, seconds: 0);
-  if (runWorkout.distance != "0" && runWorkout.distance != "0.0" && runWorkout.distance != null) {
+  if (runWorkout.distance != "0" &&
+      runWorkout.distance != "0.0" &&
+      runWorkout.distance != null) {
     Duration duration = parseDuration(runWorkout.duration);
     int inseconds = duration.inSeconds;
     double secondsPerKm = 0.0;
@@ -35,7 +37,7 @@ String printDuration(Duration duration) {
   String twoDigits(int n) => n.toString().padLeft(2, "0");
   String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
   String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-  if(twoDigits(duration.inHours) == "00"){
+  if (twoDigits(duration.inHours) == "00") {
     return "${twoDigits(duration.inMinutes)}’$twoDigitSeconds”";
   } else {
     return "${twoDigits(duration.inHours)}’$twoDigitMinutes’$twoDigitSeconds”";

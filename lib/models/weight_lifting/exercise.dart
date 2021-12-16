@@ -1,11 +1,10 @@
-
 import 'package:workout_app/models/weight_lifting/weight_set.dart';
 
-class Exercise{
+class Exercise {
   final String name;
   List<WeightSet>? sets;
 
-  Exercise(this.name){
+  Exercise(this.name) {
     sets = [];
   }
 
@@ -20,15 +19,15 @@ class Exercise{
     return Exercise.complete(name, sets);
   }
 
-  void addSet(){
+  void addSet() {
     sets!.add(WeightSet.newSet());
   }
 
-  void removeSet(WeightSet set){
+  void removeSet(WeightSet set) {
     sets!.remove(set);
   }
 
-  String getName(){
+  String getName() {
     return name;
   }
 
@@ -37,10 +36,7 @@ class Exercise{
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'sets': sets
-    };
+    return {'name': name, 'sets': sets};
   }
 }
 

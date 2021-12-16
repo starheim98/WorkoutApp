@@ -51,7 +51,7 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
         backgroundColor: Colors.brown[50],
         appBar: appbar(_auth, runWorkout!.title, context),
         body: Card(
-          margin: EdgeInsets.all(16),
+          margin: const EdgeInsets.all(16),
           child: Column(
             children: <Widget>[
               Expanded(
@@ -60,40 +60,42 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
                     children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    firstName,
-                                    style: detailsName,
-                                  ),
-                                  GradientText(runWorkout!.title,
-                                      style: const TextStyle(
-                                        fontFamily: "Roboto",
-                                        fontSize: 16.0 + 2,
-                                        fontWeight: FontWeight.bold,
-                                        height: 1.5,
-                                      ),
-                                      gradientDirection: GradientDirection.btt,
-                                      colors: const [
-                                        Color(0xFFC9082B),
-                                        Color(0xFF6C0A39),
-                                      ]),
-                                  Text(
-                                    runWorkout!.getDate(),
-                                    style: numberStyle,
-                                  ),
-                                ],
-                              ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  firstName,
+                                  style: detailsName,
+                                ),
+                                GradientText(runWorkout!.title,
+                                    style: const TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 16.0 + 2,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.5,
+                                    ),
+                                    gradientDirection: GradientDirection.btt,
+                                    colors: const [
+                                      Color(0xFFC9082B),
+                                      Color(0xFF6C0A39),
+                                    ]),
+                                Text(
+                                  runWorkout!.getDate(),
+                                  style: numberStyle,
+                                ),
+                              ],
                             ),
-                            Expanded(child: Image.asset('lib/assets/run.png', height: 40), flex: 1),
-                          ],
-                        ),
-
+                          ),
+                          Expanded(
+                              child:
+                                  Image.asset('lib/assets/run.png', height: 40),
+                              flex: 1),
+                        ],
+                      ),
                       sizedBox,
                       Row(
                         children: [
@@ -140,8 +142,10 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
                       const SizedBox(height: 30),
                       Text(
                         runWorkout!.description,
-                        style:
-                            tileTitle.copyWith(fontWeight: FontWeight.normal, fontSize: 12+2, height: 1.3),
+                        style: tileTitle.copyWith(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12 + 2,
+                            height: 1.3),
                         maxLines: 5,
                       ),
                     ],
@@ -149,7 +153,7 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
                 ),
               ),
               Expanded(
-                flex:1,
+                flex: 1,
                 child: FlutterMap(
                   options: MapOptions(
                     center: LatLng(runWorkout!.getPoints().last.latitude,

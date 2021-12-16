@@ -6,7 +6,6 @@ import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/screens/home/my_page/workout_details/run_details.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
-import 'package:intl/intl.dart';
 import 'package:workout_app/shared/km_per_minute_parser.dart';
 
 import '../../../top_secret.dart';
@@ -46,7 +45,7 @@ class _CustomRunTileState extends State<CustomRunTile> {
                     RunWorkoutDetailsPage(runWorkout: runWorkout!)),
           )
         },
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.2,
           width: MediaQuery.of(context).size.width * 1,
           child: Row(
@@ -72,8 +71,7 @@ class _CustomRunTileState extends State<CustomRunTile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(name, style: tileName),
-                                GradientText(
-                                    runWorkout!.title,
+                                GradientText(runWorkout!.title,
                                     gradientDirection: GradientDirection.btt,
                                     style: const TextStyle(
                                       fontFamily: "Roboto",
@@ -93,12 +91,13 @@ class _CustomRunTileState extends State<CustomRunTile> {
                           ),
                         ],
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
                       Row(
                         children: [
                           Column(
                             children: [
-                               const Text(
+                              const Text(
                                 "Duration",
                                 style: durationDistanceAvgPaceText,
                               ),
@@ -140,9 +139,8 @@ class _CustomRunTileState extends State<CustomRunTile> {
                   ),
                 ),
               ),
-
               Expanded(
-                flex:33,
+                flex: 33,
                 child: FlutterMap(
                   options: MapOptions(
                     center: LatLng(runWorkout!.getPoints().last.latitude,

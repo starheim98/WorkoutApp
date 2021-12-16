@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
-import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/new_workout/weights/set_list.dart';
 
 class ExerciseTile extends StatefulWidget {
@@ -32,7 +31,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 onPressed: () => widget.deleteExercise(widget.exercise),
               )
             ],
@@ -40,7 +39,7 @@ class _ExerciseTileState extends State<ExerciseTile> {
           SetList(exercise: widget.exercise),
           ElevatedButton(
             onPressed: () => addSet(),
-            child: Text("Add set"),
+            child: const Text("Add set"),
           ),
           const Divider(
             color: Colors.black,

@@ -1,13 +1,11 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:flutter/material.dart';
 import 'package:workout_app/services/database.dart';
 
 class ProgressionGraph extends StatefulWidget {
   String exercise;
   bool isSelected;
+
   ProgressionGraph({Key? key, required this.exercise, required this.isSelected})
       : super(key: key);
 
@@ -18,6 +16,7 @@ class ProgressionGraph extends StatefulWidget {
 class _ProgressionGraphState extends State<ProgressionGraph> {
   DatabaseService databaseService = DatabaseService();
   List<DateAndWeight> data = [];
+
   // List<charts.Series<DateAndWeight>> series = [];
   bool animate = false;
 
@@ -32,31 +31,34 @@ class _ProgressionGraphState extends State<ProgressionGraph> {
   Widget build(BuildContext context) {
     List<charts.Series<DateAndWeight, DateTime>> series = [
       charts.Series(
-          id: "exercise",
-          data: data,
-          domainFn: (DateAndWeight series, _) => series.date,
-          measureFn: (DateAndWeight series, _) => series.weight,
+        id: "exercise",
+        data: data,
+        domainFn: (DateAndWeight series, _) => series.date,
+        measureFn: (DateAndWeight series, _) => series.weight,
       )
     ];
-    if(data.length <= 1) {
-      return Column(children: const <Widget>[
-        SizedBox(height: 30),
-        Text("Not enough data collected")
-      ],);
+    if (data.length <= 1) {
+      return Column(
+        children: const <Widget>[
+          SizedBox(height: 30),
+          Text("Not enough data collected")
+        ],
+      );
     } else {
-      return charts.TimeSeriesChart(series,
+      return charts.TimeSeriesChart(
+        series,
         animate: true,
         behaviors: [
           charts.ChartTitle('Date',
               behaviorPosition: charts.BehaviorPosition.bottom,
               titleStyleSpec: const charts.TextStyleSpec(fontSize: 15),
               titleOutsideJustification:
-              charts.OutsideJustification.middleDrawArea),
+                  charts.OutsideJustification.middleDrawArea),
           charts.ChartTitle('Weight, kg',
               behaviorPosition: charts.BehaviorPosition.start,
               titleStyleSpec: const charts.TextStyleSpec(fontSize: 15),
               titleOutsideJustification:
-              charts.OutsideJustification.middleDrawArea)
+                  charts.OutsideJustification.middleDrawArea)
         ],
       );
     }

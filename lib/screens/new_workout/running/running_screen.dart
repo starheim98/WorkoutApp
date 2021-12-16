@@ -14,6 +14,8 @@ import 'package:wakelock/wakelock.dart';
 /// https://github.com/Baseflow/flutter-geolocator/blob/master/geolocator_android/example/lib/main.dart GEOLOCATOR EXAMPLE
 /// https://pub.dev/packages/geolocator/example - ^
 /// https://github.com/fleaflet/flutter_map/blob/master/example/lib/pages/map_controller.dart CONTROLLER EXAMPLE
+/// Code is heavily inspired from the preceeding examples.
+
 class Running extends StatefulWidget {
   @override
   State<Running> createState() => _RunningState();
@@ -175,7 +177,7 @@ class _RunningState extends State<Running> {
     return distance;
   }
 
-  onBuild(){
+  onBuild() {
     _toggleListening();
   }
 
@@ -195,7 +197,7 @@ class _RunningState extends State<Running> {
             children: [
               Expanded(
                 child: Column(children: [
-                  Container(
+                  SizedBox(
                     height: 300,
                     child: FlutterMap(
                       options: MapOptions(
@@ -226,19 +228,17 @@ class _RunningState extends State<Running> {
                       ],
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 120.0,
                     child: buildTime(),
                   ),
                   sizedBox,
-                  Container(
+                  SizedBox(
                     height: 50,
                     child: Text(distance().toString() + " km",
-                      style:
-                        const TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold)),
-                          ),
+                        style: const TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.bold)),
+                  ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     ElevatedButton(
                       child: icson(),
@@ -263,8 +263,7 @@ class _RunningState extends State<Running> {
                       onPressed: () async => {
                         Wakelock.disable(),
                         stopTimer(resets: false),
-
-                            recording = false,
+                        recording = false,
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -285,10 +284,10 @@ class _RunningState extends State<Running> {
   }
 
   Icon icson() {
-    Icon icon = Icon(Icons.play_arrow);
+    Icon icon = const Icon(Icons.play_arrow);
     if (recording == false) {
       setState(() {
-        icon = Icon(Icons.play_arrow);
+        icon = const Icon(Icons.play_arrow);
       });
     } else if (recording == true) {
       setState(() {
@@ -378,8 +377,7 @@ class _RunningState extends State<Running> {
         ],
       );
 
-  Widget buildTimeCard2() =>
-      Column(
+  Widget buildTimeCard2() => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(

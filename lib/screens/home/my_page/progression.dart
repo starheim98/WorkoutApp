@@ -1,13 +1,9 @@
-import 'dart:math';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/screens/home/my_page/graph.dart';
 import 'package:workout_app/shared/select_exercise.dart';
 
 class Progression extends StatefulWidget {
-  // final List<charts.Series<dynamic, num>> seriesList;
-  // final bool animate;
   const Progression({Key? key}) : super(key: key);
 
   @override
@@ -20,8 +16,7 @@ class _ProgressionState extends State<Progression> {
 
   @override
   Widget build(BuildContext context) {
-    // return charts.LineChart(seriesList, animate: animate);
-    if(!isSelected) {
+    if (!isSelected) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -29,27 +24,28 @@ class _ProgressionState extends State<Progression> {
           SizedBox(
             width: 250,
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: const Color(0xff0068C8)),
-              child: const Text("Select an exercise"),
-              onPressed: () => selectExercise(context)
-            ),
+                style:
+                    ElevatedButton.styleFrom(primary: const Color(0xff0068C8)),
+                child: const Text("Select an exercise"),
+                onPressed: () => selectExercise(context)),
           ),
           const SizedBox(height: 70),
-          const Text("Select an exercise to display your progression",
+          const Text(
+            "Select an exercise to display your progression",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-
         ],
       );
     } else {
       return Container(
-        child: Column (
+        child: Column(
           children: <Widget>[
             const SizedBox(height: 30),
             SizedBox(
               width: 250,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: const Color(0xff0068C8)),
+                style:
+                    ElevatedButton.styleFrom(primary: const Color(0xff0068C8)),
                 child: const Text("Select another exercise"),
                 onPressed: () => setState(() {
                   isSelected = false;
@@ -58,14 +54,14 @@ class _ProgressionState extends State<Progression> {
               ),
             ),
             const SizedBox(height: 30),
-            Text(selectedExercise,
+            Text(
+              selectedExercise,
               style: const TextStyle(fontSize: 20),
             ),
             ConstrainedBox(
-                child: ProgressionGraph(exercise: selectedExercise, isSelected: isSelected),
-              constraints: const BoxConstraints(
-                maxHeight: 300
-              ),
+              child: ProgressionGraph(
+                  exercise: selectedExercise, isSelected: isSelected),
+              constraints: const BoxConstraints(maxHeight: 300),
             ),
           ],
         ),

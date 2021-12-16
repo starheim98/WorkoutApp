@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/weight_set.dart';
-import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/new_workout/weights/set_tile.dart';
 
 class SetList extends StatefulWidget {
@@ -14,7 +13,6 @@ class SetList extends StatefulWidget {
 }
 
 class _SetListState extends State<SetList> {
-
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -27,7 +25,7 @@ class _SetListState extends State<SetList> {
         itemBuilder: (BuildContext context, int index) {
           WeightSet set = widget.exercise.getSets()![index];
           return SetTile(
-            key: ObjectKey(set),
+              key: ObjectKey(set),
               deleteSet: deleteSet,
               set: widget.exercise.getSets()![index],
               index: index);

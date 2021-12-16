@@ -6,15 +6,18 @@ import 'package:workout_app/screens/home/home_tab/custom_weightworkout_tile.dart
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/loading.dart';
 
-
 class HomeTab extends StatefulWidget {
   List<RunWorkout> runWorkouts;
   List<WeightWorkout> weightWorkouts;
   List<dynamic> friendsWorkouts;
   bool loading;
 
-  HomeTab({Key? key, required this.runWorkouts, required this.weightWorkouts,
-    required this.friendsWorkouts, required this.loading})
+  HomeTab(
+      {Key? key,
+      required this.runWorkouts,
+      required this.weightWorkouts,
+      required this.friendsWorkouts,
+      required this.loading})
       : super(key: key);
 
   @override
@@ -39,11 +42,10 @@ class _HomeTabState extends State<HomeTab> {
     weightWorkouts = widget.weightWorkouts;
     friendsWorkouts = widget.friendsWorkouts;
     fetchData();
-    // TODO: reverse sort
     workoutsList = List.from(runWorkouts)
       ..addAll(weightWorkouts)
       ..addAll(friendsWorkouts);
-    workoutsList.sort((a, b) => a.date.compareTo(b.date));
+    workoutsList.sort((b, a) => a.date.compareTo(b.date));
 
     super.didUpdateWidget(oldWidget);
   }
@@ -72,7 +74,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    if(loading) {
+    if (loading) {
       return const Loading();
     } else if (workoutsList.length >= 1) {
       return ListView.builder(
