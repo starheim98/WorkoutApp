@@ -42,7 +42,7 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(left: 16, right: 16, top: 9, bottom: 9),
+      margin: const EdgeInsets.only(left: 16, right: 16, top: 9, bottom: 9),
       elevation: 3,
       child: GestureDetector(
         onTap: () => {
@@ -54,7 +54,7 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
           )
         },
         child: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           height: MediaQuery.of(context).size.height * 0.15,
           width: MediaQuery.of(context).size.width * 1,
           child: Row(
@@ -143,7 +143,7 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
                                 child: Text(
                                   weightWorkout!.exercises[index].name,
                                   style:
-                                      TextStyle(fontSize: 12 + 2, height: 1.5),
+                                      const TextStyle(fontSize: 12 + 2, height: 1.5),
                                 )),
                             Expanded(
                                 flex: 1,
@@ -151,7 +151,7 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
                                     weightWorkout!.exercises[index].sets!.length
                                             .toString() +
                                         "sets ",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12 + 2,
                                         color: Color(0xFF737373)))),
                           ],

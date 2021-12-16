@@ -25,13 +25,13 @@ String timePerKm(RunWorkout runWorkout) {
       secondsPerKm = inseconds / double.parse(runWorkout.distance);
       formatting = parseDuration(secondsPerKm.toString());
     }
-    return _printDuration(formatting);
+    return printDuration(formatting);
   } else {
-    return _printDuration(formatting);
+    return printDuration(formatting);
   }
 }
 
-String _printDuration(Duration duration) {
+String printDuration(Duration duration) {
   String twoDigits(int n) => n.toString().padLeft(2, "0");
   String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
   String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
@@ -39,5 +39,21 @@ String _printDuration(Duration duration) {
     return "${twoDigits(duration.inMinutes)}’$twoDigitSeconds”";
   } else {
     return "${twoDigits(duration.inHours)}’$twoDigitMinutes’$twoDigitSeconds”";
+  }
+}
+
+String timePerKmWithoutRunworkout(String distance, String durationString) {
+  var formatting = const Duration(hours: 0, minutes: 0, seconds: 0);
+  if (distance != "0" && distance != "0.0" && distance != null) {
+    Duration duration = parseDuration(durationString);
+    int inseconds = duration.inSeconds;
+    double secondsPerKm = 0.0;
+    if (inseconds != 0) {
+      secondsPerKm = inseconds / double.parse(distance);
+      formatting = parseDuration(secondsPerKm.toString());
+    }
+    return printDuration(formatting);
+  } else {
+    return printDuration(formatting);
   }
 }
