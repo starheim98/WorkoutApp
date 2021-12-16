@@ -56,126 +56,120 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    firstName,
-                                    style: detailsName,
-                                  ),
-                                  GradientText(runWorkout!.title,
-                                      style: const TextStyle(
-                                        fontFamily: "Roboto",
-                                        fontSize: 16.0 + 2,
-                                        fontWeight: FontWeight.bold,
-                                        height: 1.5,
-                                      ),
-                                      gradientDirection: GradientDirection.btt,
-                                      colors: const [
-                                        Color(0xFFC9082B),
-                                        Color(0xFF6C0A39),
-                                      ]),
-                                  Text(
-                                    runWorkout!.getDate(),
-                                    style: numberStyle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(child: Image.asset('lib/assets/run.png', height: 40), flex: 1),
-                          ],
-                        ),
-
-                      sizedBox,
+                child: Column(
+                  children: [
                       Row(
                         children: [
-                          Column(
-                            children: [
-                              const Text(
-                                "Duration",
-                                style: durationDistanceAvgPaceText,
-                              ),
-                              Text(
-                                runWorkout!.duration,
-                                style: numberStyle,
-                              ),
-                            ],
+                          Expanded(
+                            flex: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  firstName,
+                                  style: detailsName,
+                                ),
+                                GradientText(runWorkout!.title,
+                                    style: const TextStyle(
+                                      fontFamily: "Roboto",
+                                      fontSize: 16.0 + 2,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.5,
+                                    ),
+                                    gradientDirection: GradientDirection.btt,
+                                    colors: const [
+                                      Color(0xFFC9082B),
+                                      Color(0xFF6C0A39),
+                                    ]),
+                                Text(
+                                  runWorkout!.getDate(),
+                                  style: numberStyle,
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Column(
-                            children: [
-                              const Text(
-                                "Distance",
-                                style: durationDistanceAvgPaceText,
-                              ),
-                              Text(runWorkout!.distance + " km",
-                                  style: numberStyle),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Column(
-                            children: [
-                              const Text(
-                                "Avg. pace",
-                                style: durationDistanceAvgPaceText,
-                              ),
-                              Text(timePerKm(runWorkout!).toString() + " /km",
-                                  style: numberStyle),
-                            ],
-                          ),
+                          Expanded(child: Image.asset('lib/assets/run.png', height: 40), flex: 1),
                         ],
                       ),
-                      SizedBox(height: 30),
-                      Text(
-                        runWorkout!.description +
-                            "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
-                                "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
-                                "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
-                                "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
-                                "",
-                        style:
-                            tileTitle.copyWith(fontWeight: FontWeight.normal, fontSize: 12+2, height: 1.3),
-                        maxLines: 5,
-                      ),
-                    ],
-                  ),
+
+                    sizedBox,
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            const Text(
+                              "Duration",
+                              style: durationDistanceAvgPaceText,
+                            ),
+                            Text(
+                              runWorkout!.duration,
+                              style: numberStyle,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 25,
+                        ),
+                        Column(
+                          children: [
+                            const Text(
+                              "Distance",
+                              style: durationDistanceAvgPaceText,
+                            ),
+                            Text(runWorkout!.distance + " km",
+                                style: numberStyle),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 25,
+                        ),
+                        Column(
+                          children: [
+                            const Text(
+                              "Avg. pace",
+                              style: durationDistanceAvgPaceText,
+                            ),
+                            Text(timePerKm(runWorkout!).toString() + " /km",
+                                style: numberStyle),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Text(
+                      runWorkout!.description +
+                          "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
+                              "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
+                              "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
+                              "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
+                              "",
+                      style:
+                          tileTitle.copyWith(fontWeight: FontWeight.normal, fontSize: 12+2, height: 1.3),
+                      maxLines: 5,
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  width: MediaQuery.of(context).size.width,
-                  child: FlutterMap(
-                    options: MapOptions(
-                      center: LatLng(runWorkout!.getPoints().last.latitude,
-                          runWorkout!.getPoints().last.longitude),
-                      zoom: 15.0,
-                    ),
-                    layers: [
-                      tileLayerOptions,
-                      PolylineLayerOptions(
-                        polylines: [
-                          Polyline(
-                              points: runWorkout!.getPoints(),
-                              strokeWidth: 4.0,
-                              color: Colors.purple),
-                        ],
-                      ),
-                    ],
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.46,
+                width: MediaQuery.of(context).size.width,
+                child: FlutterMap(
+                  options: MapOptions(
+                    center: LatLng(runWorkout!.getPoints().last.latitude,
+                        runWorkout!.getPoints().last.longitude),
+                    zoom: 15.0,
                   ),
+                  layers: [
+                    tileLayerOptions,
+                    PolylineLayerOptions(
+                      polylines: [
+                        Polyline(
+                            points: runWorkout!.getPoints(),
+                            strokeWidth: 4.0,
+                            color: Colors.purple),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
