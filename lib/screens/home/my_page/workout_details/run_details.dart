@@ -56,7 +56,7 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: Flexible(
+                child: Expanded(
                   flex: 1,
                   child: Column(
                     children: [
@@ -153,7 +153,7 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
                   ),
                 ),
               ),
-              Flexible(
+              Expanded(
                 flex: 1,
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.5,

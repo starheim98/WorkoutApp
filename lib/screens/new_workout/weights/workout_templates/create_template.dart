@@ -81,22 +81,26 @@ class _CreateTemplateState extends State<CreateTemplate> {
               Text(
                   errorExercises, style:const TextStyle(color:Colors.red, fontSize: 14.0)
               ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: selectedExercises.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    margin: const EdgeInsets.only(left: 16, right: 16, bottom: 10),
-                    child: ListTile(
-                      title: Text(selectedExercises[index]),
-                      trailing: IconButton(
-                        onPressed: () => deleteExercise(index), icon: const Icon(Icons.delete),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.45
+                ),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: selectedExercises.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      margin: const EdgeInsets.only(left: 16, right: 16, bottom: 10),
+                      child: ListTile(
+                        title: Text(selectedExercises[index]),
+                        trailing: IconButton(
+                          onPressed: () => deleteExercise(index), icon: const Icon(Icons.delete),
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ],
           ),
