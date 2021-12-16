@@ -9,28 +9,65 @@ class SelectExercise extends StatelessWidget {
     "Chest",
     "Back",
     "Legs",
-    "Shoulders"
+    "Shoulders",
+    "Abs",
+    "Biceps",
+    "Triceps"
   ];
 
   static const List<String> chestExercises = [
     "Benchpress",
     "Dummbell press",
     "Incline dumbell press",
-    "Cable crossover"
+    "Cable crossover",
+    "Flies",
+    "Dips"
   ];
   static const List<String> backExercises = [
     "Pulldowns",
     "Seated row",
     "Pullups",
-    "Barbell row"
+    "Barbell row",
+    "Deadlift",
+    "Face pulls"
   ];
-  static const List<String> legExercies = ["Squat"];
-  static const List<String> shoulderExercices = ["Military press"];
+  static const List<String> legExercies = [
+    "Squat",
+    "Leg press",
+    "Front squat",
+    "Lunges",
+    "Leg extensions",
+    "Calf raises"
+  ];
+  static const List<String> shoulderExercices = [
+    "Military press",
+    "Lateral raises",
+    "Upright rows"
+  ];
+  static const List<String> absExercices = [
+    "Crunches",
+    "Cable crunches",
+    "Hip thrust"
+  ];
+  static const List<String> bicepsExercises = [
+    "Barbell curl",
+    "Dumbell curl",
+    "Drag curl",
+    "EZ-bar curl"
+  ];
+  static const List<String> tricepsExercises = [
+    "Pushdowns",
+    "Cable purshdown",
+    "Triceps extensions"
+  ];
   static const List<List<String>> exercices = [
     chestExercises,
     backExercises,
     legExercies,
-    shoulderExercices
+    shoulderExercices,
+    absExercices,
+    bicepsExercises,
+    tricepsExercises
   ];
 
   @override
