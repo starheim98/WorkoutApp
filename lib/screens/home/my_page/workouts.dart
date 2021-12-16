@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -89,7 +89,10 @@ class _MyWorkoutsState extends State<MyWorkouts> {
         shrinkWrap: true,
         itemCount: runWorkouts.length,
         itemBuilder: (BuildContext context, int index) {
-          return runTile(runWorkouts[index], LatLng(runWorkouts[index].getPoints().last.latitude, runWorkouts[index].getPoints().last.longitude),
+          return runTile(
+              runWorkouts[index],
+              LatLng(runWorkouts[index].getPoints().last.latitude,
+                  runWorkouts[index].getPoints().last.longitude),
               getPoints(runWorkouts[index]));
         },
       )
@@ -104,7 +107,10 @@ class _MyWorkoutsState extends State<MyWorkouts> {
               minWidth: 125,
               initialLabelIndex: _selectedIndex,
               totalSwitches: 2,
-              activeBgColors: const [[Color(0xff4574EB), Color(0xff005FB7)], [Color(0xffC9082B), Color(0xff6C0A39)]] ,
+              activeBgColors: const [
+                [Color(0xff4574EB), Color(0xff005FB7)],
+                [Color(0xffC9082B), Color(0xff6C0A39)]
+              ],
               labels: const ["Weights", "Runs"],
               onToggle: (index) => {toggleStuff(index)},
             ),
@@ -117,26 +123,107 @@ class _MyWorkoutsState extends State<MyWorkouts> {
 
   void toggleStuff(int index) {
     setState(() => {
-      _selectedIndex = index,
-    });
+          _selectedIndex = index,
+        });
   }
+
+  runTile(RunWorkout runWorkout, LatLng latLng, List<LatLng> points) => Card(
+      child: ListTile(
+        onTap: () => runDetailRoute(runWorkout),
+        subtitle: Row(children: [
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GradientText(
+                  runWorkout.title,
+                  gradientDirection: GradientDirection.btt,
+                  colors: const [
+                    Color(0xFFC9082B),
+                    Color(0xFF6C0A39),
+                  ],
+                  style: tileTitle,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+                Text("Date: " + runWorkout.getDate(),
+                    style: durationDistanceAvgPaceText),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+                Text("Duration: " + runWorkout.getDuration(),
+                    style: durationDistanceAvgPaceText),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.09,
+              child: FlutterMap(
+                options: MapOptions(
+                  center: latLng,
+                  zoom: 13.0,
+                ),
+                mapController: mapController,
+                layers: [
+                  tileLayerOptions,
+                  PolylineLayerOptions(
+                    polylines: [
+                      Polyline(
+                          points: points, strokeWidth: 4.0, color: Colors.purple),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
+        ]),
+        leading: Image.asset('lib/assets/run.png', height: 40),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () async {
+            var result = await Dialogues().confirmDeleteDialogue(
+                context,
+                "Delete workout",
+                "Are you sure you want to permanently remove the workout?");
+            if (result) {
+              deleteWorkout(runWorkout.id, false);
+            }
+          },
+        ),
+      ));
 
   workoutTile(WeightWorkout weightWorkout) => Card(
         child: ListTile(
-          title: Text(weightWorkout.name!),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Date: " + weightWorkout.getDate()!),
-              Text("Duration: " + weightWorkout.getDuration())
-            ],
-          ),
-          leading: const Icon(Icons.fitness_center),
+          subtitle: Row(children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GradientText(
+                  weightWorkout.name!,
+                  gradientDirection: GradientDirection.btt,
+                  colors: const [
+                    Color(0xFF4574EB),
+                    Color(0XFF005FB7),
+                  ],
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16+2),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+                Text("Date: " + weightWorkout.getDate()!,
+                    style: durationDistanceAvgPaceText),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+                Text("Duration: " + weightWorkout.getDuration(),
+                    style: durationDistanceAvgPaceText),
+              ],
+            ),
+          ]),
+          leading: Image.asset('lib/assets/weight.png', height: 51),
           trailing: IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () async {
               var result = await Dialogues().confirmDeleteDialogue(
-                  context, "Delete workout", "Are you sure you want to permanently remove the workout?");
+                  context,
+                  "Delete workout",
+                  "Are you sure you want to permanently remove the workout?");
               if (result) {
                 deleteWorkout(weightWorkout.id!, true);
               }
@@ -147,7 +234,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
       );
 
   deleteWorkout(String id, bool isWeighWorkout) {
-    if(isWeighWorkout){
+    if (isWeighWorkout) {
       databaseService!.deleteWorkout(id);
     } else {
       databaseService!.deleteRun(id);
@@ -173,46 +260,4 @@ class _MyWorkoutsState extends State<MyWorkouts> {
             builder: (context) =>
                 RunWorkoutDetailsPage(runWorkout: runWorkout)));
   }
-
-  runTile(RunWorkout runWorkout, LatLng latLng, List<LatLng> points) => Card(
-          child: ListTile(
-        title: Text(runWorkout.title),
-        onTap: () => runDetailRoute(runWorkout),
-        subtitle: Text("Desc: " +
-            runWorkout.description +
-            ". Duration: " +
-            runWorkout.getDuration() +
-            ". Distance: " +
-            runWorkout.distance),
-        leading: SizedBox(
-          height: 50,
-          width: 50,
-          child: FlutterMap(
-            options: MapOptions(
-              center: latLng,
-              zoom: 13.0,
-            ),
-            mapController: mapController,
-            layers: [
-              tileLayerOptions,
-              PolylineLayerOptions(
-                polylines: [
-                  Polyline(
-                      points: points, strokeWidth: 4.0, color: Colors.purple),
-                ],
-              ),
-            ],
-          ),
-        ),
-          trailing: IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () async {
-                var result = await Dialogues().confirmDeleteDialogue(
-                    context, "Delete workout", "Are you sure you want to permanently remove the workout?");
-                if (result) {
-                  deleteWorkout(runWorkout.id, false);
-                }
-              },
-            ),
-      ));
 }
