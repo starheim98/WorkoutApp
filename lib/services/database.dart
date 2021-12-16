@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:workout_app/models/account.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/exercise.dart';
@@ -12,30 +10,28 @@ import 'dart:convert';
 
 import 'package:workout_app/screens/home/my_page/graph.dart';
 
-
 class DatabaseService {
   final String uid = FirebaseAuth.instance.currentUser!.uid;
 
   // collection reference
   final CollectionReference weightWorkoutCollection =
-  FirebaseFirestore.instance.collection('weight_workouts');
+      FirebaseFirestore.instance.collection('weight_workouts');
   final CollectionReference userCollection =
-  FirebaseFirestore.instance.collection('user');
+      FirebaseFirestore.instance.collection('user');
   final CollectionReference usersCollection =
-  FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('users');
   final CollectionReference runsCollection =
-  FirebaseFirestore.instance.collection('runs');
+      FirebaseFirestore.instance.collection('runs');
   final CollectionReference templateCollection =
-  FirebaseFirestore.instance.collection('template');
-
+      FirebaseFirestore.instance.collection('template');
 
   Future<List<RunWorkout>> getRunsData() async {
-    QuerySnapshot snapshot = await runsCollection.where(
-        'userId', isEqualTo: uid).get();
+    QuerySnapshot snapshot =
+        await runsCollection.where('userId', isEqualTo: uid).get();
     List<RunWorkout> runWorkouts = [];
     for (var document in snapshot.docs) {
       RunWorkout runWorkout =
-      RunWorkout.fromJson(document.data() as Map<String, dynamic>);
+          RunWorkout.fromJson(document.data() as Map<String, dynamic>);
       runWorkouts.add(runWorkout);
     }
     return runWorkouts;
@@ -49,8 +45,8 @@ class DatabaseService {
       String firstName = json["firstName"];
       String lastName = json["lastName"];
       if (query.isNotEmpty &&
-          (firstName.toLowerCase().startsWith(query.toLowerCase())
-              || lastName.toLowerCase().startsWith(query.toLowerCase()))) {
+          (firstName.toLowerCase().startsWith(query.toLowerCase()) ||
+              lastName.toLowerCase().startsWith(query.toLowerCase()))) {
         if (json['uid'] != uid) {
           foundAccouts.add(AccountData.fromJson(json));
         }
@@ -70,24 +66,24 @@ class DatabaseService {
     // get collection of friends
     AccountData user = await getThisUser();
     for (String friend in user.friends) {
-      QuerySnapshot runSnapshot = await runsCollection.where(
-          'userId', isEqualTo: friend).get();
-      QuerySnapshot weightSnapshot = await weightWorkoutCollection.where(
-          'userId', isEqualTo: friend).get();
+      QuerySnapshot runSnapshot =
+          await runsCollection.where('userId', isEqualTo: friend).get();
+      QuerySnapshot weightSnapshot = await weightWorkoutCollection
+          .where('userId', isEqualTo: friend)
+          .get();
 
       for (var document in runSnapshot.docs) {
         RunWorkout runWorkout =
-        RunWorkout.fromJson(document.data() as Map<String, dynamic>);
+            RunWorkout.fromJson(document.data() as Map<String, dynamic>);
         runWorkouts.add(runWorkout);
       }
       for (var document in weightSnapshot.docs) {
         WeightWorkout weightWorkout =
-        WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
+            WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
         weightWorkouts.add(weightWorkout);
       }
     }
-    return List.from(runWorkouts)
-      ..addAll(weightWorkouts);
+    return List.from(runWorkouts)..addAll(weightWorkouts);
   }
 
   Future<bool> followUser(String friendUid) async {
@@ -125,25 +121,25 @@ class DatabaseService {
 
     return weightWorkoutCollection
         .add({
-      'name': weightWorkout.name,
-      'date': weightWorkout.date,
-      'duration': weightWorkout.duration,
-      'exercises': exerciseJson,
-      'userId': uid.toString(),
-      'id': "",
-    })
+          'name': weightWorkout.name,
+          'date': weightWorkout.date,
+          'duration': weightWorkout.duration,
+          'exercises': exerciseJson,
+          'userId': uid.toString(),
+          'id': "",
+        })
         .then((value) =>
-        weightWorkoutCollection.doc(value.id).update({"id": value.id}))
+            weightWorkoutCollection.doc(value.id).update({"id": value.id}))
         .catchError((error) => print("Failed to add workout $error"));
   }
 
   Future<List<WeightWorkout>> getWeightWorkouts() async {
     List<WeightWorkout> weightWorkouts = [];
-    QuerySnapshot snapshot = await weightWorkoutCollection.where(
-        'userId', isEqualTo: uid).get();
+    QuerySnapshot snapshot =
+        await weightWorkoutCollection.where('userId', isEqualTo: uid).get();
     for (var document in snapshot.docs) {
       WeightWorkout weightWorkout =
-      WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
+          WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
       weightWorkouts.add(weightWorkout);
     }
     return weightWorkouts;
@@ -153,16 +149,17 @@ class DatabaseService {
       List<GeoPoint> points) async {
     if (title.isEmpty) title = "Went for a run today!";
 
-    return runsCollection.add({
-      "title": title,
-      "description": desc,
-      "date": DateTime.now().toString(),
-      "duration": duration,
-      "distance": distance.toString(),
-      "geopoints": points,
-      "userId": uid.toString(),
-      'id': "",
-    })
+    return runsCollection
+        .add({
+          "title": title,
+          "description": desc,
+          "date": DateTime.now().toString(),
+          "duration": duration,
+          "distance": distance.toString(),
+          "geopoints": points,
+          "userId": uid.toString(),
+          'id': "",
+        })
         .then((value) => runsCollection.doc(value.id).update({"id": value.id}))
         .catchError((error) => print("Failed to add run workout $error"));
   }
@@ -192,11 +189,11 @@ class DatabaseService {
 
   Future<List<DateAndWeight>> getExerciseData(String exercise) async {
     List<DateAndWeight> data = [];
-    QuerySnapshot snapshot = await weightWorkoutCollection.where(
-        'userId', isEqualTo: uid).get();
+    QuerySnapshot snapshot =
+        await weightWorkoutCollection.where('userId', isEqualTo: uid).get();
     for (var document in snapshot.docs) {
-      WeightWorkout workout = WeightWorkout.fromJson(
-          document.data() as Map<String, dynamic>);
+      WeightWorkout workout =
+          WeightWorkout.fromJson(document.data() as Map<String, dynamic>);
       for (Exercise ex in workout.exercises) {
         if (ex.name == exercise) {
           int max = 0;
@@ -213,24 +210,25 @@ class DatabaseService {
   }
 
   Future addTemplate(WorkoutTemplate template) async {
-    return templateCollection.add({
-      "name": template.name,
-      "exercises": template.exercises,
-      "userId": uid.toString(),
-      'id': "",
-    })
+    return templateCollection
+        .add({
+          "name": template.name,
+          "exercises": template.exercises,
+          "userId": uid.toString(),
+          'id': "",
+        })
         .then((value) =>
-        templateCollection.doc(value.id).update({"id": value.id}))
+            templateCollection.doc(value.id).update({"id": value.id}))
         .catchError((error) => print("Failed to add template $error"));
   }
 
   Future<List<WorkoutTemplate>> getTemplates() async {
     List<WorkoutTemplate> templates = [];
-    QuerySnapshot snapshot = await templateCollection.where(
-        'userId', isEqualTo: uid).get();
+    QuerySnapshot snapshot =
+        await templateCollection.where('userId', isEqualTo: uid).get();
     for (var document in snapshot.docs) {
       WorkoutTemplate workoutTemplate =
-      WorkoutTemplate.fromJson(document.data() as Map<String, dynamic>);
+          WorkoutTemplate.fromJson(document.data() as Map<String, dynamic>);
       templates.add(workoutTemplate);
     }
     return templates;

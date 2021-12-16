@@ -5,7 +5,6 @@ import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/screens/home/my_page/workout_details/weight_details.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
-import 'package:intl/intl.dart';
 
 class CustomWeightworkoutTile extends StatefulWidget {
   WeightWorkout weightWorkout;
@@ -129,7 +128,7 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
               ),
               Expanded(
                   flex: 2,
-                  child: Container(
+                  child: SizedBox(
                     height: double.infinity, //match parent POG
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -142,8 +141,8 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
                                 flex: 2,
                                 child: Text(
                                   weightWorkout!.exercises[index].name,
-                                  style:
-                                      const TextStyle(fontSize: 12 + 2, height: 1.5),
+                                  style: const TextStyle(
+                                      fontSize: 12 + 2, height: 1.5),
                                 )),
                             Expanded(
                                 flex: 1,
@@ -165,7 +164,6 @@ class _CustomWeightworkoutTileState extends State<CustomWeightworkoutTile> {
       ),
     );
   }
-
 
   Future getName(String uid) async {
     var result = await databaseService.getUser(uid);

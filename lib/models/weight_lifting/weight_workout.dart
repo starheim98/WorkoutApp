@@ -1,4 +1,3 @@
-
 import 'package:workout_app/models/weight_lifting/exercise.dart';
 import 'package:workout_app/models/weight_lifting/workout_template.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +16,7 @@ class WeightWorkout {
   }
 
   /// Initializes a workout session from existing template
-  WeightWorkout.template(WorkoutTemplate template){
+  WeightWorkout.template(WorkoutTemplate template) {
     _date = DateTime.now().toString();
     _name = template.name;
     List<Exercise> exercises = [];
@@ -31,14 +30,15 @@ class WeightWorkout {
     _exercises = exercises;
   }
 
-  WeightWorkout.complete(this._name, this._date, this._duration, this._exercises, this._uid, this._id);
+  WeightWorkout.complete(this._name, this._date, this._duration,
+      this._exercises, this._uid, this._id);
 
   factory WeightWorkout.fromJson(Map<String, dynamic> json) {
     String name = json['name'];
     String date = json['date'];
     int duration = json['duration'];
     List<Exercise> exercices = [];
-    for (var exercise in json['exercises']){
+    for (var exercise in json['exercises']) {
       exercices.add(Exercise.fromJson(exercise));
     }
     String uid = json['userId'];
@@ -52,19 +52,19 @@ class WeightWorkout {
 
   String? get date => _date;
 
-  void addExercise(Exercise exercise){
+  void addExercise(Exercise exercise) {
     _exercises.add(exercise);
   }
 
-  void removeExercise(Exercise exercise){
+  void removeExercise(Exercise exercise) {
     _exercises.remove(exercise);
   }
 
-  void finishWorkout(){
+  void finishWorkout() {
     _duration = DateTime.now().difference(DateTime.parse(date!)).inMinutes;
   }
 
-  List<Exercise> getExercises(){
+  List<Exercise> getExercises() {
     return _exercises;
   }
 
@@ -87,18 +87,19 @@ class WeightWorkout {
 
     s = duration - (h * 3600) - (m * 60);
 
-    String hourLeft = h.toString().length < 2 ? "0" + h.toString() : h.toString();
+    String hourLeft =
+        h.toString().length < 2 ? "0" + h.toString() : h.toString();
 
     String minuteLeft =
-    m.toString().length < 2 ? "0" + m.toString() : m.toString();
+        m.toString().length < 2 ? "0" + m.toString() : m.toString();
 
     String secondsLeft =
-    s.toString().length < 2 ? "0" + s.toString() : s.toString();
+        s.toString().length < 2 ? "0" + s.toString() : s.toString();
 
-    if(hourLeft == "00"){
+    if (hourLeft == "00") {
       return "$minuteLeft'$secondsLeft''";
     } else {
-    return "$hourLeft'$minuteLeft'$secondsLeft''";
+      return "$hourLeft'$minuteLeft'$secondsLeft''";
     }
   }
 
@@ -124,4 +125,3 @@ class WeightWorkout {
 
   List<Exercise> get exercises => _exercises;
 }
-

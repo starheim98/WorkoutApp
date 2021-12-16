@@ -1,4 +1,3 @@
-import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 
 /// Account class for connection to Firebase.
 class Account{

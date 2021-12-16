@@ -1,8 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:searchfield/searchfield.dart';
 import 'package:workout_app/models/account.dart';
-import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 
 class Friends extends StatefulWidget {
@@ -32,7 +29,6 @@ class _FriendsState extends State<Friends> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -42,10 +38,7 @@ class _FriendsState extends State<Friends> {
           children: <Widget>[
             const SizedBox(height: 30),
             TextField(
-                onChanged: (query) => {
-                  searchField = query,
-                  onSearch(query)
-                },
+                onChanged: (query) => {searchField = query, onSearch(query)},
                 decoration: const InputDecoration(hintText: "Find friends")),
             const SizedBox(height: 20),
             ListView.builder(
@@ -91,14 +84,14 @@ class _FriendsState extends State<Friends> {
 
   Future followUser(String uid) async {
     bool result = await databaseService.followUser(uid);
-    if(result) {
+    if (result) {
       getUser();
     }
   }
 
   Future unfollowUser(String uid) async {
     bool result = await databaseService.unfollowUser(uid);
-    if(result) {
+    if (result) {
       getUser();
     }
   }

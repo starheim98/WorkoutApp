@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:workout_app/models/weight_lifting/template.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 import 'package:workout_app/models/weight_lifting/workout_template.dart';
 import 'package:workout_app/screens/new_workout/weights/weightlift_screen.dart';
@@ -29,14 +27,17 @@ class _TemplatePageState extends State<TemplatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Templates")),
+      appBar: AppBar(title: const Text("Templates")),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 20),
-            const Text("Your templates", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+            const Text(
+              "Your templates",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -46,7 +47,8 @@ class _TemplatePageState extends State<TemplatePage> {
                 WorkoutTemplate template = templates[index];
                 return Card(
                   elevation: 2,
-                  margin: const EdgeInsets.only(left: 16, right: 16, bottom: 13),
+                  margin:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 13),
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -57,7 +59,8 @@ class _TemplatePageState extends State<TemplatePage> {
                       Expanded(
                         flex: 8,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
+                          padding: const EdgeInsets.only(
+                              left: 16, top: 10, bottom: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -65,26 +68,28 @@ class _TemplatePageState extends State<TemplatePage> {
                                 template.name,
                                 gradientDirection: GradientDirection.btt,
                                 style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold
-                                ),
-                                colors: const [Color(0xff4574EB), Color(0xff005FB7)],
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                colors: const [
+                                  Color(0xff4574EB),
+                                  Color(0xff005FB7)
+                                ],
                               ),
                               SingleChildScrollView(
                                 child: ListView.builder(
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount: template.exercises.length,
-                                  itemBuilder: (BuildContext context, int index) {
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
                                     return GestureDetector(
-                                      onTap: () => selectTemplate(template, context),
+                                      onTap: () =>
+                                          selectTemplate(template, context),
                                       child: Padding(
                                         padding: const EdgeInsets.only(top: 5),
                                         child: Text(
                                           template.exercises[index],
                                           style: const TextStyle(
-                                            color: Color(0xff737373)
-                                          ),
+                                              color: Color(0xff737373)),
                                         ),
                                       ),
                                     );
@@ -95,11 +100,12 @@ class _TemplatePageState extends State<TemplatePage> {
                           ),
                         ),
                       ),
-                      Expanded(flex: 2,
+                      Expanded(
+                        flex: 2,
                         child: IconButton(
                             onPressed: () => deleteTemplate(template.id!),
-                            icon: const Icon(Icons.delete, color: Color(0xff737373))
-                        ),
+                            icon: const Icon(Icons.delete,
+                                color: Color(0xff737373))),
                       ),
                     ],
                   ),
@@ -111,31 +117,29 @@ class _TemplatePageState extends State<TemplatePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color(0xff0068C8),
-        label: Text("Create new template"),
+        label: const Text("Create new template"),
         onPressed: () => addTemplate(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-
-  void selectTemplate(WorkoutTemplate template, BuildContext context){
+  void selectTemplate(WorkoutTemplate template, BuildContext context) {
     WeightWorkout workout = WeightWorkout.template(template);
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => NewWorkout.template(
-              workout: workout,
-            )));
+                  workout: workout,
+                )));
   }
 
   void addTemplate() async {
     bool result = await Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => const CreateTemplate()),
+      MaterialPageRoute(builder: (context) => const CreateTemplate()),
     );
-    if(result){
+    if (result) {
       fetchData();
     }
   }
@@ -146,10 +150,9 @@ class _TemplatePageState extends State<TemplatePage> {
       templates = result;
     });
   }
+
   void deleteTemplate(String id) async {
     var result = await databaseService.deleteTemplate(id);
     fetchData();
   }
 }
-
-

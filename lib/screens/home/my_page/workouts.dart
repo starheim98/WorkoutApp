@@ -1,18 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/models/weight_lifting/weight_workout.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:workout_app/screens/home/my_page/workout_details/run_details.dart';
 import 'package:workout_app/screens/home/my_page/workout_details/weight_details.dart';
-import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
 import 'package:workout_app/shared/dialogues.dart';
@@ -52,7 +47,9 @@ class _MyWorkoutsState extends State<MyWorkouts> {
     if (mounted) {
       setState(() {
         weightWorkouts = weightWorkoutData;
+        weightWorkouts.sort((b, a) => a.date!.compareTo(b.date!));
         runWorkouts = runWorkoutData;
+        runWorkouts.sort((b, a) => a.date.compareTo(b.date));
       });
     }
   }
@@ -128,7 +125,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
   }
 
   runTile(RunWorkout runWorkout, LatLng latLng, List<LatLng> points) => Card(
-      child: ListTile(
+          child: ListTile(
         onTap: () => runDetailRoute(runWorkout),
         subtitle: Row(children: [
           Expanded(
@@ -169,7 +166,9 @@ class _MyWorkoutsState extends State<MyWorkouts> {
                   PolylineLayerOptions(
                     polylines: [
                       Polyline(
-                          points: points, strokeWidth: 4.0, color: Colors.purple),
+                          points: points,
+                          strokeWidth: 4.0,
+                          color: Colors.purple),
                     ],
                   ),
                 ],
@@ -205,7 +204,8 @@ class _MyWorkoutsState extends State<MyWorkouts> {
                     Color(0xFF4574EB),
                     Color(0XFF005FB7),
                   ],
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16+2),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16 + 2),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.008),
                 Text("Date: " + weightWorkout.getDate()!,

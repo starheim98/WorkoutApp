@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -26,10 +25,9 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       child: MaterialApp(
         theme: ThemeData(
-          backgroundColor: backgroundColor,
-          appBarTheme: const AppBarTheme(color: Color(0xff245CB6)),
-          primaryColor: const Color(0xff245CB6)
-        ),
+            backgroundColor: backgroundColor,
+            appBarTheme: const AppBarTheme(color: Color(0xff245CB6)),
+            primaryColor: const Color(0xff245CB6)),
         home: Wrapper(),
         routes: {
           'home': (context) => const Wrapper(),
@@ -38,4 +36,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

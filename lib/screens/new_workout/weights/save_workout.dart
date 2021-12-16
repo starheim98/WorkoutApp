@@ -6,6 +6,7 @@ import 'package:workout_app/shared/constants.dart';
 
 class SaveWeightWorkout extends StatefulWidget {
   WeightWorkout workout;
+
   SaveWeightWorkout({Key? key, required this.workout}) : super(key: key);
 
   @override
@@ -19,9 +20,7 @@ class _SaveWeightWorkoutState extends State<SaveWeightWorkout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Save your workout")
-      ),
+      appBar: AppBar(title: const Text("Save your workout")),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -30,16 +29,18 @@ class _SaveWeightWorkoutState extends State<SaveWeightWorkout> {
               SizedBox(
                   width: 350,
                   child: TextFormField(
-                    decoration: textInputDecoration.copyWith(hintText: "Title your workout"),
-                    validator: (val)=> val!.isEmpty ? 'Title...' : null,
+                    decoration: textInputDecoration.copyWith(
+                        hintText: "Title your workout"),
+                    validator: (val) => val!.isEmpty ? 'Title...' : null,
                     onChanged: (val) {
                       setState(() => title = val);
                     },
-                  )
-              ),
+                  )),
               const SizedBox(height: 30),
-              const Text("Summary",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              const Text(
+                "Summary",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 300),
                 child: ListView.builder(
@@ -51,12 +52,13 @@ class _SaveWeightWorkoutState extends State<SaveWeightWorkout> {
                       title: GradientText(
                         widget.workout.exercises[index].name,
                         gradientDirection: GradientDirection.btt,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                         colors: const [Color(0xff4574EB), Color(0xff005FB7)],
                       ),
-                      subtitle: Text(widget.workout.exercises[index].sets!.length.toString() + " sets"),
+                      subtitle: Text(widget
+                              .workout.exercises[index].sets!.length
+                              .toString() +
+                          " sets"),
                     );
                   },
                 ),
@@ -68,14 +70,13 @@ class _SaveWeightWorkoutState extends State<SaveWeightWorkout> {
       floatingActionButton: FloatingActionButton.extended(
           label: const Text("     Save workout     "),
           backgroundColor: const Color(0xff0068C8),
-          onPressed: () => finishWorkout()
-      ),
+          onPressed: () => finishWorkout()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
   finishWorkout() {
-    if(title.isEmpty) {
+    if (title.isEmpty) {
       widget.workout.setName("Workout " + widget.workout.getDate()!);
     } else {
       widget.workout.setName(title);

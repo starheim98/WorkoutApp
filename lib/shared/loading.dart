@@ -8,11 +8,10 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: const Center(
-          child: SpinKitChasingDots(
-            color: Color(0xff245CB6),
-            size: 50.0,
-          ),
-        )
-    );
+      child: SpinKitChasingDots(
+        color: Color(0xff245CB6),
+        size: 50.0,
+      ),
+    ));
   }
 }

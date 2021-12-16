@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/models/weight_lifting/weight_set.dart';
 import 'package:flutter/services.dart';
-import 'package:workout_app/models/weight_lifting/weight_workout.dart';
 
 class SetTile extends StatefulWidget {
   Function deleteSet;

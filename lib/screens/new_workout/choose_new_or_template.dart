@@ -15,13 +15,15 @@ class _WeightLiftingState extends State<WeightLifting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           title: const Text("Weightlifting"),
         ),
         body: Center(
           child: Column(children: <Widget>[
-            const SizedBox(height: 44,),
+            const SizedBox(
+              height: 44,
+            ),
             GestureDetector(
               onTap: () async => {
                 Navigator.push(
@@ -34,18 +36,16 @@ class _WeightLiftingState extends State<WeightLifting> {
                 height: 60,
                 child: Card(
                   elevation: 2,
-                    margin: EdgeInsets.only(left: 16, right: 16),
-                    child: Center(
-                      child: GradientText(
-                        "Select from template",
-                        gradientDirection: GradientDirection.btt,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold
-                        ),
-                        colors: const [Color(0xff4574EB), Color(0xff005FB7)],
-                      ),
+                  margin: const EdgeInsets.only(left: 16, right: 16),
+                  child: Center(
+                    child: GradientText(
+                      "Select from template",
+                      gradientDirection: GradientDirection.btt,
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold),
+                      colors: const [Color(0xff4574EB), Color(0xff005FB7)],
                     ),
+                  ),
                 ),
               ),
             ),
@@ -61,16 +61,14 @@ class _WeightLiftingState extends State<WeightLifting> {
                 width: double.infinity,
                 height: 60,
                 child: Card(
-                  elevation: 2,
+                    elevation: 2,
                     margin: const EdgeInsets.only(left: 16, right: 16),
                     child: Center(
                       child: GradientText(
                         "New workout",
                         gradientDirection: GradientDirection.btt,
                         style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontSize: 22, fontWeight: FontWeight.bold),
                         colors: const [Color(0xff4574EB), Color(0xff005FB7)],
                       ),
                     )),

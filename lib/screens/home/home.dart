@@ -10,7 +10,6 @@ import 'package:workout_app/shared/constants.dart';
 
 import 'dart:async';
 
-
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -65,10 +64,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final List<Widget> _widgetOptions = <Widget>[
       HomeTab(
-          runWorkouts: runWorkouts,
-          weightWorkouts: weightWorkouts,
-          friendsWorkouts: friendsWorkouts,
-          loading: loading,
+        runWorkouts: runWorkouts,
+        weightWorkouts: weightWorkouts,
+        friendsWorkouts: friendsWorkouts,
+        loading: loading,
       ),
       newWorkoutTab(context),
       myPageTab()

@@ -11,7 +11,8 @@ class Dialogues {
     }
   }
 
-  confirmLogoutDialogue(BuildContext context, String title, String description) {
+  confirmLogoutDialogue(
+      BuildContext context, String title, String description) {
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -34,9 +35,9 @@ class Dialogues {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     ElevatedButton.icon(
-                      icon: const Icon(
-                      Icons.exit_to_app,
-                      ),
+                        icon: const Icon(
+                          Icons.exit_to_app,
+                        ),
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Color(0xFFEA323D))),
@@ -47,9 +48,13 @@ class Dialogues {
                           Icons.cancel,
                           color: Color(0xFF333333),
                         ),
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white)),
                         onPressed: () => confirmResult(false, context),
-                        label: Text("Cancel", style: dialogueFont.copyWith(color: const Color(0xFF333333)))),
+                        label: Text("Cancel",
+                            style: dialogueFont.copyWith(
+                                color: const Color(0xFF333333)))),
                   ],
                 ),
               ),
@@ -58,7 +63,8 @@ class Dialogues {
         });
   }
 
-  confirmDeleteDialogue(BuildContext context, String title, String description) {
+  confirmDeleteDialogue(
+      BuildContext context, String title, String description) {
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -81,27 +87,26 @@ class Dialogues {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     ElevatedButton.icon(
-                      icon: const Icon(
-                        Icons.delete,
-                      ),
+                        icon: const Icon(
+                          Icons.delete,
+                        ),
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Color(0xFFEA323D))
-                        ),
+                                MaterialStateProperty.all(Color(0xFFEA323D))),
                         onPressed: () => confirmResult(true, context),
                         label: const Text("Delete", style: dialogueFont)),
                     ElevatedButton.icon(
                         style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(Colors.white)
-                        ),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white)),
                         icon: const Icon(
                           Icons.cancel,
                           color: Color(0xFF333333),
                         ),
                         onPressed: () => confirmResult(false, context),
-                        label: Text("Cancel", style: dialogueFont.copyWith(color: const Color(0xFF333333)))),
-
+                        label: Text("Cancel",
+                            style: dialogueFont.copyWith(
+                                color: const Color(0xFF333333)))),
                   ],
                 ),
               ),

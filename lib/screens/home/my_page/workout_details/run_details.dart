@@ -51,13 +51,15 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
         backgroundColor: Colors.brown[50],
         appBar: appbar(_auth, runWorkout!.title, context),
         body: Card(
-          margin: EdgeInsets.all(16),
+          margin: const EdgeInsets.all(16),
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
                       Row(
                         children: [
                           Expanded(
@@ -88,71 +90,70 @@ class _RunWorkoutDetailsPageState extends State<RunWorkoutDetailsPage> {
                               ],
                             ),
                           ),
-                          Expanded(child: Image.asset('lib/assets/run.png', height: 40), flex: 1),
+                          Expanded(
+                              child:
+                                  Image.asset('lib/assets/run.png', height: 40),
+                              flex: 1),
                         ],
                       ),
-
-                    sizedBox,
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            const Text(
-                              "Duration",
-                              style: durationDistanceAvgPaceText,
-                            ),
-                            Text(
-                              runWorkout!.duration,
-                              style: numberStyle,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 25,
-                        ),
-                        Column(
-                          children: [
-                            const Text(
-                              "Distance",
-                              style: durationDistanceAvgPaceText,
-                            ),
-                            Text(runWorkout!.distance + " km",
-                                style: numberStyle),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 25,
-                        ),
-                        Column(
-                          children: [
-                            const Text(
-                              "Avg. pace",
-                              style: durationDistanceAvgPaceText,
-                            ),
-                            Text(timePerKm(runWorkout!).toString() + " /km",
-                                style: numberStyle),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      runWorkout!.description +
-                          "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
-                              "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
-                              "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
-                              "I wne tfor a long run today it was so nice to run i nthe frtehs swewet ait i loved it ."
-                              "",
-                      style:
-                          tileTitle.copyWith(fontWeight: FontWeight.normal, fontSize: 12+2, height: 1.3),
-                      maxLines: 5,
-                    ),
-                  ],
+                      sizedBox,
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              const Text(
+                                "Duration",
+                                style: durationDistanceAvgPaceText,
+                              ),
+                              Text(
+                                runWorkout!.duration,
+                                style: numberStyle,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 25,
+                          ),
+                          Column(
+                            children: [
+                              const Text(
+                                "Distance",
+                                style: durationDistanceAvgPaceText,
+                              ),
+                              Text(runWorkout!.distance + " km",
+                                  style: numberStyle),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 25,
+                          ),
+                          Column(
+                            children: [
+                              const Text(
+                                "Avg. pace",
+                                style: durationDistanceAvgPaceText,
+                              ),
+                              Text(timePerKm(runWorkout!).toString() + " /km",
+                                  style: numberStyle),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      Text(
+                        runWorkout!.description,
+                        style: tileTitle.copyWith(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12 + 2,
+                            height: 1.3),
+                        maxLines: 5,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.46,
-                width: MediaQuery.of(context).size.width,
+              Expanded(
+                flex: 1,
                 child: FlutterMap(
                   options: MapOptions(
                     center: LatLng(runWorkout!.getPoints().last.latitude,

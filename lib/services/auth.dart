@@ -1,18 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:workout_app/models/account.dart';
-import 'package:workout_app/services/database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final CollectionReference users = FirebaseFirestore.instance.collection('users'); //reference to the users collection.
+  final CollectionReference users = FirebaseFirestore.instance
+      .collection('users'); //reference to the users collection.
 
   //Create user object based on firebase user. BASICALLY filters all the
   //unwanted fields from the regular user to our custom version.
-  Account? _userFromFirebaseUser(User user){
+  Account? _userFromFirebaseUser(User user) {
     return user != null ? Account(uid: user.uid) : null;
   }
 
@@ -29,7 +26,7 @@ class AuthService {
       UserCredential result = await _auth.signInAnonymously();
       User user = result.user!;
       return _userFromFirebaseUser(user);
-    } catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
@@ -37,8 +34,9 @@ class AuthService {
 
   //sign in email&password
   Future signInEmailPassword(String email, String password) async {
-    try{
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
@@ -48,23 +46,23 @@ class AuthService {
   }
 
   //register email&password
-  Future registerEmailPassword(String firstName, String lastName, String email, String password) async {
-    try{
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future registerEmailPassword(
+      String firstName, String lastName, String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
 
-      ///// Create collection of users -> create document with the registered users uid + email.
+      // Create collection of users -> create document with the registered users uid + email.
       // Will not override - cause our AUTH uses unique emails.
       await users.doc(user!.uid).set({
-        "firstName" : firstName,
-        "lastName" : lastName,
-        "uid" : user.uid,
-        "email" : email,
-        "friends" : [],
+        "firstName": firstName,
+        "lastName": lastName,
+        "uid": user.uid,
+        "email": email,
+        "friends": [],
       });
-      /////
 
-      //writeUserData(user.uid, user.displayName, )
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -76,12 +74,10 @@ class AuthService {
   Future signOut() async {
     try {
       return await _auth.signOut();
-    } catch (e){
+    } catch (e) {
       print("ERROR SIGNING OUT");
       print(e.toString());
       return null;
     }
   }
-
 }
-

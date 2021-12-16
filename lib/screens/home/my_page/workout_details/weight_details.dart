@@ -91,7 +91,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                       "Duration",
                       style: durationDistanceAvgPaceText.copyWith(height: 1.5),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Text(
                       widget.workout.getDuration(),
                       style: numberStyle.copyWith(height: 1.5),

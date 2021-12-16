@@ -1,27 +1,28 @@
-
-class WeightSet{
+class WeightSet {
   int _weight = 0;
   int _repetitions = 0;
 
-  WeightSet(this._weight,this._repetitions);
+  WeightSet(this._weight, this._repetitions);
+
   WeightSet.newSet();
 
   factory WeightSet.fromJson(Map<String, dynamic> json) {
     return WeightSet(json['weight'], json['repetitions']);
   }
 
-  int getWeight(){
+  int getWeight() {
     return _weight;
   }
 
-  int getRepetitions(){
+  int getRepetitions() {
     return _repetitions;
   }
 
-  void setWeight(int weight){
+  void setWeight(int weight) {
     _weight = weight;
   }
-  void setRepetitions(int repetitions){
+
+  void setRepetitions(int repetitions) {
     _repetitions = repetitions;
   }
 
