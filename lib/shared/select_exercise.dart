@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
+
 class SelectExercise extends StatelessWidget {
   const SelectExercise({Key? key}) : super(key: key);
 
@@ -34,6 +36,7 @@ class SelectExercise extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text("Select exercise"),
       ),
@@ -41,9 +44,18 @@ class SelectExercise extends StatelessWidget {
         itemCount: exerciseCategories.length,
         itemBuilder: (_, index) {
           return Card(
+            elevation: 2,
+            margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
             child: ListTile(
-              title: Text(exerciseCategories[index]),
-              trailing: const Icon(Icons.arrow_forward),
+              title: Text(
+                exerciseCategories[index],
+                style: const TextStyle(
+                    color: Color(0xff245CB6), fontWeight: FontWeight.bold),
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward,
+                color: Colors.black,
+              ),
               onTap: () {
                 Navigator.push(
                     context,
@@ -71,6 +83,7 @@ class SelectedCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(category),
       ),
@@ -78,8 +91,14 @@ class SelectedCategory extends StatelessWidget {
         itemCount: exercises.length,
         itemBuilder: (_, index) {
           return Card(
+            elevation: 2,
+            margin: const EdgeInsets.only(left: 16, right: 16, top: 12),
             child: ListTile(
-              title: Text(exercises[index]),
+              title: Text(
+                exercises[index],
+                style: const TextStyle(
+                    color: Color(0xff245CB6), fontWeight: FontWeight.bold),
+              ),
               onTap: () {
                 Navigator.pop(context, exercises[index]);
                 Navigator.pop(context, exercises[index]);
