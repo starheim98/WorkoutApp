@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:workout_app/models/running/run_workout.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/services/database.dart';
 import 'package:workout_app/shared/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:workout_app/shared/km_per_minute_parser.dart';
 
 import '../../../top_secret.dart';
 
@@ -26,7 +28,7 @@ class _RunDataState extends State<RunData> {
   String title = "";
   String desc = "";
 
-  var sizedbox = SizedBox(height: 30);
+  var sizedbox = const SizedBox(height: 30);
   var document;
 
   List<GeoPoint> latlngToGeopoint(List<LatLng> initialPoints) {
@@ -45,6 +47,7 @@ class _RunDataState extends State<RunData> {
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     String sDuration =
@@ -53,6 +56,14 @@ class _RunDataState extends State<RunData> {
         "${(widget.duration.inSeconds.remainder(60).toString().padLeft(2, '0'))}";
     return Scaffold(
         appBar: appbar(_auth, "Save your run", context),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: ()  => {
+            DatabaseService().saveRun(title, desc, sDuration, widget.distance, latlngToGeopoint(widget.points)),
+            Navigator.of(context).popUntil((route) => route.isFirst),
+          },
+          label: const Text("     Save Run     "),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: SingleChildScrollView(
           child: Center(
             child: Column(
@@ -79,12 +90,52 @@ class _RunDataState extends State<RunData> {
                   )
               ),
                 sizedbox,
-                Text("Distance: " + widget.distance.toString() + " km"),
-                sizedbox,
-                Text("Duration: " + sDuration ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        const Text(
+                          "Duration",
+                          style: durationDistanceAvgPaceText,
+                        ),
+                        Text(
+                          printDuration(widget.duration),
+                          style: numberStyle,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Distance",
+                          style: durationDistanceAvgPaceText,
+                        ),
+                        Text(widget.distance.toString() + " km",
+                            style: numberStyle),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Avg. pace",
+                          style: durationDistanceAvgPaceText,
+                        ),
+                        Text(timePerKmWithoutRunworkout(widget.distance.toString(), widget.duration.toString()).toString() + " /km",
+                            style: numberStyle),
+                      ],
+                    ),
+                  ],
+                ),
                 sizedbox,
                 SizedBox(
-                    height: 240,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     child: FlutterMap(
                       options: MapOptions(
                         center: LatLng(widget.points.last.latitude, widget.points.last.longitude),
@@ -103,15 +154,11 @@ class _RunDataState extends State<RunData> {
                       ],
                     ),
                 ),
-                ElevatedButton(
-                  onPressed: ()  => {
-                        DatabaseService().saveRun(title, desc, sDuration, widget.distance, latlngToGeopoint(widget.points)),
-                        Navigator.of(context).popUntil((route) => route.isFirst),
-                      },
-                  child: const Text("Save Run"),
-                ),
+
           ])),
-        ));
+        )
+
+    );
    }
 }
 

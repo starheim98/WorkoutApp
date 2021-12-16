@@ -35,7 +35,7 @@ class _CustomRunTileState extends State<CustomRunTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(left: 16, right: 16, top: 9, bottom: 9),
+      margin: const EdgeInsets.only(left: 16, right: 16, top: 9, bottom: 9),
       elevation: 3,
       child: GestureDetector(
         onTap: () => {
@@ -54,7 +54,7 @@ class _CustomRunTileState extends State<CustomRunTile> {
               Expanded(
                 flex: 50,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                  padding: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
                   child: Column(
                     children: [
                       Row(
