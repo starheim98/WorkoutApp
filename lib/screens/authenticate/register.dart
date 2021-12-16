@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/services/auth.dart';
 import 'package:workout_app/shared/constants.dart';
-import 'package:workout_app/shared/loading.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -16,7 +15,6 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = new AuthService();
   final _formkey = GlobalKey<FormState>();
 
-  bool loading = false;
   String email = "";
   String password = "";
   String error = "";
@@ -25,17 +23,16 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
-      backgroundColor: Colors.brown[100],
+    return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-          backgroundColor: Colors.brown[400],
           elevation: 0.0,
           title: const Text('Sign up to this app'),
           actions: <Widget>[
             TextButton.icon(
                 onPressed: () => widget.toggleView(),
-                icon: const Icon(Icons.person),
-                label: const Text('Sign in')),
+                icon: const Icon(Icons.person, color: Colors.white,),
+                label: const Text('Sign in', style: TextStyle(color: Colors.white))),
           ]),
       body: SingleChildScrollView(
         child: Container(
@@ -78,14 +75,13 @@ class _RegisterState extends State<Register> {
                   ),
                   const SizedBox(height: 20.0),
                   ElevatedButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xff0068C8))),
                       onPressed: () async {
                         if(_formkey.currentState!.validate()){
-                          setState(() => loading = true);
-
                           //valid form
                           dynamic result = await _auth.registerEmailPassword(firstName, lastName, email, password);
                           if (result == null) {
-                            setState(() => {error = 'Please enter a valid email. (Remember @, etc)', loading = false});
+                            setState(() => {error = 'Please enter a valid email. (Remember @, etc)'});
                           } // do not need an else. WE have a listener for auth changes so it will automatically change.
                         } else {
                           print("Invalid register-form");
