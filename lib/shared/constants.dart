@@ -56,6 +56,12 @@ const detailsName = TextStyle(
     fontSize: 16 + 2,
 );
 
+const dialogueFont = TextStyle(
+  fontSize: 16 +2,
+  fontFamily: "Roboto",
+  fontStyle: FontStyle.normal,
+);
+
 /// AppBar - TODO: Move to better named file? or not
 appbar(AuthService _auth, String name, BuildContext context) => AppBar(
   title: Text(name),
@@ -63,7 +69,7 @@ appbar(AuthService _auth, String name, BuildContext context) => AppBar(
   actions: <Widget>[
     TextButton.icon(
       onPressed: () async {
-        var value = await Dialogues().confirmDialogue(context, "Logout", "Are you sure you want to logout?");
+        var value = await Dialogues().confirmLogoutDialogue(context, "Logout", "Are you sure you want to logout?");
         if(value){
           await _auth.signOut();
         }

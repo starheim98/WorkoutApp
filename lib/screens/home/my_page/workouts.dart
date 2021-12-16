@@ -135,7 +135,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
           trailing: IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () async {
-              var result = await Dialogues().confirmDialogue(
+              var result = await Dialogues().confirmDeleteDialogue(
                   context, "Delete workout", "Are you sure you want to permanently remove the workout?");
               if (result) {
                 deleteWorkout(weightWorkout.id!, true);
@@ -207,7 +207,7 @@ class _MyWorkoutsState extends State<MyWorkouts> {
           trailing: IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () async {
-                var result = await Dialogues().confirmDialogue(
+                var result = await Dialogues().confirmDeleteDialogue(
                     context, "Delete workout", "Are you sure you want to permanently remove the workout?");
                 if (result) {
                   deleteWorkout(runWorkout.id, false);
