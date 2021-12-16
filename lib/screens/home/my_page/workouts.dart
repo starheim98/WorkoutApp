@@ -47,7 +47,9 @@ class _MyWorkoutsState extends State<MyWorkouts> {
     if (mounted) {
       setState(() {
         weightWorkouts = weightWorkoutData;
+        weightWorkouts.sort((b, a) => a.date!.compareTo(b.date!));
         runWorkouts = runWorkoutData;
+        runWorkouts.sort((b, a) => a.date.compareTo(b.date));
       });
     }
   }
